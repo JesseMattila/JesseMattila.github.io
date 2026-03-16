@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jesse Mattila — KTM | Analytiikka & Prosessikehitys</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e94560;
+            --accent-light: #ff6b81;
+            --bg: #0f0f1a;
+            --card: #16213e;
+            --card-hover: #1a2744;
+            --text: #eaeaea;
+            --text-muted: #8892b0;
+            --gradient: linear-gradient(135deg, #e94560, #0f3460);
+            --gradient-accent: linear-gradient(135deg, #e94560 0%, #ff6b81 50%, #0f3460 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 15, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(233, 69, 96, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(15, 15, 26, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text);
+            transition: all 0.3s;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(233, 69, 96, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(15, 52, 96, 0.12) 0%, transparent 50%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-2%, -1%) scale(1.05); }
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(233, 69, 96, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(233, 69, 96, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(233, 69, 96, 0.15);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            color: var(--accent-light);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: rgba(233, 69, 96, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* ===== KEY METRICS ===== */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .metric-card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(233, 69, 96, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-card:hover::before { opacity: 1; }
+
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ===== CASE STUDY ===== */
+        .case-study {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .case-tag {
+            display: inline-block;
+            background: rgba(233, 69, 96, 0.15);
+            color: var(--accent-light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .case-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .case-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .case-metric {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .case-metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        .case-metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-top: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), rgba(233, 69, 96, 0.1));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg);
+            transform: translateX(-4px);
+        }
+
+        .timeline-item h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== SKILLS ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(233, 69, 96, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .skill-icon.analytics { background: rgba(99, 102, 241, 0.15); }
+        .skill-icon.logistics { background: rgba(16, 185, 129, 0.15); }
+        .skill-icon.ai { background: rgba(233, 69, 96, 0.15); }
+        .skill-icon.process { background: rgba(245, 158, 11, 0.15); }
+        .skill-icon.bi { background: rgba(59, 130, 246, 0.15); }
+        .skill-icon.law { background: rgba(168, 85, 247, 0.15); }
+
+        .skill-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .skill-desc {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* ===== ABOUT / STORY ===== */
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .story-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .highlight {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .highlight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(233, 69, 96, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .highlight-text h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .highlight-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== INTERACTIVE DEMO ===== */
+        .demo-section {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .demo-dot.red { background: #ff5f57; }
+        .demo-dot.yellow { background: #ffbd2e; }
+        .demo-dot.green { background: #28c840; }
+
+        .calculator {
+            margin-top: 2rem;
+        }
+
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .calc-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .calc-group input, .calc-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .calc-group input:focus, .calc-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .calc-group select option {
+            background: var(--card);
+        }
+
+        .calc-result {
+            background: rgba(233, 69, 96, 0.08);
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .calc-result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .calc-result-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .calc-result-breakdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .breakdown-item-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        .breakdown-item-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-section {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== COUNT ANIMATION ===== */
+        .count-up {
+            display: inline-block;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 15, 26, 0.98);
+                padding: 1.5rem 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid rgba(233, 69, 96, 0.15);
+            }
+
+            .hero-stats { gap: 1.5rem; }
+            .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .calc-row { grid-template-columns: 1fr; }
+            .case-study { padding: 2rem; }
+            .calc-result-breakdown { grid-template-columns: 1fr; }
+            section { padding: 4rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <div class="nav-logo">JM</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#tulokset">Tulokset</a></li>
+            <li><a href="#case">Case Study</a></li>
+            <li><a href="#osaaminen">Osaaminen</a></li>
+            <li><a href="#tarina">Tarina</a></li>
+            <li><a href="#demo">Live Demo</a></li>
+            <li><a href="#yhteystiedot">Yhteystiedot</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Valikko">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content fade-in">
+        <div class="hero-badge">KTM — Talousoikeus & Tuotantotalous</div>
+        <h1>
+            Datasta <span class="gradient-text">päätöksiin</span>,<br>
+            kaaoksesta <span class="gradient-text">prosessiin</span>.
+        </h1>
+        <p class="hero-sub">
+            Rakennan järjestelmiä joilla yritykset ymmärtävät kustannuksensa, optimoivat toimintansa ja tekevät parempia päätöksiä — tekoälyavusteisesti.
+        </p>
+        <div class="hero-cta">
+            <a href="#case" class="btn btn-primary">Katso mitä olen tehnyt &darr;</a>
+            <a href="#yhteystiedot" class="btn btn-outline">Ota yhteyttä</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value count-up" data-target="453000" data-prefix="" data-suffix=" €">453 000 €</div>
+                <div class="hero-stat-label">Analysoitu kustannusmassa</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value count-up" data-target="100000" data-prefix="+" data-suffix=" €">+100 000 €</div>
+                <div class="hero-stat-label">Tunnistetut säästöt</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value count-up" data-target="5500" data-prefix="" data-suffix="">5 500</div>
+                <div class="hero-stat-label">Analysoitua keikkaa</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Metrics -->
+<section id="tulokset">
+    <p class="section-label fade-in">Konkreettiset tulokset</p>
+    <h2 class="section-title fade-in">Ei mutuilua — lukuja.</h2>
+    <p class="section-desc fade-in">Kaikki alla olevat tulokset on saavutettu Meltex Oy:ssä oman työn ohessa, ilman erillistä toimeksiantoa.</p>
+
+    <div class="metrics">
+        <div class="metric-card fade-in">
+            <div class="metric-icon">📊</div>
+            <div class="metric-value">453 000 €</div>
+            <div class="metric-label">Kuljetuskustannusmassa analysoitu autokohtaiselle tasolle (H1/2025)</div>
+        </div>
+        <div class="metric-card fade-in">
+            <div class="metric-icon">💰</div>
+            <div class="metric-value">100 000+ €</div>
+            <div class="metric-label">Tunnistettu säästöpotentiaali vuositasolla</div>
+        </div>
+        <div class="metric-card fade-in">
+            <div class="metric-icon">⏱️</div>
+            <div class="metric-value">44 300 €/v</div>
+            <div class="metric-label">Lastausaikojen 5 min nopeutus = tämä säästö vuodessa</div>
+        </div>
+        <div class="metric-card fade-in">
+            <div class="metric-icon">🔄</div>
+            <div class="metric-value">50+</div>
+            <div class="metric-label">Kehitysideaa tuotu johdolle oma-aloitteisesti</div>
+        </div>
+    </div>
+</section>
+
+<!-- Case Study -->
+<section id="case">
+    <p class="section-label fade-in">Pääcase</p>
+    <h2 class="section-title fade-in">Kuljetuskustannusjärjestelmä</h2>
+    <p class="section-desc fade-in">Kaaoksesta pysyväksi kustannusseurantajärjestelmäksi — ilman budjettia, ilman toimeksiantoa.</p>
+
+    <div class="case-study fade-in">
+        <div class="case-header">
+            <div>
+                <span class="case-tag">Meltex Oy &middot; 2025</span>
+                <h3 class="case-title" style="margin-top: 0.75rem;">Kuljetuskustannusten analysointi ja seurantajärjestelmä</h3>
+                <p class="case-subtitle">10 ajoneuvoa &middot; 15+ kuljettajaa &middot; 5 toimipistettä &middot; 203 000 km</p>
+            </div>
+        </div>
+
+        <div class="case-grid">
+            <div class="case-metric">
+                <div class="case-metric-value">453 000 €</div>
+                <div class="case-metric-label">Kokonaiskustannus H1/2025</div>
+            </div>
+            <div class="case-metric">
+                <div class="case-metric-value">+32 %</div>
+                <div class="case-metric-label">Ostokuljettajat kalliimpia / keikka</div>
+            </div>
+            <div class="case-metric">
+                <div class="case-metric-value">60 → 28 min</div>
+                <div class="case-metric-label">Lastausaikaero toimipisteiden välillä</div>
+            </div>
+            <div class="case-metric">
+                <div class="case-metric-value">50–225 €</div>
+                <div class="case-metric-label">Yksikkökustannus / keikka (autosta riippuen)</div>
+            </div>
+        </div>
+
+        <h4 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.1rem;">Lähtötilanne → Lopputulos</h4>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>Kaaos — Ei kustannustietoa</h4>
+                <p>Käsinkirjoitettuja tuntilistoja. Kukaan ei tiennyt paljonko kuljetukset oikeasti maksoivat. GPS-data vaati siivoamista.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>Selvitys — Data haltuun</h4>
+                <p>Yhdistin tuntilistat, GPS-datan, Helpten-lastausajat ja taloushallinnon kulut autokohtaiseksi kustannusnäkymäksi.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>Analyysi — €/keikka, €/h, €/km joka autolle</h4>
+                <p>ROI-laskelmat, omat vs. ostokuljettajat, lastausaika-analyysit toimipisteittäin, poissaolojen kustannusvaikutus.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>Prosessi — Pysyvä seurantamalli</h4>
+                <p>Ohjeistin ajojärjestelijät, taloushallinnon ja logistiikkapäällikön. Kirjoitin AI-promptit datan analysointiin. Järjestelmä toimii ilman minua.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini cases -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <div class="case-study fade-in" style="padding: 2rem;">
+            <span class="case-tag">Prosessit</span>
+            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Teams-keräilyjärjestelmä</h3>
+            <p class="case-subtitle" style="margin-top: 0.5rem;">Suunnittelin myymälän keräilyprosessin Teamsin avulla — paransi läpimenoaikaa ja vähensi virheitä.</p>
+        </div>
+        <div class="case-study fade-in" style="padding: 2rem;">
+            <span class="case-tag">Organisaatio</span>
+            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Uuden työntekijän käsikirja</h3>
+            <p class="case-subtitle" style="margin-top: 0.5rem;">Kiersin myymälät, keräsin parhaat käytännöt ja kokosin standardoidun perehdytysoppaan.</p>
+        </div>
+        <div class="case-study fade-in" style="padding: 2rem;">
+            <span class="case-tag">Palkitseminen</span>
+            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Tulospalkka-ehdotus</h3>
+            <p class="case-subtitle" style="margin-top: 0.5rem;">Vein johdolle ehdotuksen tulospalkkiojärjestelmästä — mittarit, tavoitteet ja kustannusarvio.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Skills -->
+<section id="osaaminen">
+    <p class="section-label fade-in">Osaaminen</p>
+    <h2 class="section-title fade-in">Mitä tuon pöytään</h2>
+    <p class="section-desc fade-in">KTM-tutkinnon ja käytännön kokemuksen yhdistelmä — painotus analytiikassa, prosesseissa ja tekoälyssä.</p>
+
+    <div class="skills-grid">
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon analytics">📈</div>
+                <div class="skill-name">Talousanalyysi & Controller</div>
+            </div>
+            <p class="skill-desc">Kustannuslaskenta, sopimusanalyysi, ROI-laskelmat, yksikkö- ja vaihtoehtoiskustannukset. Osaan kaivaa datan esiin ja kertoa mitä se tarkoittaa euroina.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Kustannuslaskenta</span>
+                <span class="skill-tag">ROI-analyysi</span>
+                <span class="skill-tag">Budjetointi</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon logistics">🚛</div>
+                <div class="skill-name">Logistiikka & Toimitusketju</div>
+            </div>
+            <p class="skill-desc">Ajojärjestely 10 ajoneuvolle, kuljetuskustannusoptimointi, GPS-data-analyysi, toimipistekohtaiset vertailut. Käytännön kokemus kentältä.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Ajojärjestely</span>
+                <span class="skill-tag">Kustannusoptimointi</span>
+                <span class="skill-tag">GPS-data</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon ai">🤖</div>
+                <div class="skill-name">Tekoäly & Automaatio</div>
+            </div>
+            <p class="skill-desc">Käytän AI:ta työn tehostamiseen: data-analyysi, raporttien generointi, prosessiautomaatio. Rakennan AI-avusteisia työkaluja ja prompteja loppukäyttäjille.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Claude / GPT</span>
+                <span class="skill-tag">Prompt Engineering</span>
+                <span class="skill-tag">Python + AI</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon process">⚙️</div>
+                <div class="skill-name">Prosessikehitys</div>
+            </div>
+            <p class="skill-desc">Tunnistan pullonkaulat, rakennan seurantamallit ja standardoin työtavat. Kaaoksesta järjestelmäksi — niin että homma pyörii ilman minua.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Prosessiketjut</span>
+                <span class="skill-tag">Standardointi</span>
+                <span class="skill-tag">Kehitysideat</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon bi">📊</div>
+                <div class="skill-name">Power BI & Data</div>
+            </div>
+            <p class="skill-desc">Dashboardit, DAX-kaavat, M-koodi, CSV-tuonnit. Osaan rakentaa johdon näkymät ja operatiiviset seurantanäkymät samasta datasta.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Power BI</span>
+                <span class="skill-tag">DAX</span>
+                <span class="skill-tag">Excel</span>
+                <span class="skill-tag">Dashboardit</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon law">⚖️</div>
+                <div class="skill-name">Talousoikeus</div>
+            </div>
+            <p class="skill-desc">KTM-pääaine. Sopimusoikeus, yhtiöoikeus, vero-oikeus. Ymmärrän liiketoiminnan juridisen kehyksen ja sääntelyympäristön.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Sopimusoikeus</span>
+                <span class="skill-tag">Yhtiöoikeus</span>
+                <span class="skill-tag">KTM</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Story -->
+<section id="tarina">
+    <p class="section-label fade-in">Tarina</p>
+    <h2 class="section-title fade-in">Miksi juuri minä?</h2>
+
+    <div class="story-grid fade-in">
+        <div>
+            <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Keskeytin kauppiksen 108 opintopisteen kohdalla. Moni olisi jäänyt siihen. Minä palasin — ja vedin maisterin valmiiksi <strong style="color: var(--text);">14 kuukaudessa työn ohessa</strong>.
+            </p>
+            <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Meltexillä en tyytynyt myyjän rooliin. Tein kuljetuskustannusanalyysin jota kukaan ei pyytänyt, koska näin tarpeen. Rakensin seurantajärjestelmän joka toimii ilman minua. Vein 50+ kehitysideaa johdolle.
+            </p>
+            <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted);">
+                En etsi <em>jotain työtä</em>. Etsin paikkaa jossa analyyttisyys, oma-aloitteisuus ja suorapuheisuus ovat vahvuuksia — eivät ongelmia.
+            </p>
+        </div>
+        <div class="story-highlights">
+            <div class="highlight">
+                <div class="highlight-icon">🎓</div>
+                <div class="highlight-text">
+                    <h4>KTM 14 kuukaudessa työn ohessa</h4>
+                    <p>Vaasan yliopisto, talousoikeus + tuotantotalous. Valmistunut 12/2025.</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <div class="highlight-icon">🧠</div>
+                <div class="highlight-text">
+                    <h4>Analyyttinen ongelmanratkaisija</h4>
+                    <p>Numerot eivät valehtele. Kaivan datan esiin, analysoin ja kerron mitä tehdä.</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <div class="highlight-icon">🚀</div>
+                <div class="highlight-text">
+                    <h4>Tekee ilman pyytämistä</h4>
+                    <p>50+ kehitysideaa, kustannusanalyysi, prosessimuutokset — kaikki oma-aloitteisesti.</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <div class="highlight-icon">🤖</div>
+                <div class="highlight-text">
+                    <h4>AI-osaaminen käytännössä</h4>
+                    <p>Rakennan AI-avusteisia työkaluja, automaatioita ja analyysejä. Tämäkin sivu on AI:n avulla tehty.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Demo -->
+<section id="demo">
+    <p class="section-label fade-in">Live Demo</p>
+    <h2 class="section-title fade-in">Kuljetuskustannuslaskuri</h2>
+    <p class="section-desc fade-in">Kokeile itse — syötä luvut ja näe kuinka analysoin kustannuksia. Tämä on yksinkertaistettu versio Meltexin työkalusta.</p>
+
+    <div class="demo-section fade-in">
+        <div class="demo-header">
+            <div class="demo-dot red"></div>
+            <div class="demo-dot yellow"></div>
+            <div class="demo-dot green"></div>
+            <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.5rem;">kuljetuskustannuslaskuri.app</span>
+        </div>
+
+        <div class="calculator">
+            <div class="calc-row">
+                <div class="calc-group">
+                    <label>Kuukausikustannus (€)</label>
+                    <input type="number" id="monthlyCost" value="6500" min="0" step="100">
+                </div>
+                <div class="calc-group">
+                    <label>Keikkoja / kuukausi</label>
+                    <input type="number" id="tripsPerMonth" value="180" min="1">
+                </div>
+            </div>
+            <div class="calc-row">
+                <div class="calc-group">
+                    <label>Kilometrejä / kuukausi</label>
+                    <input type="number" id="kmPerMonth" value="3500" min="1">
+                </div>
+                <div class="calc-group">
+                    <label>Keskim. lastausaika (min)</label>
+                    <input type="number" id="loadTime" value="45" min="1">
+                </div>
+            </div>
+            <div class="calc-row">
+                <div class="calc-group">
+                    <label>Kuljettajatyyppi</label>
+                    <select id="driverType">
+                        <option value="own">Oma kuljettaja</option>
+                        <option value="external">Ostokuljettaja (+32 %)</option>
+                    </select>
+                </div>
+                <div class="calc-group">
+                    <label>Lastausajan tavoite (min)</label>
+                    <input type="number" id="targetLoadTime" value="30" min="1">
+                </div>
+            </div>
+
+            <div class="calc-result" id="calcResult">
+                <div class="calc-result-value" id="costPerTrip">36,11 €</div>
+                <div class="calc-result-label">Kustannus per keikka</div>
+                <div class="calc-result-breakdown">
+                    <div>
+                        <div class="breakdown-item-value" id="costPerKm">1,86 €</div>
+                        <div class="breakdown-item-label">€ / km</div>
+                    </div>
+                    <div>
+                        <div class="breakdown-item-value" id="annualCost">78 000 €</div>
+                        <div class="breakdown-item-label">Vuosikustannus</div>
+                    </div>
+                    <div>
+                        <div class="breakdown-item-value" id="savings">0 €</div>
+                        <div class="breakdown-item-label">Säästöpotentiaali / vuosi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="yhteystiedot" class="contact-section">
+    <p class="section-label fade-in">Yhteystiedot</p>
+    <h2 class="section-title fade-in">Otetaan yhteyttä</h2>
+    <p class="section-desc fade-in" style="margin: 1rem auto 0; max-width: 500px;">Kiinnostuitko? Olen avoin uusille mahdollisuuksille controller-, logistiikka-, hankinta- ja myyntitehtävissä.</p>
+
+    <div class="contact-links fade-in">
+        <a href="mailto:jesse.mattila@icloud.com" class="contact-link">
+            ✉️ jesse.mattila@icloud.com
+        </a>
+        <a href="https://www.linkedin.com/in/jessemattila" class="contact-link" target="_blank" rel="noopener">
+            💼 LinkedIn
+        </a>
+    </div>
+</section>
+
+<footer>
+    <p>Jesse Mattila &copy; 2026 — Rakennettu tekoälyavusteisesti</p>
+</footer>
+
+<script>
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// Calculator
+const fmt = (n) => n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+const fmtDec = (n) => n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+function calculate() {
+    let cost = parseFloat(document.getElementById('monthlyCost').value) || 0;
+    const trips = parseFloat(document.getElementById('tripsPerMonth').value) || 1;
+    const km = parseFloat(document.getElementById('kmPerMonth').value) || 1;
+    const loadTime = parseFloat(document.getElementById('loadTime').value) || 1;
+    const targetLoadTime = parseFloat(document.getElementById('targetLoadTime').value) || 1;
+    const driverType = document.getElementById('driverType').value;
+
+    if (driverType === 'external') cost *= 1.32;
+
+    const perTrip = cost / trips;
+    const perKm = cost / km;
+    const annual = cost * 12;
+
+    // Savings from load time optimization
+    const timeSavedMin = Math.max(0, loadTime - targetLoadTime);
+    const hourlyRate = cost / (trips * (loadTime / 60));
+    const monthlySavings = (timeSavedMin / 60) * hourlyRate * trips;
+    const annualSavings = monthlySavings * 12;
+
+    document.getElementById('costPerTrip').textContent = fmtDec(perTrip) + ' €';
+    document.getElementById('costPerKm').textContent = fmtDec(perKm) + ' €';
+    document.getElementById('annualCost').textContent = fmt(Math.round(annual)) + ' €';
+    document.getElementById('savings').textContent = annualSavings > 0 ? fmt(Math.round(annualSavings)) + ' €' : '0 €';
+
+    // Highlight savings
+    const savingsEl = document.getElementById('savings');
+    savingsEl.style.color = annualSavings > 0 ? '#28c840' : '';
+}
+
+document.querySelectorAll('.calculator input, .calculator select').forEach(el => {
+    el.addEventListener('input', calculate);
+});
+
+calculate();
+
+// Count-up animation for hero stats
+const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.dataset.target);
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            let current = 0;
+            const step = target / 60;
+            const interval = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(interval);
+                }
+                el.textContent = prefix + fmt(Math.round(current)) + suffix;
+            }, 16);
+            countObserver.unobserve(el);
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
+</script>
+
+</body>
+</html>
