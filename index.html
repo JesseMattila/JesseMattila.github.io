@@ -41,15 +41,9 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(15, 15, 26, 0.85);
+            background: rgba(15, 15, 26, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(233, 69, 96, 0.15);
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            background: rgba(15, 15, 26, 0.95);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         .nav-inner {
@@ -57,63 +51,63 @@
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             height: 70px;
         }
 
         .nav-logo {
-            font-weight: 800;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
+            font-weight: 900;
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            cursor: pointer;
             letter-spacing: -0.5px;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
             list-style: none;
+            gap: 0.25rem;
         }
 
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s;
+        .nav-links a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .nav-links a:hover { color: var(--text); }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active {
+            color: var(--accent-light);
+            background: rgba(233, 69, 96, 0.12);
+        }
 
         .hamburger {
             display: none;
             flex-direction: column;
             gap: 5px;
-            cursor: pointer;
             background: none;
             border: none;
-            padding: 5px;
+            cursor: pointer;
+            padding: 0.5rem;
         }
 
         .hamburger span {
-            width: 25px;
+            width: 24px;
             height: 2px;
             background: var(--text);
+            border-radius: 2px;
             transition: all 0.3s;
         }
 
@@ -123,26 +117,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 100px 2rem 60px;
             position: relative;
-            padding: 2rem;
             overflow: hidden;
+            transition: all 0.4s ease;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(233, 69, 96, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(15, 52, 96, 0.12) 0%, transparent 50%);
-            animation: heroGlow 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes heroGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-2%, -1%) scale(1.05); }
+        .hero.compact {
+            min-height: auto;
+            padding: 100px 2rem 2rem;
         }
 
         .hero-grid {
@@ -152,95 +135,64 @@
                 linear-gradient(rgba(233, 69, 96, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(233, 69, 96, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
         }
 
         .hero-content {
+            max-width: 900px;
+            text-align: center;
             position: relative;
             z-index: 1;
-            text-align: center;
-            max-width: 800px;
         }
 
         .hero-badge {
             display: inline-block;
-            background: rgba(233, 69, 96, 0.15);
-            border: 1px solid rgba(233, 69, 96, 0.3);
-            color: var(--accent-light);
-            padding: 0.5rem 1.25rem;
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            padding: 0.4rem 1.2rem;
             border-radius: 50px;
             font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1.5rem;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
             font-weight: 900;
-            line-height: 1.1;
+            line-height: 1.15;
             margin-bottom: 1.5rem;
-            letter-spacing: -2px;
+            letter-spacing: -1px;
         }
 
-        .hero h1 .gradient-text {
+        .gradient-text {
             background: var(--gradient-accent);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero-sub {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
+            max-width: 650px;
+            margin: 0 auto 2rem;
             line-height: 1.7;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-top: 3rem;
-        }
-
-        .hero-stat {
-            text-align: center;
-        }
-
-        .hero-stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 0.25rem;
         }
 
         .hero-cta {
             display: flex;
             gap: 1rem;
             justify-content: center;
-            flex-wrap: wrap;
+            margin-bottom: 3rem;
         }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.9rem 2rem;
+            padding: 0.85rem 2rem;
             border-radius: 12px;
             font-weight: 600;
             font-size: 0.95rem;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             cursor: pointer;
             border: none;
             font-family: inherit;
@@ -249,12 +201,12 @@
         .btn-primary {
             background: var(--gradient);
             color: white;
-            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.4);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
         }
 
         .btn-outline {
@@ -266,37 +218,181 @@
         .btn-outline:hover {
             border-color: var(--accent);
             background: rgba(233, 69, 96, 0.05);
-            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Hide hero details in compact mode */
+        .hero.compact .hero-sub,
+        .hero.compact .hero-cta,
+        .hero.compact .hero-stats,
+        .hero.compact .hero-badge {
+            display: none;
+        }
+
+        .hero.compact h1 {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            margin-bottom: 0;
+        }
+
+        /* ===== OVERVIEW CARDS ===== */
+        .overview {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .overview-card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(233, 69, 96, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .overview-card:hover::before { opacity: 1; }
+
+        .overview-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .overview-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .overview-card p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .overview-card .arrow {
+            position: absolute;
+            bottom: 1.75rem;
+            right: 1.75rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .overview-card:hover .arrow {
+            color: var(--accent-light);
+            transform: translateX(4px);
         }
 
         /* ===== SECTIONS ===== */
-        section {
-            padding: 6rem 2rem;
+        .section {
+            display: none;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            animation: fadeInSection 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInSection {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section-label {
-            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: var(--accent);
+            font-size: 0.8rem;
             font-weight: 600;
+            color: var(--accent);
             margin-bottom: 0.75rem;
         }
 
         .section-title {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 1rem;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
         }
 
         .section-desc {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             max-width: 600px;
             margin-bottom: 3rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .back-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         /* ===== KEY METRICS ===== */
@@ -485,6 +581,129 @@
             color: var(--text-muted);
         }
 
+        /* ===== PROJECTS ===== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(233, 69, 96, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card:hover::before { opacity: 1; }
+
+        .project-status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .project-status.live {
+            background: rgba(40, 200, 64, 0.15);
+            color: #28c840;
+        }
+
+        .project-status.demo {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .project-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card .project-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .project-tech span {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .project-highlights {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1.25rem;
+        }
+
+        .project-highlights li {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+            padding-left: 1rem;
+            position: relative;
+            list-style: none;
+        }
+
+        .project-highlights li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
         /* ===== SKILLS ===== */
         .skills-grid {
             display: grid;
@@ -528,7 +747,6 @@
         .skill-icon.logistics { background: rgba(16, 185, 129, 0.15); }
         .skill-icon.ai { background: rgba(233, 69, 96, 0.15); }
         .skill-icon.process { background: rgba(245, 158, 11, 0.15); }
-        .skill-icon.bi { background: rgba(59, 130, 246, 0.15); }
         .skill-icon.law { background: rgba(168, 85, 247, 0.15); }
 
         .skill-name {
@@ -558,12 +776,12 @@
             font-weight: 500;
         }
 
-        /* ===== ABOUT / STORY ===== */
+        /* ===== STORY ===== */
         .story-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
-            align-items: center;
+            align-items: start;
         }
 
         .story-highlights {
@@ -601,7 +819,50 @@
             color: var(--text-muted);
         }
 
-        /* ===== INTERACTIVE DEMO ===== */
+        /* Harrastukset (now inside story) */
+        .hobbies-section {
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hobbies-section h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .hobby-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hobby-icon {
+            font-size: 1.5rem;
+        }
+
+        .hobby-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .hobby-info p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== INTERACTIVE DEMO (inside project) ===== */
         .demo-section {
             background: var(--card);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -627,9 +888,7 @@
         .demo-dot.yellow { background: #ffbd2e; }
         .demo-dot.green { background: #28c840; }
 
-        .calculator {
-            margin-top: 2rem;
-        }
+        .calculator { margin-top: 2rem; }
 
         .calc-row {
             display: grid;
@@ -665,9 +924,7 @@
             border-color: var(--accent);
         }
 
-        .calc-group select option {
-            background: var(--card);
-        }
+        .calc-group select option { background: var(--card); }
 
         .calc-result {
             background: rgba(233, 69, 96, 0.08);
@@ -713,9 +970,9 @@
         }
 
         /* ===== CONTACT ===== */
-        .contact-section {
+        .contact-content {
             text-align: center;
-            padding: 6rem 2rem 4rem;
+            padding: 2rem 0;
         }
 
         .contact-links {
@@ -755,23 +1012,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* ===== ANIMATIONS ===== */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ===== COUNT ANIMATION ===== */
-        .count-up {
-            display: inline-block;
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -786,7 +1026,7 @@
                 right: 0;
                 background: rgba(15, 15, 26, 0.98);
                 padding: 1.5rem 2rem;
-                gap: 1rem;
+                gap: 0.5rem;
                 border-bottom: 1px solid rgba(233, 69, 96, 0.15);
             }
 
@@ -795,7 +1035,9 @@
             .calc-row { grid-template-columns: 1fr; }
             .case-study { padding: 2rem; }
             .calc-result-breakdown { grid-template-columns: 1fr; }
-            section { padding: 4rem 1.25rem; }
+            .overview-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .section { padding: 2rem 1.25rem 4rem; }
         }
     </style>
 </head>
@@ -804,15 +1046,14 @@
 <!-- Navigation -->
 <nav id="navbar">
     <div class="nav-inner">
-        <div class="nav-logo">JM</div>
+        <div class="nav-logo" onclick="showHome()">JM</div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#tulokset">Tulokset</a></li>
-            <li><a href="#case">Case Study</a></li>
-            <li><a href="#osaaminen">Osaaminen</a></li>
-            <li><a href="#tarina">Tarina</a></li>
-            <li><a href="#demo">Live Demo</a></li>
-            <li><a href="#harrastukset">Harrastukset</a></li>
-            <li><a href="#yhteystiedot">Yhteystiedot</a></li>
+            <li><a data-section="tulokset">Tulokset</a></li>
+            <li><a data-section="case">Case Study</a></li>
+            <li><a data-section="projektit">Projektit</a></li>
+            <li><a data-section="osaaminen">Osaaminen</a></li>
+            <li><a data-section="tarina">Tarina</a></li>
+            <li><a data-section="yhteystiedot">Yhteystiedot</a></li>
         </ul>
         <button class="hamburger" id="hamburger" aria-label="Valikko">
             <span></span><span></span><span></span>
@@ -821,29 +1062,29 @@
 </nav>
 
 <!-- Hero -->
-<section class="hero">
+<section class="hero" id="hero">
     <div class="hero-grid"></div>
-    <div class="hero-content fade-in">
+    <div class="hero-content">
         <div class="hero-badge">KTM — Talousoikeus & Tuotantotalous</div>
         <h1>
-            Datasta <span class="gradient-text">päätöksiin</span>,<br>
+            Datasta <span class="gradient-text">p&auml;&auml;t&ouml;ksiin</span>,<br>
             kaaoksesta <span class="gradient-text">prosessiin</span>.
         </h1>
         <p class="hero-sub">
-            Rakennan järjestelmiä joilla yritykset ymmärtävät kustannuksensa, optimoivat toimintansa ja tekevät parempia päätöksiä — tekoälyavusteisesti.
+            Rakennan j&auml;rjestelmi&auml; joilla yritykset ymm&auml;rt&auml;v&auml;t kustannuksensa, optimoivat toimintansa ja tekev&auml;t parempia p&auml;&auml;t&ouml;ksi&auml; — teko&auml;lyavusteisesti.
         </p>
         <div class="hero-cta">
-            <a href="#case" class="btn btn-primary">Katso mitä olen tehnyt &darr;</a>
-            <a href="#yhteystiedot" class="btn btn-outline">Ota yhteyttä</a>
+            <a class="btn btn-primary" onclick="showSection('case')">Katso mit&auml; olen tehnyt &darr;</a>
+            <a class="btn btn-outline" onclick="showSection('yhteystiedot')">Ota yhteytt&auml;</a>
         </div>
         <div class="hero-stats">
             <div class="hero-stat">
-                <div class="hero-stat-value">lähes 0,5 M€</div>
+                <div class="hero-stat-value">l&auml;hes 0,5 M&euro;</div>
                 <div class="hero-stat-label">Analysoitu kustannusmassa</div>
             </div>
             <div class="hero-stat">
                 <div class="hero-stat-value">6-numeroinen</div>
-                <div class="hero-stat-label">Tunnistettu säästöpotentiaali</div>
+                <div class="hero-stat-label">Tunnistettu s&auml;&auml;st&ouml;potentiaali</div>
             </div>
             <div class="hero-stat">
                 <div class="hero-stat-value">tuhansia</div>
@@ -853,54 +1094,100 @@
     </div>
 </section>
 
-<!-- Key Metrics -->
-<section id="tulokset">
-    <p class="section-label fade-in">Konkreettiset tulokset</p>
-    <h2 class="section-title fade-in">Ei mutuilua — lukuja.</h2>
-    <p class="section-desc fade-in">Kaikki alla olevat tulokset on saavutettu Meltex Oy:ssä oman työn ohessa, ilman erillistä toimeksiantoa.</p>
+<!-- Overview Cards (shown on home) -->
+<div class="overview" id="overviewCards">
+    <div class="overview-grid">
+        <div class="overview-card" onclick="showSection('tulokset')">
+            <div class="overview-card-icon">&#x1f4ca;</div>
+            <h3>Tulokset</h3>
+            <p>Konkreettiset luvut ja saavutukset — ei mutuilua.</p>
+            <span class="arrow">&rarr;</span>
+        </div>
+        <div class="overview-card" onclick="showSection('case')">
+            <div class="overview-card-icon">&#x1f4cb;</div>
+            <h3>Case Study</h3>
+            <p>Kuljetuskustannusjärjestelmä kaaoksesta pysyväksi prosessiksi.</p>
+            <span class="arrow">&rarr;</span>
+        </div>
+        <div class="overview-card" onclick="showSection('projektit')">
+            <div class="overview-card-icon">&#x1f680;</div>
+            <h3>Projektit</h3>
+            <p>AI-avusteisia projekteja ja työkaluja.</p>
+            <span class="arrow">&rarr;</span>
+        </div>
+        <div class="overview-card" onclick="showSection('osaaminen')">
+            <div class="overview-card-icon">&#x1f9e0;</div>
+            <h3>Osaaminen</h3>
+            <p>Analytiikka, logistiikka, tekoäly, talousoikeus.</p>
+            <span class="arrow">&rarr;</span>
+        </div>
+        <div class="overview-card" onclick="showSection('tarina')">
+            <div class="overview-card-icon">&#x1f4d6;</div>
+            <h3>Tarina</h3>
+            <p>Kuka olen, mistä tulen ja mihin olen menossa.</p>
+            <span class="arrow">&rarr;</span>
+        </div>
+        <div class="overview-card" onclick="showSection('yhteystiedot')">
+            <div class="overview-card-icon">&#x2709;</div>
+            <h3>Yhteystiedot</h3>
+            <p>Ota yhteyttä — olen avoin uusille mahdollisuuksille.</p>
+            <span class="arrow">&rarr;</span>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SECTIONS ==================== -->
+
+<!-- Tulokset -->
+<div class="section" id="tulokset">
+    <button class="back-btn" onclick="showHome()">&larr; Takaisin</button>
+    <p class="section-label">Konkreettiset tulokset</p>
+    <h2 class="section-title">Ei mutuilua — lukuja.</h2>
+    <p class="section-desc">Kaikki alla olevat tulokset on saavutettu Meltex Oy:ssa oman tyon ohessa, ilman erillista toimeksiantoa.</p>
 
     <div class="metrics">
-        <div class="metric-card fade-in">
-            <div class="metric-icon">📊</div>
-            <div class="metric-value">lähes 0,5 M€</div>
+        <div class="metric-card">
+            <div class="metric-icon">&#x1f4ca;</div>
+            <div class="metric-value">lahes 0,5 M&euro;</div>
             <div class="metric-label">Kuljetuskustannusmassa analysoitu autokohtaiselle tasolle</div>
         </div>
-        <div class="metric-card fade-in">
-            <div class="metric-icon">💰</div>
+        <div class="metric-card">
+            <div class="metric-icon">&#x1f4b0;</div>
             <div class="metric-value">6-numeroinen</div>
-            <div class="metric-label">Tunnistettu säästöpotentiaali vuositasolla</div>
+            <div class="metric-label">Tunnistettu saastopotentiaali vuositasolla</div>
         </div>
-        <div class="metric-card fade-in">
-            <div class="metric-icon">⏱️</div>
-            <div class="metric-value">kymmeniä tuhansia €/v</div>
-            <div class="metric-label">Lastausaikojen optimoinnin säästöpotentiaali</div>
+        <div class="metric-card">
+            <div class="metric-icon">&#x23f1;</div>
+            <div class="metric-value">kymmenia tuhansia &euro;/v</div>
+            <div class="metric-label">Lastausaikojen optimoinnin saastopotentiaali</div>
         </div>
-        <div class="metric-card fade-in">
-            <div class="metric-icon">🔄</div>
+        <div class="metric-card">
+            <div class="metric-icon">&#x1f504;</div>
             <div class="metric-value">50+</div>
             <div class="metric-label">Kehitysideaa tuotu johdolle oma-aloitteisesti</div>
         </div>
     </div>
-</section>
+</div>
 
 <!-- Case Study -->
-<section id="case">
-    <p class="section-label fade-in">Pääcase</p>
-    <h2 class="section-title fade-in">Kuljetuskustannusjärjestelmä</h2>
-    <p class="section-desc fade-in">Kaaoksesta pysyväksi kustannusseurantajärjestelmäksi — ilman budjettia, ilman toimeksiantoa.</p>
+<div class="section" id="case">
+    <button class="back-btn" onclick="showHome()">&larr; Takaisin</button>
+    <p class="section-label">P&auml;&auml;case</p>
+    <h2 class="section-title">Kuljetuskustannusj&auml;rjestelm&auml;</h2>
+    <p class="section-desc">Kaaoksesta pysy&auml;ksi kustannusseurantaj&auml;rjestelm&auml;ksi — ilman budjettia, ilman toimeksiantoa.</p>
 
-    <div class="case-study fade-in">
+    <div class="case-study">
         <div class="case-header">
             <div>
                 <span class="case-tag">Meltex Oy &middot; 2025</span>
-                <h3 class="case-title" style="margin-top: 0.75rem;">Kuljetuskustannusten analysointi ja seurantajärjestelmä</h3>
-                <p class="case-subtitle">~10 ajoneuvoa &middot; useita kuljettajia &middot; monta toimipistettä</p>
+                <h3 class="case-title" style="margin-top: 0.75rem;">Kuljetuskustannusten analysointi ja seurantaj&auml;rjestelm&auml;</h3>
+                <p class="case-subtitle">~10 ajoneuvoa &middot; useita kuljettajia &middot; monta toimipistett&auml;</p>
             </div>
         </div>
 
         <div class="case-grid">
             <div class="case-metric">
-                <div class="case-metric-value">lähes 0,5 M€</div>
+                <div class="case-metric-value">l&auml;hes 0,5 M&euro;</div>
                 <div class="case-metric-label">Analysoitu kustannusmassa</div>
             </div>
             <div class="case-metric">
@@ -908,8 +1195,8 @@
                 <div class="case-metric-label">Ostokuljettajat kalliimpia / keikka</div>
             </div>
             <div class="case-metric">
-                <div class="case-metric-value">yli 2× ero</div>
-                <div class="case-metric-label">Lastausaikaero toimipisteiden välillä</div>
+                <div class="case-metric-value">yli 2&times; ero</div>
+                <div class="case-metric-label">Lastausaikaero toimipisteiden v&auml;lill&auml;</div>
             </div>
             <div class="case-metric">
                 <div class="case-metric-value">moninkertainen</div>
@@ -917,60 +1204,111 @@
             </div>
         </div>
 
-        <h4 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.1rem;">Lähtötilanne → Lopputulos</h4>
+        <h4 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.1rem;">L&auml;ht&ouml;tilanne &rarr; Lopputulos</h4>
         <div class="timeline">
             <div class="timeline-item">
                 <h4>Kaaos — Ei kustannustietoa</h4>
-                <p>Käsinkirjoitettuja tuntilistoja. Kukaan ei tiennyt paljonko kuljetukset oikeasti maksoivat. GPS-data vaati siivoamista.</p>
+                <p>K&auml;sinkirjoitettuja tuntilistoja. Kukaan ei tiennyt paljonko kuljetukset oikeasti maksoivat. GPS-data vaati siivoamista.</p>
             </div>
             <div class="timeline-item">
                 <h4>Selvitys — Data haltuun</h4>
-                <p>Yhdistin tuntilistat, GPS-datan, Helpten-lastausajat ja taloushallinnon kulut autokohtaiseksi kustannusnäkymäksi.</p>
+                <p>Yhdistin tuntilistat, GPS-datan, Helpten-lastausajat ja taloushallinnon kulut autokohtaiseksi kustannusn&auml;kym&auml;ksi.</p>
             </div>
             <div class="timeline-item">
-                <h4>Analyysi — €/keikka, €/h, €/km joka autolle</h4>
-                <p>ROI-laskelmat, omat vs. ostokuljettajat, lastausaika-analyysit toimipisteittäin, poissaolojen kustannusvaikutus.</p>
+                <h4>Analyysi — &euro;/keikka, &euro;/h, &euro;/km joka autolle</h4>
+                <p>ROI-laskelmat, omat vs. ostokuljettajat, lastausaika-analyysit toimipisteitt&auml;in, poissaolojen kustannusvaikutus.</p>
             </div>
             <div class="timeline-item">
-                <h4>Prosessi — Pysyvä seurantamalli</h4>
-                <p>Ohjeistin ajojärjestelijät, taloushallinnon ja logistiikkapäällikön. Kirjoitin AI-promptit datan analysointiin. Järjestelmä toimii ilman minua.</p>
+                <h4>Prosessi — Pysyv&auml; seurantamalli</h4>
+                <p>Ohjeistin ajoj&auml;rjestelij&auml;t, taloushallinnon ja logistiikkap&auml;&auml;llik&ouml;n. Kirjoitin AI-promptit datan analysointiin. J&auml;rjestelm&auml; toimii ilman minua.</p>
             </div>
         </div>
     </div>
 
     <!-- Mini cases -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-        <div class="case-study fade-in" style="padding: 2rem;">
+        <div class="case-study" style="padding: 2rem;">
             <span class="case-tag">Prosessit</span>
-            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Teams-keräilyjärjestelmä</h3>
-            <p class="case-subtitle" style="margin-top: 0.5rem;">Suunnittelin myymälän keräilyprosessin Teamsin avulla — paransi läpimenoaikaa ja vähensi virheitä.</p>
+            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Teams-ker&auml;ilyj&auml;rjestelm&auml;</h3>
+            <p class="case-subtitle" style="margin-top: 0.5rem;">Suunnittelin myym&auml;l&auml;n ker&auml;ilyprosessin Teamsin avulla — paransi l&auml;pimenoaikaa ja v&auml;hensi virheit&auml;.</p>
         </div>
-        <div class="case-study fade-in" style="padding: 2rem;">
+        <div class="case-study" style="padding: 2rem;">
             <span class="case-tag">Organisaatio</span>
-            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Uuden työntekijän käsikirja</h3>
-            <p class="case-subtitle" style="margin-top: 0.5rem;">Kiersin myymälät, keräsin parhaat käytännöt ja kokosin standardoidun perehdytysoppaan.</p>
+            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Uuden ty&ouml;ntekij&auml;n k&auml;sikirja</h3>
+            <p class="case-subtitle" style="margin-top: 0.5rem;">Kiersin myym&auml;l&auml;t, ker&auml;sin parhaat k&auml;yt&auml;nn&ouml;t ja kokosin standardoidun perehdytysoppaan.</p>
         </div>
-        <div class="case-study fade-in" style="padding: 2rem;">
+        <div class="case-study" style="padding: 2rem;">
             <span class="case-tag">Palkitseminen</span>
             <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Tulospalkka-ehdotus</h3>
-            <p class="case-subtitle" style="margin-top: 0.5rem;">Vein johdolle ehdotuksen tulospalkkiojärjestelmästä — mittarit, tavoitteet ja kustannusarvio.</p>
+            <p class="case-subtitle" style="margin-top: 0.5rem;">Vein johdolle ehdotuksen tulospalkkioj&auml;rjestelm&auml;st&auml; — mittarit, tavoitteet ja kustannusarvio.</p>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Skills -->
-<section id="osaaminen">
-    <p class="section-label fade-in">Osaaminen</p>
-    <h2 class="section-title fade-in">Mitä tuon pöytään</h2>
-    <p class="section-desc fade-in">KTM-tutkinnon ja käytännön kokemuksen yhdistelmä — painotus analytiikassa, prosesseissa ja tekoälyssä.</p>
+<!-- Projektit (NEW) -->
+<div class="section" id="projektit">
+    <button class="back-btn" onclick="showHome()">&larr; Takaisin</button>
+    <p class="section-label">AI-projektit</p>
+    <h2 class="section-title">Teko&auml;ly k&auml;yt&auml;nn&ouml;ss&auml;</h2>
+    <p class="section-desc">Projekteja joissa hy&ouml;dynn&auml;n teko&auml;ly&auml; k&auml;yt&auml;nn&ouml;n ongelmanratkaisuun — suunnittelusta toteutukseen.</p>
+
+    <div class="projects-grid">
+        <!-- Projekti 1: Portfolio -->
+        <div class="project-card">
+            <span class="project-status live">Live</span>
+            <div class="project-icon" style="background: linear-gradient(135deg, rgba(233, 69, 96, 0.15), rgba(15, 52, 96, 0.15));">&#x1f310;</div>
+            <h3>Portfolio-sivusto</h3>
+            <p class="project-desc">T&auml;m&auml; sivusto — suunniteltu ja rakennettu kokonaan AI-avusteisesti. SPA-navigaatio, responsiivinen design, interaktiiviset elementit.</p>
+            <div class="project-tech">
+                <span>Claude Code</span>
+                <span>HTML/CSS/JS</span>
+                <span>GitHub Pages</span>
+            </div>
+            <ul class="project-highlights">
+                <li>Koko sivusto generoitu AI:n avulla prompteilla</li>
+                <li>SPA-arkkitehtuuri ilman frameworkeja</li>
+                <li>Responsiivinen design mobiilille ja desktopille</li>
+            </ul>
+        </div>
+
+        <!-- Projekti 2: Kuljetuskustannuslaskuri -->
+        <div class="project-card">
+            <span class="project-status demo">Demo</span>
+            <div class="project-icon" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));">&#x1f69b;</div>
+            <h3>Kuljetuskustannuslaskuri</h3>
+            <p class="project-desc">Kattava analyysity&ouml;kalu ~10 ajoneuvon kuljetuskustannusten seurantaan. Yhteenveto, ROI-laskuri, omat vs. ostot -vertailu ja tehostamisskenaariosimulattori.</p>
+            <div class="project-tech">
+                <span>JavaScript</span>
+                <span>Chart.js</span>
+                <span>Data-analyysi</span>
+                <span>Kustannuslaskenta</span>
+            </div>
+            <ul class="project-highlights">
+                <li>&euro;/keikka, &euro;/km, &euro;/h jokaiselle kuljettajalle ja ajoneuvolle</li>
+                <li>Oma vs. ostokuljettaja -vertailu graafeilla</li>
+                <li>Simulaattori: lastausajan, poissaolojen ja kuljettajavaihtojen vaikutus</li>
+                <li>ROI-laskuri ajoneuvojen p&auml;&auml;omakustannuksille</li>
+            </ul>
+            <a href="kuljetuskustannuslaskuri-demo.html" class="project-link" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;padding:0.6rem 1.2rem;background:rgba(79,124,255,0.12);color:#4f7cff;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.88rem;transition:all 0.2s;">Avaa interaktiivinen demo &rarr;</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Osaaminen -->
+<div class="section" id="osaaminen">
+    <button class="back-btn" onclick="showHome()">&larr; Takaisin</button>
+    <p class="section-label">Osaaminen</p>
+    <h2 class="section-title">Mit&auml; tuon p&ouml;yt&auml;&auml;n</h2>
+    <p class="section-desc">KTM-tutkinnon ja k&auml;yt&auml;nn&ouml;n kokemuksen yhdistelm&auml; — painotus analytiikassa, prosesseissa ja teko&auml;lyss&auml;.</p>
 
     <div class="skills-grid">
-        <div class="skill-card fade-in">
+        <div class="skill-card">
             <div class="skill-header">
-                <div class="skill-icon analytics">📈</div>
+                <div class="skill-icon analytics">&#x1f4c8;</div>
                 <div class="skill-name">Talousanalyysi & Controller</div>
             </div>
-            <p class="skill-desc">Kustannuslaskenta, sopimusanalyysi, ROI-laskelmat, yksikkö- ja vaihtoehtoiskustannukset. Osaan kaivaa datan esiin ja kertoa mitä se tarkoittaa euroina.</p>
+            <p class="skill-desc">Kustannuslaskenta, sopimusanalyysi, ROI-laskelmat, yksikk&ouml;- ja vaihtoehtoiskustannukset. Osaan kaivaa datan esiin ja kertoa mit&auml; se tarkoittaa euroina.</p>
             <div class="skill-tags">
                 <span class="skill-tag">Kustannuslaskenta</span>
                 <span class="skill-tag">ROI-analyysi</span>
@@ -978,25 +1316,25 @@
             </div>
         </div>
 
-        <div class="skill-card fade-in">
+        <div class="skill-card">
             <div class="skill-header">
-                <div class="skill-icon logistics">🚛</div>
+                <div class="skill-icon logistics">&#x1f69b;</div>
                 <div class="skill-name">Logistiikka & Toimitusketju</div>
             </div>
-            <p class="skill-desc">Ajojärjestely 10 ajoneuvolle, kuljetuskustannusoptimointi, GPS-data-analyysi, toimipistekohtaiset vertailut. Käytännön kokemus kentältä.</p>
+            <p class="skill-desc">Ajoj&auml;rjestely 10 ajoneuvolle, kuljetuskustannusoptimointi, GPS-data-analyysi, toimipistekohtaiset vertailut. K&auml;yt&auml;nn&ouml;n kokemus kent&auml;lt&auml;.</p>
             <div class="skill-tags">
-                <span class="skill-tag">Ajojärjestely</span>
+                <span class="skill-tag">Ajoj&auml;rjestely</span>
                 <span class="skill-tag">Kustannusoptimointi</span>
                 <span class="skill-tag">GPS-data</span>
             </div>
         </div>
 
-        <div class="skill-card fade-in">
+        <div class="skill-card">
             <div class="skill-header">
-                <div class="skill-icon ai">🤖</div>
-                <div class="skill-name">Tekoäly & Automaatio</div>
+                <div class="skill-icon ai">&#x1f916;</div>
+                <div class="skill-name">Teko&auml;ly & Automaatio</div>
             </div>
-            <p class="skill-desc">Käytän AI:ta työn tehostamiseen: data-analyysi, raporttien generointi, prosessiautomaatio. Rakennan AI-avusteisia työkaluja ja prompteja loppukäyttäjille.</p>
+            <p class="skill-desc">K&auml;yt&auml;n AI:ta ty&ouml;n tehostamiseen: data-analyysi, raporttien generointi, prosessiautomaatio. Rakennan AI-avusteisia ty&ouml;kaluja ja prompteja loppuk&auml;ytt&auml;jille.</p>
             <div class="skill-tags">
                 <span class="skill-tag">Claude / GPT</span>
                 <span class="skill-tag">Prompt Engineering</span>
@@ -1004,12 +1342,12 @@
             </div>
         </div>
 
-        <div class="skill-card fade-in">
+        <div class="skill-card">
             <div class="skill-header">
-                <div class="skill-icon process">⚙️</div>
+                <div class="skill-icon process">&#x2699;</div>
                 <div class="skill-name">Prosessikehitys</div>
             </div>
-            <p class="skill-desc">Tunnistan pullonkaulat, rakennan seurantamallit ja standardoin työtavat. Kaaoksesta järjestelmäksi — niin että homma pyörii ilman minua.</p>
+            <p class="skill-desc">Tunnistan pullonkaulat, rakennan seurantamallit ja standardoin ty&ouml;tavat. Kaaoksesta j&auml;rjestelm&auml;ksi — niin ett&auml; homma py&ouml;rii ilman minua.</p>
             <div class="skill-tags">
                 <span class="skill-tag">Prosessiketjut</span>
                 <span class="skill-tag">Standardointi</span>
@@ -1017,311 +1355,203 @@
             </div>
         </div>
 
-        <div class="skill-card fade-in">
+        <div class="skill-card">
             <div class="skill-header">
-                <div class="skill-icon law">⚖️</div>
+                <div class="skill-icon law">&#x2696;</div>
                 <div class="skill-name">Talousoikeus</div>
             </div>
-            <p class="skill-desc">KTM-pääaine. Sopimusoikeus, yhtiöoikeus, vero-oikeus. Ymmärrän liiketoiminnan juridisen kehyksen ja sääntelyympäristön.</p>
+            <p class="skill-desc">KTM-p&auml;&auml;aine. Sopimusoikeus, yhti&ouml;oikeus, vero-oikeus. Ymm&auml;rr&auml;n liiketoiminnan juridisen kehyksen ja s&auml;&auml;ntelymp&auml;rist&ouml;n.</p>
             <div class="skill-tags">
                 <span class="skill-tag">Sopimusoikeus</span>
-                <span class="skill-tag">Yhtiöoikeus</span>
+                <span class="skill-tag">Yhti&ouml;oikeus</span>
                 <span class="skill-tag">KTM</span>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Story -->
-<section id="tarina">
-    <p class="section-label fade-in">Tarina</p>
-    <h2 class="section-title fade-in">Miksi juuri minä?</h2>
+<!-- Tarina (+ Harrastukset) -->
+<div class="section" id="tarina">
+    <button class="back-btn" onclick="showHome()">&larr; Takaisin</button>
+    <p class="section-label">Tarina</p>
+    <h2 class="section-title">Miksi juuri min&auml;?</h2>
 
-    <div class="story-grid fade-in">
+    <div class="story-grid">
         <div>
             <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 1.5rem;">
-                Keskeytin kauppiksen 108 opintopisteen kohdalla. Moni olisi jäänyt siihen. Minä palasin — ja vedin maisterin valmiiksi <strong style="color: var(--text);">14 kuukaudessa työn ohessa</strong>.
+                Keskeytin kauppiksen 108 opintopisteen kohdalla. Moni olisi j&auml;&auml;nyt siihen. Min&auml; palasin — ja vedin maisterin valmiiksi <strong style="color: var(--text);">14 kuukaudessa ty&ouml;n ohessa</strong>.
             </p>
             <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 1.5rem;">
-                Meltexillä en tyytynyt myyjän rooliin. Tein kuljetuskustannusanalyysin jota kukaan ei pyytänyt, koska näin tarpeen. Rakensin seurantajärjestelmän joka toimii ilman minua. Vein 50+ kehitysideaa johdolle.
+                Meltexill&auml; en tyytynyt myyj&auml;n rooliin. Tein kuljetuskustannusanalyysin jota kukaan ei pyyt&auml;nyt, koska n&auml;in tarpeen. Rakensin seurantaj&auml;rjestelm&auml;n joka toimii ilman minua. Vein 50+ kehitysideaa johdolle.
             </p>
             <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted);">
-                En etsi <em>jotain työtä</em>. Etsin paikkaa jossa analyyttisyys, oma-aloitteisuus ja suorapuheisuus ovat vahvuuksia — eivät ongelmia.
+                En etsi <em>jotain ty&ouml;t&auml;</em>. Etsin paikkaa jossa analyyttisyys, oma-aloitteisuus ja suorapuheisuus ovat vahvuuksia — eiv&auml;t ongelmia.
             </p>
         </div>
         <div class="story-highlights">
             <div class="highlight">
-                <div class="highlight-icon">🎓</div>
+                <div class="highlight-icon">&#x1f393;</div>
                 <div class="highlight-text">
-                    <h4>KTM 14 kuukaudessa työn ohessa</h4>
+                    <h4>KTM 14 kuukaudessa ty&ouml;n ohessa</h4>
                     <p>Vaasan yliopisto, talousoikeus + tuotantotalous. Valmistunut 12/2025.</p>
                 </div>
             </div>
             <div class="highlight">
-                <div class="highlight-icon">🧠</div>
+                <div class="highlight-icon">&#x1f9e0;</div>
                 <div class="highlight-text">
                     <h4>Analyyttinen ongelmanratkaisija</h4>
-                    <p>Numerot eivät valehtele. Kaivan datan esiin, analysoin ja kerron mitä tehdä.</p>
+                    <p>Numerot eiv&auml;t valehtele. Kaivan datan esiin, analysoin ja kerron mit&auml; tehd&auml;.</p>
                 </div>
             </div>
             <div class="highlight">
-                <div class="highlight-icon">🚀</div>
+                <div class="highlight-icon">&#x1f680;</div>
                 <div class="highlight-text">
-                    <h4>Tekee ilman pyytämistä</h4>
+                    <h4>Tekee ilman pyyt&auml;mist&auml;</h4>
                     <p>50+ kehitysideaa, kustannusanalyysi, prosessimuutokset — kaikki oma-aloitteisesti.</p>
                 </div>
             </div>
             <div class="highlight">
-                <div class="highlight-icon">🤖</div>
+                <div class="highlight-icon">&#x1f916;</div>
                 <div class="highlight-text">
-                    <h4>AI-osaaminen käytännössä</h4>
-                    <p>Rakennan AI-avusteisia työkaluja, automaatioita ja analyysejä. Tämäkin sivu on AI:n avulla tehty.</p>
+                    <h4>AI-osaaminen k&auml;yt&auml;nn&ouml;ss&auml;</h4>
+                    <p>Rakennan AI-avusteisia ty&ouml;kaluja, automaatioita ja analyysej&auml;. T&auml;m&auml;kin sivu on AI:n avulla tehty.</p>
                 </div>
             </div>
         </div>
     </div>
-</section>
 
-<!-- Interactive Demo -->
-<section id="demo">
-    <p class="section-label fade-in">Live Demo</p>
-    <h2 class="section-title fade-in">Kuljetuskustannuslaskuri</h2>
-    <p class="section-desc fade-in">Kokeile itse — syötä luvut ja näe kuinka analysoin kustannuksia. Tämä on yksinkertaistettu versio Meltexin työkalusta.</p>
-
-    <div class="demo-section fade-in">
-        <div class="demo-header">
-            <div class="demo-dot red"></div>
-            <div class="demo-dot yellow"></div>
-            <div class="demo-dot green"></div>
-            <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.5rem;">kuljetuskustannuslaskuri.app</span>
-        </div>
-
-        <div class="calculator">
-            <div class="calc-row">
-                <div class="calc-group">
-                    <label>Kuukausikustannus (€)</label>
-                    <input type="number" id="monthlyCost" value="6500" min="0" step="100">
-                </div>
-                <div class="calc-group">
-                    <label>Keikkoja / kuukausi</label>
-                    <input type="number" id="tripsPerMonth" value="180" min="1">
+    <!-- Harrastukset -->
+    <div class="hobbies-section">
+        <h3>Vapaa-aika & Harrastukset</h3>
+        <div class="hobbies-grid">
+            <div class="hobby-card">
+                <div class="hobby-icon">&#x26f3;</div>
+                <div class="hobby-info">
+                    <h4>Golf</h4>
+                    <p>Tavoitteellinen pelaaminen — kent&auml;ll&auml; ja simulaattorissa</p>
                 </div>
             </div>
-            <div class="calc-row">
-                <div class="calc-group">
-                    <label>Kilometrejä / kuukausi</label>
-                    <input type="number" id="kmPerMonth" value="3500" min="1">
-                </div>
-                <div class="calc-group">
-                    <label>Keskim. lastausaika (min)</label>
-                    <input type="number" id="loadTime" value="45" min="1">
+            <div class="hobby-card">
+                <div class="hobby-icon">&#x1f3cb;</div>
+                <div class="hobby-info">
+                    <h4>Kuntosali</h4>
+                    <p>Aamutreenit ennen ty&ouml;p&auml;iv&auml;&auml; — energiataso korkealla</p>
                 </div>
             </div>
-            <div class="calc-row">
-                <div class="calc-group">
-                    <label>Kuljettajatyyppi</label>
-                    <select id="driverType">
-                        <option value="own">Oma kuljettaja</option>
-                        <option value="external">Ostokuljettaja (+32 %)</option>
-                    </select>
-                </div>
-                <div class="calc-group">
-                    <label>Lastausajan tavoite (min)</label>
-                    <input type="number" id="targetLoadTime" value="30" min="1">
+            <div class="hobby-card">
+                <div class="hobby-icon">&#x1f4da;</div>
+                <div class="hobby-info">
+                    <h4>Kirjallisuus</h4>
+                    <p>Tietokirjat ja dekkarit — n&auml;k&ouml;kulmia ja vastapainoa</p>
                 </div>
             </div>
-
-            <div class="calc-result" id="calcResult">
-                <div class="calc-result-value" id="costPerTrip">36,11 €</div>
-                <div class="calc-result-label">Kustannus per keikka</div>
-                <div class="calc-result-breakdown">
-                    <div>
-                        <div class="breakdown-item-value" id="costPerKm">1,86 €</div>
-                        <div class="breakdown-item-label">€ / km</div>
-                    </div>
-                    <div>
-                        <div class="breakdown-item-value" id="annualCost">78 000 €</div>
-                        <div class="breakdown-item-label">Vuosikustannus</div>
-                    </div>
-                    <div>
-                        <div class="breakdown-item-value" id="savings">0 €</div>
-                        <div class="breakdown-item-label">Säästöpotentiaali / vuosi</div>
-                    </div>
+            <div class="hobby-card">
+                <div class="hobby-icon">&#x1f4bb;</div>
+                <div class="hobby-info">
+                    <h4>Teknologia & AI</h4>
+                    <p>AI-avusteinen koodaus ja automaatiot</p>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Harrastukset -->
-<section id="harrastukset">
-    <p class="section-label fade-in">Vapaa-aika</p>
-    <h2 class="section-title fade-in">Harrastukset & Kiinnostukset</h2>
-    <p class="section-desc fade-in">Tavoitteellisuus ei rajoitu työelämään.</p>
+<!-- Yhteystiedot -->
+<div class="section" id="yhteystiedot">
+    <button class="back-btn" onclick="showHome()">&larr; Takaisin</button>
+    <div class="contact-content">
+        <p class="section-label">Yhteystiedot</p>
+        <h2 class="section-title">Otetaan yhteytt&auml;</h2>
+        <p class="section-desc" style="margin: 1rem auto 0; max-width: 500px;">Kiinnostuitko? Olen avoin uusille mahdollisuuksille controller-, logistiikka-, hankinta- ja myyntiteht&auml;viss&auml;.</p>
 
-    <div class="skills-grid">
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon" style="background: linear-gradient(135deg, #2d8a4e, #1a5c32);">⛳</div>
-                <div class="skill-name">Golf</div>
-            </div>
-            <p class="skill-desc">Tavoitteellinen pelaaminen ja jatkuva kehittyminen. Kesäisin kentällä, talvella simulaattorissa.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Kenttäpeli</span>
-                <span class="skill-tag">Simulaattori</span>
-            </div>
-        </div>
-
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon" style="background: linear-gradient(135deg, #e94560, #c0392b);">🏋️</div>
-                <div class="skill-name">Kuntosali</div>
-            </div>
-            <p class="skill-desc">Yleiskunnon ylläpitoa osana arkea. Aamutreenit ennen työpäivää pitävät energiatason korkealla.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Yleiskunto</span>
-                <span class="skill-tag">Aamutreeni</span>
-            </div>
-        </div>
-
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon" style="background: linear-gradient(135deg, #8e44ad, #6c3483);">📚</div>
-                <div class="skill-name">Kirjallisuus</div>
-            </div>
-            <p class="skill-desc">Tietoa ja dekkareita. Lukeminen laajentaa näkökulmia ja tarjoaa vastapainoa työelämälle.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Tietokirjat</span>
-                <span class="skill-tag">Dekkarit</span>
-            </div>
-        </div>
-
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon" style="background: linear-gradient(135deg, #3498db, #2c3e50);">💻</div>
-                <div class="skill-name">Teknologia & AI</div>
-            </div>
-            <p class="skill-desc">Tekoälyavusteinen koodaus, automaatiot ja prosessien tehostaminen. Tämäkin portfolio on rakennettu AI:n avulla.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">AI-työkalut</span>
-                <span class="skill-tag">Automaatiot</span>
-            </div>
+        <div class="contact-links">
+            <a href="mailto:jesse.mattila@icloud.com" class="contact-link">
+                &#x2709;&#xfe0f; jesse.mattila@icloud.com
+            </a>
+            <a href="https://www.linkedin.com/in/jessemattila" class="contact-link" target="_blank" rel="noopener">
+                &#x1f4bc; LinkedIn
+            </a>
         </div>
     </div>
-</section>
-
-<!-- Contact -->
-<section id="yhteystiedot" class="contact-section">
-    <p class="section-label fade-in">Yhteystiedot</p>
-    <h2 class="section-title fade-in">Otetaan yhteyttä</h2>
-    <p class="section-desc fade-in" style="margin: 1rem auto 0; max-width: 500px;">Kiinnostuitko? Olen avoin uusille mahdollisuuksille controller-, logistiikka-, hankinta- ja myyntitehtävissä.</p>
-
-    <div class="contact-links fade-in">
-        <a href="mailto:jesse.mattila@icloud.com" class="contact-link">
-            ✉️ jesse.mattila@icloud.com
-        </a>
-        <a href="https://www.linkedin.com/in/jessemattila" class="contact-link" target="_blank" rel="noopener">
-            💼 LinkedIn
-        </a>
-    </div>
-</section>
+</div>
 
 <footer>
-    <p>Jesse Mattila &copy; 2026 — Rakennettu tekoälyavusteisesti</p>
+    <p>Jesse Mattila &copy; 2026 — Rakennettu teko&auml;lyavusteisesti</p>
 </footer>
 
 <script>
-// Scroll animations
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
+const sections = document.querySelectorAll('.section');
+const navLinksEl = document.getElementById('navLinks');
+const navAnchors = navLinksEl.querySelectorAll('a[data-section]');
+const hero = document.getElementById('hero');
+const overview = document.getElementById('overviewCards');
+const hamburger = document.getElementById('hamburger');
+
+function showHome() {
+    // Hide all sections
+    sections.forEach(s => s.classList.remove('active'));
+    // Show full hero + overview
+    hero.classList.remove('compact');
+    overview.style.display = '';
+    // Clear active nav
+    navAnchors.forEach(a => a.classList.remove('active'));
+    // Update URL
+    history.pushState(null, '', window.location.pathname);
+    // Close mobile menu
+    navLinksEl.classList.remove('open');
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showSection(id) {
+    // Hide overview
+    overview.style.display = 'none';
+    // Compact hero
+    hero.classList.add('compact');
+    // Show only the selected section
+    sections.forEach(s => {
+        s.classList.toggle('active', s.id === id);
     });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    // Update nav active state
+    navAnchors.forEach(a => {
+        a.classList.toggle('active', a.dataset.section === id);
+    });
+    // Update URL hash
+    history.pushState(null, '', '#' + id);
+    // Close mobile menu
+    navLinksEl.classList.remove('open');
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Recalculate if calculator is now visible
+    if (id === 'projektit') calculate();
+}
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// Navbar scroll effect
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
+// Nav click handlers
+navAnchors.forEach(a => {
+    a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSection(a.dataset.section);
+    });
 });
 
 // Hamburger menu
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
 hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-});
-navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
+    navLinksEl.classList.toggle('open');
 });
 
-// Calculator
-const fmt = (n) => n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-const fmtDec = (n) => n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-function calculate() {
-    let cost = parseFloat(document.getElementById('monthlyCost').value) || 0;
-    const trips = parseFloat(document.getElementById('tripsPerMonth').value) || 1;
-    const km = parseFloat(document.getElementById('kmPerMonth').value) || 1;
-    const loadTime = parseFloat(document.getElementById('loadTime').value) || 1;
-    const targetLoadTime = parseFloat(document.getElementById('targetLoadTime').value) || 1;
-    const driverType = document.getElementById('driverType').value;
-
-    if (driverType === 'external') cost *= 1.32;
-
-    const perTrip = cost / trips;
-    const perKm = cost / km;
-    const annual = cost * 12;
-
-    // Savings from load time optimization
-    const timeSavedMin = Math.max(0, loadTime - targetLoadTime);
-    const hourlyRate = cost / (trips * (loadTime / 60));
-    const monthlySavings = (timeSavedMin / 60) * hourlyRate * trips;
-    const annualSavings = monthlySavings * 12;
-
-    document.getElementById('costPerTrip').textContent = fmtDec(perTrip) + ' €';
-    document.getElementById('costPerKm').textContent = fmtDec(perKm) + ' €';
-    document.getElementById('annualCost').textContent = fmt(Math.round(annual)) + ' €';
-    document.getElementById('savings').textContent = annualSavings > 0 ? fmt(Math.round(annualSavings)) + ' €' : '0 €';
-
-    // Highlight savings
-    const savingsEl = document.getElementById('savings');
-    savingsEl.style.color = annualSavings > 0 ? '#28c840' : '';
+// Handle URL hash on load
+function handleHash() {
+    const hash = window.location.hash.slice(1);
+    if (hash && document.getElementById(hash)) {
+        showSection(hash);
+    } else {
+        showHome();
+    }
 }
 
-document.querySelectorAll('.calculator input, .calculator select').forEach(el => {
-    el.addEventListener('input', calculate);
-});
+window.addEventListener('popstate', handleHash);
+handleHash();
 
-calculate();
-
-// Count-up animation for hero stats
-const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const el = entry.target;
-            const target = parseInt(el.dataset.target);
-            const prefix = el.dataset.prefix || '';
-            const suffix = el.dataset.suffix || '';
-            let current = 0;
-            const step = target / 60;
-            const interval = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(interval);
-                }
-                el.textContent = prefix + fmt(Math.round(current)) + suffix;
-            }, 16);
-            countObserver.unobserve(el);
-        }
-    });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
 </script>
 
 </body>

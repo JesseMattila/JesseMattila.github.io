@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuljetuskustannuslaskuri — Demo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232733;
+    --border: #2d3140;
+    --text: #e4e6ef;
+    --text2: #8b8fa3;
+    --accent: #4f7cff;
+    --accent2: #6c5ce7;
+    --green: #00d68f;
+    --red: #ff6b6b;
+    --orange: #ffa94d;
+    --own-color: #4f7cff;
+    --buy-color: #ff6b6b;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1d27 0%, #232733 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .subtitle { color: var(--text2); font-size: 13px; margin-top: 2px; }
+  .header-right { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .badge.live { border-color: var(--green); color: var(--green); }
+  .badge.demo-badge { border-color: var(--orange); color: var(--orange); }
+
+  .disclaimer {
+    background: rgba(255, 169, 77, 0.1);
+    border: 1px solid rgba(255, 169, 77, 0.3);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin: 16px 32px 0;
+    font-size: 13px;
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .disclaimer strong { color: #ffc078; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .back-link:hover { background: rgba(79, 124, 255, 0.1); }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 16px 32px 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    color: var(--text2);
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+  .tab.summary-tab { color: var(--accent2); font-weight: 600; }
+  .tab.summary-tab.active { border-bottom-color: var(--accent2); }
+
+  .main { padding: 24px 32px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .kpi-card .label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-card .value { font-size: 26px; font-weight: 700; margin-top: 6px; }
+  .kpi-card .value.blue { color: var(--accent); }
+  .kpi-card .value.green { color: var(--green); }
+  .kpi-card .value.red { color: var(--red); }
+  .kpi-card .value.orange { color: var(--orange); }
+
+  .table-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .table-title {
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .table-title .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.own { background: var(--own-color); }
+  .dot.buy { background: var(--buy-color); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: var(--surface2);
+    padding: 10px 12px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--text2);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+  }
+  th:first-child { text-align: left; }
+  td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--border); }
+  td:first-child { text-align: left; font-weight: 600; }
+  tr:hover td { background: rgba(79, 124, 255, 0.05); }
+  tr.total-row td { font-weight: 700; border-top: 2px solid var(--accent); background: rgba(79, 124, 255, 0.05); }
+  tr.own-total td { border-top: 2px solid var(--own-color); background: rgba(79, 124, 255, 0.08); }
+  tr.buy-total td { border-top: 2px solid var(--buy-color); background: rgba(255, 107, 107, 0.08); }
+  .driver-type { font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-left: 6px; font-weight: 500; }
+  .driver-type.own { background: rgba(79, 124, 255, 0.15); color: var(--own-color); }
+  .driver-type.buy { background: rgba(255, 107, 107, 0.15); color: var(--buy-color); }
+  .calc-value { color: var(--green); font-weight: 500; font-variant-numeric: tabular-nums; }
+  tr.cat-header td {
+    background: var(--surface2);
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .chart-card h3 { font-size: 14px; margin-bottom: 16px; color: var(--text2); }
+
+  .roi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .roi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .roi-card h3 { font-size: 15px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .roi-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 13px; }
+  .roi-row .label { color: var(--text2); }
+  .roi-row .val { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .comparison-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .comparison-box h3 { margin-bottom: 16px; font-size: 16px; }
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .comp-item { text-align: center; padding: 20px; border-radius: var(--radius); background: var(--surface2); }
+  .comp-item .comp-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+  .comp-item .comp-val { font-size: 24px; font-weight: 700; }
+  .comp-item .comp-diff { font-size: 13px; margin-top: 6px; }
+  .comp-diff.positive { color: var(--green); }
+  .comp-diff.negative { color: var(--red); }
+
+  .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  .table-scroll { overflow-x: auto; }
+
+  /* SIMULATOR */
+  .sim-total {
+    background: linear-gradient(135deg, rgba(79,124,255,0.1), rgba(108,92,231,0.1));
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .sim-total .label { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .sim-total .value { font-size: 36px; font-weight: 700; color: var(--green); margin-top: 8px; }
+  .sim-total .sub { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  .sim-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .sim-card h3 { font-size: 16px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .sim-card .sim-hint {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 8px;
+  }
+  .sim-control { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .sim-control label { font-size: 13px; color: var(--text2); min-width: 180px; flex-shrink: 0; }
+  .sim-control input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    outline: none;
+  }
+  .sim-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .sim-control .sim-val {
+    font-size: 20px;
+    font-weight: 700;
+    min-width: 60px;
+    text-align: right;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-control select {
+    flex: 1;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .sim-control select:focus { outline: none; border-color: var(--accent); }
+  .sim-results { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .sim-result { text-align: center; padding: 16px 12px; border-radius: var(--radius); background: var(--surface2); }
+  .sim-result .label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.3px; }
+  .sim-result .value { font-size: 22px; font-weight: 700; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .sim-result .value.green { color: var(--green); }
+  .sim-result .value.red { color: var(--red); }
+  .sim-result .value.blue { color: var(--accent); }
+  .sim-result .value.orange { color: var(--orange); }
+
+  @media (max-width: 768px) {
+    .header { padding: 16px; }
+    .tabs { padding: 12px 16px 0; }
+    .main { padding: 16px; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .disclaimer { margin: 12px 16px 0; }
+    .charts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Kuljetuskustannuslaskuri</h1>
+    <div class="subtitle">Kuljetusanalyysi — H1/2025 (esittelydatalla)</div>
+  </div>
+  <div class="header-right">
+    <a href="index.html#projektit" class="back-link">&larr; Takaisin portfolioon</a>
+    <span class="badge demo-badge">Esittelydata</span>
+    <span class="badge live">Automaattilaskenta</span>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <strong>Huom:</strong> Kaikki nimet, rekisterinumerot ja luvut on muutettu esittelytiedostoa varten. Data on samassa suuruusluokassa kuin alkuperainen, mutta ei vastaa todellisia arvoja.
+</div>
+
+<div class="tabs" id="mainTabs">
+  <button class="tab active" data-tab="yhteenveto">Yhteenveto</button>
+  <button class="tab summary-tab" data-tab="roi">ROI-laskuri</button>
+  <button class="tab summary-tab" data-tab="vertailu">Omat vs Ostot</button>
+  <button class="tab summary-tab" data-tab="simulaattori">Simulaattori</button>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<script>
+const MONTHS = ['tammi','helmi','maalis','huhti','touko','kesa'];
+const MONTH_NAMES = {
+  tammi:'Tammikuu',helmi:'Helmikuu',maalis:'Maaliskuu',huhti:'Huhtikuu',
+  touko:'Toukokuu',kesa:'Kesakuu'
+};
+
+const DRIVER_CATEGORIES = [
+  {name: 'Kaappi', drivers: ['Oma Kaappi 1','Oma Kaappi 2','Osto Kaappi 1','Osto Kaappi 2','Osto Kaappi 3','Osto Kaappi 4']},
+  {name: 'HIAB', drivers: ['Oma Hiab 1','Osto Hiab 1','Osto Hiab 2']},
+  {name: 'Pakut', drivers: ['Oma Paku 1','Oma Paku 2']},
+];
+
+const DRIVERS = [
+  {id:'Oma Kaappi 1', type:'own', palkka:3550, cat:'Kaappi'},
+  {id:'Oma Kaappi 2', type:'own', palkka:3550, cat:'Kaappi'},
+  {id:'Osto Kaappi 1', type:'buy', rate:54, cat:'Kaappi'},
+  {id:'Osto Kaappi 2', type:'buy', rate:54, cat:'Kaappi'},
+  {id:'Osto Kaappi 3', type:'buy', rate:54, cat:'Kaappi'},
+  {id:'Osto Kaappi 4', type:'buy', rate:54, cat:'Kaappi'},
+  {id:'Oma Hiab 1', type:'own', palkka:3550, cat:'HIAB'},
+  {id:'Osto Hiab 1', type:'buy', rate:64, cat:'HIAB'},
+  {id:'Osto Hiab 2', type:'buy', rate:82, cat:'HIAB'},
+  {id:'Oma Paku 1', type:'own', palkka:3550, cat:'Pakut'},
+  {id:'Oma Paku 2', type:'own', palkka:3550, cat:'Pakut'},
+];
+
+const VEHICLES = [
+  {id:'Oma Hiab 1', hankinta:195000, jaannos:40000, pitoaika:6, roi_pct:0.10},
+  {id:'Oma Kaappi 1', hankinta:115000, jaannos:27000, pitoaika:6, roi_pct:0.10},
+  {id:'Oma Kaappi 2', hankinta:115000, jaannos:27000, pitoaika:6, roi_pct:0.10},
+  {id:'Oma Paku 1', hankinta:45000, jaannos:11000, pitoaika:6, roi_pct:0.10},
+  {id:'Oma Paku 2', hankinta:73000, jaannos:16000, pitoaika:6, roi_pct:0.10},
+];
+
+// Anonymized data - same magnitude, different values
+const monthlyData = {};
+
+monthlyData.tammi = {
+  'Oma Hiab 1':    {keikat:33, km:1350, tunnit:160, lastauskerrat:17, lastausmin:1020, palkka:3550, muut:3850, poissaolot:5, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 1':  {keikat:92, km:3700, tunnit:160, lastauskerrat:59, lastausmin:4200, palkka:3550, muut:3300, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 1': {keikat:88, km:2800, tunnit:90, lastauskerrat:50, lastausmin:2100, palkka:0, muut:0, poissaolot:15, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 2': {keikat:115, km:4200, tunnit:168, lastauskerrat:69, lastausmin:2760, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 2':  {keikat:72, km:2450, tunnit:160, lastauskerrat:36, lastausmin:1900, palkka:3550, muut:1600, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 1':    {keikat:102, km:3450, tunnit:160, lastauskerrat:64, lastausmin:4180, palkka:3550, muut:1250, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 1':   {keikat:96, km:2610, tunnit:153, lastauskerrat:28, lastausmin:1040, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 3': {keikat:0, km:0, tunnit:0, lastauskerrat:6, lastausmin:270, palkka:0, muut:0, poissaolot:9, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 4': {keikat:0, km:0, tunnit:0, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:0, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 2':    {keikat:116, km:2790, tunnit:160, lastauskerrat:61, lastausmin:3570, palkka:3550, muut:1860, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 2':   {keikat:104, km:5780, tunnit:131, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+};
+
+monthlyData.helmi = {
+  'Oma Hiab 1':    {keikat:49, km:1790, tunnit:153, lastauskerrat:27, lastausmin:1490, palkka:3550, muut:4400, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 1':  {keikat:81, km:3580, tunnit:153, lastauskerrat:53, lastausmin:3310, palkka:3550, muut:3250, poissaolot:2, tuuraajat:1, tuuraus_hinta:380},
+  'Osto Kaappi 1': {keikat:101, km:3560, tunnit:164, lastauskerrat:56, lastausmin:2240, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 2': {keikat:55, km:2770, tunnit:90, lastauskerrat:45, lastausmin:1640, palkka:0, muut:0, poissaolot:11, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 2':  {keikat:105, km:3390, tunnit:153, lastauskerrat:53, lastausmin:2250, palkka:3550, muut:1800, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 1':    {keikat:91, km:3270, tunnit:153, lastauskerrat:60, lastausmin:4140, palkka:3550, muut:2210, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 1':   {keikat:89, km:2580, tunnit:143, lastauskerrat:43, lastausmin:1580, palkka:0, muut:0, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 3': {keikat:38, km:2150, tunnit:44, lastauskerrat:29, lastausmin:1100, palkka:0, muut:0, poissaolot:11, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 4': {keikat:0, km:0, tunnit:0, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:0, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 2':    {keikat:65, km:2080, tunnit:153, lastauskerrat:34, lastausmin:2030, palkka:3550, muut:1560, poissaolot:6, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 2':   {keikat:85, km:4670, tunnit:136, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:4, tuuraajat:0, tuuraus_hinta:0},
+};
+
+monthlyData.maalis = {
+  'Oma Hiab 1':    {keikat:69, km:1850, tunnit:160, lastauskerrat:35, lastausmin:1690, palkka:3550, muut:4740, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 1':  {keikat:102, km:4340, tunnit:160, lastauskerrat:61, lastausmin:3610, palkka:3550, muut:4510, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 1': {keikat:130, km:4040, tunnit:179, lastauskerrat:61, lastausmin:2970, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 2': {keikat:0, km:0, tunnit:0, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:21, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 2':  {keikat:68, km:2410, tunnit:160, lastauskerrat:39, lastausmin:1550, palkka:3550, muut:1980, poissaolot:9, tuuraajat:7, tuuraus_hinta:2150},
+  'Oma Paku 1':    {keikat:123, km:4060, tunnit:160, lastauskerrat:59, lastausmin:1870, palkka:3550, muut:3430, poissaolot:14, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 1':   {keikat:78, km:2600, tunnit:131, lastauskerrat:40, lastausmin:1490, palkka:0, muut:0, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 3': {keikat:70, km:3870, tunnit:174, lastauskerrat:69, lastausmin:2960, palkka:0, muut:0, poissaolot:6, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 4': {keikat:17, km:495, tunnit:26, lastauskerrat:10, lastausmin:450, palkka:0, muut:0, poissaolot:0, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 2':    {keikat:128, km:3830, tunnit:160, lastauskerrat:59, lastausmin:3510, palkka:3550, muut:1840, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 2':   {keikat:125, km:6890, tunnit:182, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+};
+
+monthlyData.huhti = {
+  'Oma Hiab 1':    {keikat:52, km:1800, tunnit:153, lastauskerrat:23, lastausmin:1250, palkka:3550, muut:4600, poissaolot:7, tuuraajat:5, tuuraus_hinta:2640},
+  'Oma Kaappi 1':  {keikat:76, km:3070, tunnit:153, lastauskerrat:39, lastausmin:1940, palkka:3550, muut:3800, poissaolot:12, tuuraajat:0, tuuraus_hinta:1620},
+  'Osto Kaappi 1': {keikat:121, km:5020, tunnit:181, lastauskerrat:70, lastausmin:2720, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 2': {keikat:61, km:2420, tunnit:128, lastauskerrat:39, lastausmin:1450, palkka:0, muut:0, poissaolot:9, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 2':  {keikat:90, km:3400, tunnit:153, lastauskerrat:43, lastausmin:2100, palkka:3550, muut:6170, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 1':    {keikat:129, km:4690, tunnit:153, lastauskerrat:56, lastausmin:1920, palkka:3550, muut:4340, poissaolot:12, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 1':   {keikat:116, km:3500, tunnit:122, lastauskerrat:50, lastausmin:1900, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 3': {keikat:106, km:3600, tunnit:152, lastauskerrat:53, lastausmin:2400, palkka:0, muut:0, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 4': {keikat:0, km:0, tunnit:0, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:0, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 2':    {keikat:130, km:2830, tunnit:153, lastauskerrat:50, lastausmin:2620, palkka:3550, muut:1650, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 2':   {keikat:137, km:7580, tunnit:178, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+};
+
+monthlyData.touko = {
+  'Oma Hiab 1':    {keikat:62, km:2050, tunnit:146, lastauskerrat:29, lastausmin:1550, palkka:3550, muut:3740, poissaolot:4, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 1':  {keikat:109, km:4480, tunnit:153, lastauskerrat:68, lastausmin:4270, palkka:3550, muut:3400, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 1': {keikat:112, km:3780, tunnit:162, lastauskerrat:57, lastausmin:2490, palkka:0, muut:0, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 2': {keikat:78, km:3090, tunnit:123, lastauskerrat:47, lastausmin:1870, palkka:0, muut:0, poissaolot:4, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 2':  {keikat:98, km:3210, tunnit:153, lastauskerrat:50, lastausmin:2180, palkka:3550, muut:1920, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 1':    {keikat:114, km:3940, tunnit:153, lastauskerrat:62, lastausmin:3730, palkka:3550, muut:2280, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 1':   {keikat:98, km:2900, tunnit:133, lastauskerrat:42, lastausmin:1560, palkka:0, muut:0, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 3': {keikat:91, km:3320, tunnit:144, lastauskerrat:47, lastausmin:2080, palkka:0, muut:0, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 4': {keikat:11, km:310, tunnit:16, lastauskerrat:6, lastausmin:210, palkka:0, muut:0, poissaolot:0, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 2':    {keikat:119, km:3320, tunnit:153, lastauskerrat:57, lastausmin:3210, palkka:3550, muut:1710, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 2':   {keikat:124, km:6840, tunnit:159, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:1, tuuraajat:0, tuuraus_hinta:0},
+};
+
+monthlyData.kesa = {
+  'Oma Hiab 1':    {keikat:55, km:1710, tunnit:146, lastauskerrat:24, lastausmin:1250, palkka:3550, muut:3520, poissaolot:5, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 1':  {keikat:88, km:3630, tunnit:146, lastauskerrat:52, lastausmin:3320, palkka:3550, muut:2900, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 1': {keikat:93, km:3210, tunnit:138, lastauskerrat:47, lastausmin:1970, palkka:0, muut:0, poissaolot:4, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 2': {keikat:63, km:2490, tunnit:98, lastauskerrat:37, lastausmin:1450, palkka:0, muut:0, poissaolot:7, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Kaappi 2':  {keikat:81, km:2800, tunnit:146, lastauskerrat:40, lastausmin:1760, palkka:3550, muut:1550, poissaolot:4, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 1':    {keikat:93, km:3320, tunnit:146, lastauskerrat:50, lastausmin:2900, palkka:3550, muut:1970, poissaolot:4, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 1':   {keikat:83, km:2380, tunnit:113, lastauskerrat:37, lastausmin:1350, palkka:0, muut:0, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 3': {keikat:73, km:2590, tunnit:113, lastauskerrat:37, lastausmin:1660, palkka:0, muut:0, poissaolot:4, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Kaappi 4': {keikat:6, km:160, tunnit:9, lastauskerrat:4, lastausmin:110, palkka:0, muut:0, poissaolot:0, tuuraajat:0, tuuraus_hinta:0},
+  'Oma Paku 2':    {keikat:103, km:2900, tunnit:146, lastauskerrat:47, lastausmin:2700, palkka:3550, muut:1450, poissaolot:3, tuuraajat:0, tuuraus_hinta:0},
+  'Osto Hiab 2':   {keikat:98, km:5420, tunnit:144, lastauskerrat:0, lastausmin:0, palkka:0, muut:0, poissaolot:2, tuuraajat:0, tuuraus_hinta:0},
+};
+
+// ============================
+// CALCULATION ENGINE
+// ============================
+function calcDriver(driverDef, raw) {
+  const r = {...raw};
+  const driver = DRIVERS.find(d => d.id === driverDef);
+  const type = driver ? driver.type : 'own';
+  const rate = driver ? driver.rate : 0;
+  let kustannukset;
+  if (type === 'buy') {
+    kustannukset = rate * r.tunnit;
+  } else {
+    kustannukset = (r.palkka || 0) + (r.muut || 0);
+  }
+  kustannukset += (r.tuuraus_hinta || 0);
+  return {
+    ...r, type,
+    keskiarvolastaus: r.lastauskerrat > 0 ? r.lastausmin / r.lastauskerrat : 0,
+    kustannukset,
+    eurPerKeikka: r.keikat > 0 ? kustannukset / r.keikat : 0,
+    eurPerH: r.tunnit > 0 ? kustannukset / r.tunnit : 0,
+    eurPerKm: r.km > 0 ? kustannukset / r.km : 0,
+    kmPerKeikka: r.keikat > 0 ? r.km / r.keikat : 0,
+    minPerKeikka: r.keikat > 0 ? (r.tunnit / r.keikat) * 60 : 0,
+  };
+}
+
+function calcMonth(month) {
+  const results = {};
+  const data = monthlyData[month];
+  DRIVERS.forEach(d => { if (data[d.id]) results[d.id] = calcDriver(d.id, data[d.id]); });
+  return results;
+}
+
+function calcSummary() {
+  const totals = {};
+  DRIVERS.forEach(d => {
+    totals[d.id] = {keikat:0,km:0,tunnit:0,lastauskerrat:0,lastausmin:0,palkka:0,muut:0,poissaolot:0,tuuraajat:0,tuuraus_hinta:0};
+  });
+  MONTHS.forEach(m => {
+    const data = monthlyData[m];
+    DRIVERS.forEach(d => {
+      if (data[d.id]) {
+        const r = data[d.id];
+        totals[d.id].keikat += r.keikat||0; totals[d.id].km += r.km||0;
+        totals[d.id].tunnit += r.tunnit||0; totals[d.id].lastauskerrat += r.lastauskerrat||0;
+        totals[d.id].lastausmin += r.lastausmin||0; totals[d.id].palkka += r.palkka||0;
+        totals[d.id].muut += r.muut||0; totals[d.id].poissaolot += r.poissaolot||0;
+        totals[d.id].tuuraajat += r.tuuraajat||0; totals[d.id].tuuraus_hinta += r.tuuraus_hinta||0;
+      }
+    });
+  });
+  const results = {};
+  DRIVERS.forEach(d => { results[d.id] = calcDriver(d.id, totals[d.id]); });
+  return results;
+}
+
+function calcROI(vehicle) {
+  const sidottuPaaoma = (vehicle.hankinta + vehicle.jaannos) / 2;
+  const veKustannusPa = sidottuPaaoma * vehicle.roi_pct;
+  const veKustannusKk = veKustannusPa / 12;
+  const arvonalenemma = vehicle.hankinta - vehicle.jaannos;
+  const arvonalemmaKk = arvonalenemma / vehicle.pitoaika / 12;
+  return { sidottuPaaoma, veKustannusPa, veKustannusKk, arvonalenemma, arvonalemmaKk };
+}
+
+const fmt = (v, dec=0) => v != null && isFinite(v) ? v.toLocaleString('fi-FI', {minimumFractionDigits:dec, maximumFractionDigits:dec}) : '-';
+const fmtEur = (v, dec=0) => v != null && isFinite(v) ? v.toLocaleString('fi-FI', {minimumFractionDigits:dec, maximumFractionDigits:dec}) + ' \u20ac' : '-';
+
+let charts = {};
+
+function renderSummary() {
+  const results = calcSummary();
+  let totalKust=0,totalKeikat=0,totalKm=0,totalTunnit=0;
+  let ownKust=0,ownKeikat=0,ownKm=0,ownTunnit=0;
+  let buyKust=0,buyKeikat=0,buyKm=0,buyTunnit=0;
+  DRIVERS.forEach(d => {
+    const c = results[d.id];
+    totalKust += c.kustannukset; totalKeikat += c.keikat; totalKm += c.km; totalTunnit += c.tunnit;
+    if (d.type==='own') { ownKust+=c.kustannukset; ownKeikat+=c.keikat; ownKm+=c.km; ownTunnit+=c.tunnit; }
+    else { buyKust+=c.kustannukset; buyKeikat+=c.keikat; buyKm+=c.km; buyTunnit+=c.tunnit; }
+  });
+
+  let html = `
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="label">H1 kokonaiskustannukset</div><div class="value blue">${fmtEur(totalKust)}</div></div>
+      <div class="kpi-card"><div class="label">Omat kustannukset</div><div class="value" style="color:var(--own-color)">${fmtEur(ownKust)}</div></div>
+      <div class="kpi-card"><div class="label">Ostokuljetukset</div><div class="value" style="color:var(--buy-color)">${fmtEur(buyKust)}</div></div>
+      <div class="kpi-card"><div class="label">Keikat yhteensa</div><div class="value">${fmt(totalKeikat)}</div></div>
+      <div class="kpi-card"><div class="label">Kilometrit yhteensa</div><div class="value">${fmt(totalKm)}</div></div>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card"><h3>Kustannukset kuljettajittain (H1)</h3><canvas id="chartDriverCosts"></canvas></div>
+      <div class="chart-card"><h3>Omat vs Ostot — kuukausittain</h3><canvas id="chartMonthly"></canvas></div>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card"><h3>\u20ac/keikka kuljettajittain</h3><canvas id="chartEurPerKeikka"></canvas></div>
+      <div class="chart-card"><h3>\u20ac/km kuljettajittain</h3><canvas id="chartEurPerKm"></canvas></div>
+    </div>
+    <div class="table-container">
+      <div class="table-title">H1/2025 Yhteenveto — kaikki kuljettajat</div>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Kuljettaja</th><th>Keikat</th><th>Km</th><th>Tunnit</th><th>Kustannukset</th><th>\u20ac/keikka</th><th>\u20ac/h</th><th>\u20ac/km</th><th>Km/keikka</th><th>Min/keikka</th><th>Poissaolot</th></tr></thead>
+        <tbody>
+          ${DRIVER_CATEGORIES.map(cat => {
+            const catDrivers = DRIVERS.filter(d => d.cat === cat.name);
+            return `<tr class="cat-header"><td colspan="11">${cat.name}</td></tr>` +
+            catDrivers.map(d => {
+              const c = results[d.id];
+              return `<tr>
+                <td>${d.id} <span class="driver-type ${d.type}">${d.type==='own'?'Oma':'Osto'}</span></td>
+                <td>${fmt(c.keikat)}</td><td>${fmt(c.km)}</td><td>${fmt(c.tunnit,1)}</td>
+                <td class="calc-value">${fmtEur(c.kustannukset)}</td>
+                <td class="calc-value">${fmtEur(c.eurPerKeikka,1)}</td>
+                <td class="calc-value">${fmtEur(c.eurPerH,1)}</td>
+                <td class="calc-value">${fmtEur(c.eurPerKm,2)}</td>
+                <td class="calc-value">${fmt(c.kmPerKeikka,1)}</td>
+                <td class="calc-value">${fmt(c.minPerKeikka,1)}</td>
+                <td>${fmt(c.poissaolot)}</td>
+              </tr>`;
+            }).join('');
+          }).join('')}
+          <tr class="own-total">
+            <td><span class="dot own"></span> Omat yhteensa</td>
+            <td>${fmt(ownKeikat)}</td><td>${fmt(ownKm)}</td><td>${fmt(ownTunnit,1)}</td>
+            <td class="calc-value">${fmtEur(ownKust)}</td>
+            <td class="calc-value">${fmtEur(ownKeikat>0?ownKust/ownKeikat:0,1)}</td>
+            <td class="calc-value">${fmtEur(ownTunnit>0?ownKust/ownTunnit:0,1)}</td>
+            <td class="calc-value">${fmtEur(ownKm>0?ownKust/ownKm:0,2)}</td>
+            <td class="calc-value">${fmt(ownKeikat>0?ownKm/ownKeikat:0,1)}</td>
+            <td class="calc-value">${fmt(ownKeikat>0?(ownTunnit/ownKeikat)*60:0,1)}</td>
+            <td></td>
+          </tr>
+          <tr class="buy-total">
+            <td><span class="dot buy"></span> Ostot yhteensa</td>
+            <td>${fmt(buyKeikat)}</td><td>${fmt(buyKm)}</td><td>${fmt(buyTunnit,1)}</td>
+            <td class="calc-value">${fmtEur(buyKust)}</td>
+            <td class="calc-value">${fmtEur(buyKeikat>0?buyKust/buyKeikat:0,1)}</td>
+            <td class="calc-value">${fmtEur(buyTunnit>0?buyKust/buyTunnit:0,1)}</td>
+            <td class="calc-value">${fmtEur(buyKm>0?buyKust/buyKm:0,2)}</td>
+            <td class="calc-value">${fmt(buyKeikat>0?buyKm/buyKeikat:0,1)}</td>
+            <td class="calc-value">${fmt(buyKeikat>0?(buyTunnit/buyKeikat)*60:0,1)}</td>
+            <td></td>
+          </tr>
+          <tr class="total-row">
+            <td>Kaikki yhteensa</td>
+            <td>${fmt(totalKeikat)}</td><td>${fmt(totalKm)}</td><td>${fmt(totalTunnit,1)}</td>
+            <td class="calc-value">${fmtEur(totalKust)}</td>
+            <td class="calc-value">${fmtEur(totalKeikat>0?totalKust/totalKeikat:0,1)}</td>
+            <td class="calc-value">${fmtEur(totalTunnit>0?totalKust/totalTunnit:0,1)}</td>
+            <td class="calc-value">${fmtEur(totalKm>0?totalKust/totalKm:0,2)}</td>
+            <td class="calc-value">${fmt(totalKeikat>0?totalKm/totalKeikat:0,1)}</td>
+            <td class="calc-value">${fmt(totalKeikat>0?(totalTunnit/totalKeikat)*60:0,1)}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table></div>
+    </div>
+  `;
+  return html;
+}
+
+function renderROI() {
+  let html = `
+    <div class="section-title">Ajoneuvojen paaomakustannukset</div>
+    <div class="roi-grid">
+      ${VEHICLES.map(v => {
+        const r = calcROI(v);
+        return `<div class="roi-card">
+          <h3>${v.id}</h3>
+          <div class="roi-row"><span class="label">Hankintahinta</span><span class="val">${fmtEur(v.hankinta)}</span></div>
+          <div class="roi-row"><span class="label">Jaannosarvo</span><span class="val">${fmtEur(v.jaannos)}</span></div>
+          <div class="roi-row"><span class="label">Pitoaika</span><span class="val">${v.pitoaika} v</span></div>
+          <div class="roi-row"><span class="label">Sidottu paaoma (ka.)</span><span class="val" style="color:var(--accent)">${fmtEur(r.sidottuPaaoma)}</span></div>
+          <div class="roi-row"><span class="label">VE-kustannus (${(v.roi_pct*100).toFixed(0)}% p.a.)</span><span class="val">${fmtEur(r.veKustannusPa)}</span></div>
+          <div class="roi-row"><span class="label">VE-kustannus /kk</span><span class="val" style="color:var(--orange)">${fmtEur(r.veKustannusKk,0)}</span></div>
+          <div class="roi-row"><span class="label">Arvonalenemma</span><span class="val">${fmtEur(r.arvonalenemma)}</span></div>
+          <div class="roi-row"><span class="label">Arvonalenemma /kk</span><span class="val" style="color:var(--red)">${fmtEur(r.arvonalemmaKk,0)}</span></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="table-container">
+      <div class="table-title">Yhteenveto — kuukausikustannukset ajoneuvoittain</div>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Ajoneuvo</th><th>Hankinta</th><th>Jaannosarvo</th><th>Sidottu paaoma</th><th>VE-kust. /kk</th><th>Arvonal. /kk</th><th>Yhteensa /kk</th></tr></thead>
+        <tbody>
+          ${VEHICLES.map(v => {
+            const r = calcROI(v);
+            const yhteensa = r.veKustannusKk + r.arvonalemmaKk;
+            return `<tr>
+              <td>${v.id}</td><td>${fmtEur(v.hankinta)}</td><td>${fmtEur(v.jaannos)}</td>
+              <td class="calc-value">${fmtEur(r.sidottuPaaoma)}</td>
+              <td class="calc-value">${fmtEur(r.veKustannusKk,0)}</td>
+              <td class="calc-value">${fmtEur(r.arvonalemmaKk,0)}</td>
+              <td class="calc-value" style="color:var(--orange)">${fmtEur(yhteensa,0)}</td>
+            </tr>`;
+          }).join('')}
+          <tr class="total-row">
+            <td>Yhteensa</td>
+            <td>${fmtEur(VEHICLES.reduce((s,v)=>s+v.hankinta,0))}</td>
+            <td>${fmtEur(VEHICLES.reduce((s,v)=>s+v.jaannos,0))}</td>
+            <td class="calc-value">${fmtEur(VEHICLES.reduce((s,v)=>s+calcROI(v).sidottuPaaoma,0))}</td>
+            <td class="calc-value">${fmtEur(VEHICLES.reduce((s,v)=>s+calcROI(v).veKustannusKk,0),0)}</td>
+            <td class="calc-value">${fmtEur(VEHICLES.reduce((s,v)=>s+calcROI(v).arvonalemmaKk,0),0)}</td>
+            <td class="calc-value" style="color:var(--orange)">${fmtEur(VEHICLES.reduce((s,v)=>{const r=calcROI(v);return s+r.veKustannusKk+r.arvonalemmaKk;},0),0)}</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </div>
+  `;
+  return html;
+}
+
+function renderComparison() {
+  const results = calcSummary();
+  let ownKust=0,ownKeikat=0,ownKm=0,ownTunnit=0;
+  let buyKust=0,buyKeikat=0,buyKm=0,buyTunnit=0;
+  let totalKust=0,totalKeikat=0,totalKm=0,totalTunnit=0;
+  DRIVERS.forEach(d => {
+    const c = results[d.id];
+    totalKust+=c.kustannukset; totalKeikat+=c.keikat; totalKm+=c.km; totalTunnit+=c.tunnit;
+    if(d.type==='own'){ownKust+=c.kustannukset;ownKeikat+=c.keikat;ownKm+=c.km;ownTunnit+=c.tunnit;}
+    else{buyKust+=c.kustannukset;buyKeikat+=c.keikat;buyKm+=c.km;buyTunnit+=c.tunnit;}
+  });
+  const ownEurPerKeikka = ownKeikat>0 ? ownKust/ownKeikat : 0;
+  const buyEurPerKeikka = buyKeikat>0 ? buyKust/buyKeikat : 0;
+  const ownEurPerKm = ownKm>0 ? ownKust/ownKm : 0;
+  const buyEurPerKm = buyKm>0 ? buyKust/buyKm : 0;
+  const ownEurPerH = ownTunnit>0 ? ownKust/ownTunnit : 0;
+  const buyEurPerH = buyTunnit>0 ? buyKust/buyTunnit : 0;
+  const allOwnCost = ownEurPerKeikka * totalKeikat;
+  const allBuyCost = buyEurPerKeikka * totalKeikat;
+
+  let html = `
+    <div class="section-title">Omat vs Ostokuljetukset — vertailu</div>
+    <div class="comparison-box">
+      <h3>Yksikkokustannusvertailu (H1/2025)</h3>
+      <div class="comp-grid">
+        <div class="comp-item"><div class="comp-label">\u20ac/keikka — Omat</div><div class="comp-val" style="color:var(--own-color)">${fmtEur(ownEurPerKeikka,1)}</div></div>
+        <div class="comp-item"><div class="comp-label">\u20ac/keikka — Ostot</div><div class="comp-val" style="color:var(--buy-color)">${fmtEur(buyEurPerKeikka,1)}</div><div class="comp-diff ${ownEurPerKeikka>buyEurPerKeikka?'positive':'negative'}">${fmtEur(Math.abs(buyEurPerKeikka-ownEurPerKeikka),1)} ero</div></div>
+        <div class="comp-item"><div class="comp-label">\u20ac/km — Omat</div><div class="comp-val" style="color:var(--own-color)">${fmtEur(ownEurPerKm,2)}</div></div>
+        <div class="comp-item"><div class="comp-label">\u20ac/km — Ostot</div><div class="comp-val" style="color:var(--buy-color)">${fmtEur(buyEurPerKm,2)}</div><div class="comp-diff ${ownEurPerKm>buyEurPerKm?'positive':'negative'}">${fmtEur(Math.abs(buyEurPerKm-ownEurPerKm),2)} ero</div></div>
+        <div class="comp-item"><div class="comp-label">\u20ac/h — Omat</div><div class="comp-val" style="color:var(--own-color)">${fmtEur(ownEurPerH,1)}</div></div>
+        <div class="comp-item"><div class="comp-label">\u20ac/h — Ostot</div><div class="comp-val" style="color:var(--buy-color)">${fmtEur(buyEurPerH,1)}</div><div class="comp-diff ${ownEurPerH>buyEurPerH?'positive':'negative'}">${fmtEur(Math.abs(buyEurPerH-ownEurPerH),1)} ero</div></div>
+      </div>
+    </div>
+    <div class="comparison-box">
+      <h3>Enta jos kaikki ${fmt(totalKeikat)} keikkaa tehtaisiin yhdella mallilla?</h3>
+      <div class="comp-grid">
+        <div class="comp-item"><div class="comp-label">Kaikki omilla</div><div class="comp-val" style="color:var(--own-color)">${fmtEur(allOwnCost)}</div></div>
+        <div class="comp-item"><div class="comp-label">Kaikki ostoilla</div><div class="comp-val" style="color:var(--buy-color)">${fmtEur(allBuyCost)}</div></div>
+        <div class="comp-item"><div class="comp-label">Erotus</div><div class="comp-val ${allOwnCost<allBuyCost?'green':'red'}">${fmtEur(Math.abs(allOwnCost-allBuyCost))}</div><div class="comp-diff ${allOwnCost<allBuyCost?'positive':'negative'}">${allOwnCost<allBuyCost?'Omat halvemmat':'Ostot halvemmat'}</div></div>
+      </div>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card"><h3>Kustannusjakauma — Omat vs Ostot</h3><canvas id="chartPie"></canvas></div>
+      <div class="chart-card"><h3>Keikkajakauma — Omat vs Ostot</h3><canvas id="chartPieKeikat"></canvas></div>
+    </div>
+  `;
+  return html;
+}
+
+// ============================
+// SIMULATOR
+// ============================
+let simState = {lastausMin: 5, replaceDriver: '', absenceDays: 0};
+
+function calcSimLastaus(minReduction) {
+  if (minReduction <= 0) return {tunnit: 0, saastoH1: 0, saastoVuosi: 0, lastauskerrat: 0};
+  const results = calcSummary();
+  let totalLastauskerrat = 0, totalKust = 0, totalTunnit = 0;
+  DRIVERS.forEach(d => {
+    const c = results[d.id];
+    totalLastauskerrat += c.lastauskerrat;
+    totalKust += c.kustannukset;
+    totalTunnit += c.tunnit;
+  });
+  const avgEurPerH = totalTunnit > 0 ? totalKust / totalTunnit : 0;
+  const vapautuneetTunnit = (minReduction * totalLastauskerrat) / 60;
+  const saastoH1 = vapautuneetTunnit * avgEurPerH;
+  return {tunnit: vapautuneetTunnit, saastoH1, saastoVuosi: saastoH1 * 2, lastauskerrat: totalLastauskerrat};
+}
+
+function calcSimReplace(driverId) {
+  if (!driverId) return null;
+  const driver = DRIVERS.find(d => d.id === driverId);
+  if (!driver || driver.type !== 'buy') return null;
+  const results = calcSummary();
+  const c = results[driverId];
+  if (!c || c.keikat === 0) return null;
+  const nykyKust = c.kustannukset;
+  const ownDrivers = DRIVERS.filter(d => d.type === 'own');
+  let totalMuut = 0, ownCount = 0;
+  ownDrivers.forEach(d => {
+    const oc = results[d.id];
+    if (oc && oc.keikat > 0) { totalMuut += oc.muut; ownCount++; }
+  });
+  const avgMuutPerKk = ownCount > 0 ? (totalMuut / ownCount) / MONTHS.length : 0;
+  const omaPalkkaH1 = 3550 * MONTHS.length;
+  const omaMuutH1 = avgMuutPerKk * MONTHS.length;
+  const omaKust = omaPalkkaH1 + omaMuutH1;
+  const erotus = nykyKust - omaKust;
+  let autoHinta = 115000;
+  if (driver.cat === 'HIAB') autoHinta = 195000;
+  else if (driver.cat === 'Pakut') autoHinta = 73000;
+  const takaisinmaksu = erotus > 0 ? autoHinta / (erotus * 2) : null;
+  return { driverId, nykyKust, omaKust, erotus, eurPerKeikkaNow: c.eurPerKeikka, eurPerKeikkaOwn: c.keikat > 0 ? omaKust / c.keikat : 0, keikat: c.keikat, autoHinta, takaisinmaksu };
+}
+
+function calcSimAbsence(dayReduction) {
+  if (dayReduction <= 0) return {saastoH1: 0, saastoVuosi: 0, poistetutPv: 0, totalPoissaolot: 0, avgBuyRate: 57};
+  const results = calcSummary();
+  let totalPoissaolot = 0;
+  DRIVERS.filter(d => d.type === 'own').forEach(d => { totalPoissaolot += results[d.id].poissaolot; });
+  const buyDrivers = DRIVERS.filter(d => d.type === 'buy');
+  let totalBuyRate = 0;
+  buyDrivers.forEach(d => totalBuyRate += d.rate);
+  const avgBuyRate = buyDrivers.length > 0 ? totalBuyRate / buyDrivers.length : 57;
+  const poistetutPv = dayReduction * MONTHS.length;
+  const saastetutTunnit = poistetutPv * 7.5;
+  const saastoH1 = saastetutTunnit * avgBuyRate;
+  return { saastoH1, saastoVuosi: saastoH1 * 2, poistetutPv, totalPoissaolot, avgBuyRate };
+}
+
+function renderSimulator() {
+  const sim1 = calcSimLastaus(simState.lastausMin);
+  const sim2 = calcSimReplace(simState.replaceDriver);
+  const sim3 = calcSimAbsence(simState.absenceDays);
+  const totalSaastoVuosi = sim1.saastoVuosi + (sim2 && sim2.erotus > 0 ? sim2.erotus * 2 : 0) + sim3.saastoVuosi;
+
+  const results = calcSummary();
+  const buyDriverOpts = DRIVERS.filter(d => d.type === 'buy').map(d => {
+    const c = results[d.id];
+    const info = c && c.keikat > 0 ? ` (${fmt(c.keikat)} keikkaa, ${fmtEur(c.kustannukset)})` : ' (ei dataa)';
+    return `<option value="${d.id}" ${simState.replaceDriver === d.id ? 'selected' : ''}>${d.id}${info}</option>`;
+  });
+
+  let totalLastauskerrat = 0, totalLastausmin = 0;
+  DRIVERS.forEach(d => { const c = results[d.id]; totalLastauskerrat += c.lastauskerrat; totalLastausmin += c.lastausmin; });
+  const avgLastaus = totalLastauskerrat > 0 ? totalLastausmin / totalLastauskerrat : 0;
+
+  let totalPoissaolot = 0;
+  DRIVERS.filter(d => d.type === 'own').forEach(d => { totalPoissaolot += results[d.id].poissaolot; });
+  const avgPoissaolotPerKk = totalPoissaolot / MONTHS.length;
+
+  let html = `
+    <div class="section-title">Tehostamisskenaariot</div>
+    <div class="sim-total">
+      <div class="label">Valittujen skenaarioiden yhteissaasto</div>
+      <div class="value">${totalSaastoVuosi > 0 ? '+' : ''}${fmtEur(totalSaastoVuosi)} / vuosi</div>
+      <div class="sub">${fmtEur(totalSaastoVuosi / 2)} puolivuosittain (H1-dataan perustuen)</div>
+    </div>
+
+    <div class="sim-card">
+      <h3>1. Lastausajan tehostus</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Lastausajan lyhentaminen vapauttaa tyoaikaa ja laskee yksikkokustannuksia. Liikuta slideria nahdaksesi vaikutus.</p>
+      <div class="sim-control">
+        <label>Lastausaika lyhenee</label>
+        <input type="range" min="0" max="20" step="1" value="${simState.lastausMin}" oninput="simState.lastausMin=+this.value;switchTab('simulaattori')">
+        <span class="sim-val">${simState.lastausMin} min</span>
+      </div>
+      <div class="sim-results">
+        <div class="sim-result"><div class="label">Lastauskerrat (H1)</div><div class="value blue">${fmt(sim1.lastauskerrat || totalLastauskerrat)}</div></div>
+        <div class="sim-result"><div class="label">Vapautuvat tunnit</div><div class="value blue">${fmt(sim1.tunnit, 0)} h</div></div>
+        <div class="sim-result"><div class="label">Saasto H1</div><div class="value green">${fmtEur(sim1.saastoH1)}</div></div>
+        <div class="sim-result"><div class="label">Saasto / vuosi</div><div class="value green">${fmtEur(sim1.saastoVuosi)}</div></div>
+      </div>
+      <div class="sim-hint">Ka. lastausaika nyt: ${fmt(avgLastaus, 1)} min/kerta. Toimipiste A: 62 min vs. Toimipiste B: 30 min — yli 30 min ero samassa prosessissa.</div>
+    </div>
+
+    <div class="sim-card">
+      <h3>2. Ostokuljettajan korvaaminen omalla</h3>
+      <div class="sim-control">
+        <label>Valitse ostokuljettaja</label>
+        <select onchange="simState.replaceDriver=this.value;switchTab('simulaattori')">
+          <option value="">— Valitse —</option>
+          ${buyDriverOpts.join('')}
+        </select>
+      </div>
+      ${sim2 ? `
+      <div class="sim-results">
+        <div class="sim-result"><div class="label">Nykyinen kustannus (H1)</div><div class="value red">${fmtEur(sim2.nykyKust)}</div></div>
+        <div class="sim-result"><div class="label">Omana kuljettajana (H1)</div><div class="value blue">${fmtEur(sim2.omaKust)}</div></div>
+        <div class="sim-result"><div class="label">${sim2.erotus >= 0 ? 'Saasto' : 'Lisakulu'} H1</div><div class="value ${sim2.erotus >= 0 ? 'green' : 'red'}">${fmtEur(Math.abs(sim2.erotus))}</div></div>
+        <div class="sim-result"><div class="label">${sim2.erotus >= 0 ? 'Saasto' : 'Lisakulu'} / vuosi</div><div class="value ${sim2.erotus >= 0 ? 'green' : 'red'}">${fmtEur(Math.abs(sim2.erotus * 2))}</div></div>
+        <div class="sim-result"><div class="label">\u20ac/keikka nyt (osto)</div><div class="value red">${fmtEur(sim2.eurPerKeikkaNow, 1)}</div></div>
+        <div class="sim-result"><div class="label">\u20ac/keikka omana</div><div class="value blue">${fmtEur(sim2.eurPerKeikkaOwn, 1)}</div></div>
+        <div class="sim-result"><div class="label">Auton hankintahinta</div><div class="value orange">${fmtEur(sim2.autoHinta)}</div></div>
+        <div class="sim-result"><div class="label">Takaisinmaksuaika</div><div class="value orange">${sim2.takaisinmaksu != null && sim2.takaisinmaksu > 0 ? fmt(sim2.takaisinmaksu, 1) + ' v' : '\u2014'}</div></div>
+      </div>
+      <div class="sim-hint">Laskelmassa oletetaan oma palkka 3 550 \u20ac/kk + keskimaaraiset muut kulut omien autojen perusteella.</div>
+      ` : `
+      <div class="sim-results">
+        <div class="sim-result" style="grid-column:1/-1;"><div class="label">Valitse ostokuljettaja nahdaksesi vertailu</div><div class="value" style="color:var(--text2);">\u2014</div></div>
+      </div>
+      <div class="sim-hint">Ostokuljettajat keskimaarin kalliimpia per keikka verrattuna omiin.</div>
+      `}
+    </div>
+
+    <div class="sim-card">
+      <h3>3. Poissaolojen vahentaminen</h3>
+      <div class="sim-control">
+        <label>Poissaolot vahenevat</label>
+        <input type="range" min="0" max="10" step="1" value="${simState.absenceDays}" oninput="simState.absenceDays=+this.value;switchTab('simulaattori')">
+        <span class="sim-val">${simState.absenceDays} pv/kk</span>
+      </div>
+      <div class="sim-results">
+        <div class="sim-result"><div class="label">Nykyiset poissaolot (H1)</div><div class="value blue">${fmt(totalPoissaolot)} pv</div></div>
+        <div class="sim-result"><div class="label">Vahennetyt paivat (H1)</div><div class="value blue">${fmt(sim3.poistetutPv)} pv</div></div>
+        <div class="sim-result"><div class="label">Saasto H1 (tuurauskulut)</div><div class="value green">${fmtEur(sim3.saastoH1)}</div></div>
+        <div class="sim-result"><div class="label">Saasto / vuosi</div><div class="value green">${fmtEur(sim3.saastoVuosi)}</div></div>
+      </div>
+      <div class="sim-hint">Nykyinen poissaolokeskiarvo: ${fmt(avgPoissaolotPerKk, 1)} pv/kk (omat kuljettajat). Tuuraus ostetaan keskihintaan ${fmtEur(sim3.avgBuyRate || 57, 1)}/h.</div>
+    </div>
+  `;
+  return html;
+}
+
+// ============================
+// CHARTS
+// ============================
+function destroyCharts() { Object.values(charts).forEach(c => c.destroy()); charts = {}; }
+
+function initSummaryCharts() {
+  const results = calcSummary();
+  Chart.defaults.color = '#8b8fa3';
+  Chart.defaults.borderColor = '#2d3140';
+  const driverLabels = DRIVERS.map(d => d.id);
+  const driverCosts = DRIVERS.map(d => results[d.id].kustannukset);
+  const driverColors = DRIVERS.map(d => d.type==='own' ? 'rgba(79,124,255,0.7)' : 'rgba(255,107,107,0.7)');
+  charts.driverCosts = new Chart(document.getElementById('chartDriverCosts'), {
+    type: 'bar',
+    data: { labels: driverLabels, datasets: [{label:'Kustannukset (\u20ac)', data:driverCosts, backgroundColor:driverColors, borderRadius:6}] },
+    options: {responsive:true, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>fmt(v)+' \u20ac'}}}}
+  });
+  const monthLabels = MONTHS.map(m => MONTH_NAMES[m]);
+  const ownMonthly = MONTHS.map(m => { const res = calcMonth(m); return DRIVERS.filter(d=>d.type==='own').reduce((s,d)=>s+(res[d.id]?res[d.id].kustannukset:0),0); });
+  const buyMonthly = MONTHS.map(m => { const res = calcMonth(m); return DRIVERS.filter(d=>d.type==='buy').reduce((s,d)=>s+(res[d.id]?res[d.id].kustannukset:0),0); });
+  charts.monthly = new Chart(document.getElementById('chartMonthly'), {
+    type: 'bar',
+    data: { labels: monthLabels, datasets: [ {label:'Omat', data:ownMonthly, backgroundColor:'rgba(79,124,255,0.7)', borderRadius:6}, {label:'Ostot', data:buyMonthly, backgroundColor:'rgba(255,107,107,0.7)', borderRadius:6} ] },
+    options: {responsive:true, plugins:{legend:{position:'top'}}, scales:{y:{ticks:{callback:v=>fmt(v)+' \u20ac'}}}}
+  });
+  const driverEurKeikka = DRIVERS.map(d => results[d.id].eurPerKeikka);
+  charts.eurKeikka = new Chart(document.getElementById('chartEurPerKeikka'), {
+    type: 'bar',
+    data: { labels: driverLabels, datasets: [{label:'\u20ac/keikka', data:driverEurKeikka, backgroundColor:driverColors, borderRadius:6}] },
+    options: {responsive:true, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>fmt(v,1)+' \u20ac'}}}, indexAxis:'y'}
+  });
+  const driverEurKm = DRIVERS.map(d => results[d.id].eurPerKm);
+  charts.eurKm = new Chart(document.getElementById('chartEurPerKm'), {
+    type: 'bar',
+    data: { labels: driverLabels, datasets: [{label:'\u20ac/km', data:driverEurKm, backgroundColor:driverColors, borderRadius:6}] },
+    options: {responsive:true, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>v.toFixed(2)+' \u20ac'}}}, indexAxis:'y'}
+  });
+}
+
+function initComparisonCharts() {
+  const results = calcSummary();
+  Chart.defaults.color = '#8b8fa3';
+  Chart.defaults.borderColor = '#2d3140';
+  let ownKust=0, buyKust=0, ownKeikat=0, buyKeikat=0;
+  DRIVERS.forEach(d => { const c = results[d.id]; if(d.type==='own'){ownKust+=c.kustannukset;ownKeikat+=c.keikat;}else{buyKust+=c.kustannukset;buyKeikat+=c.keikat;} });
+  charts.pie = new Chart(document.getElementById('chartPie'), {
+    type: 'doughnut',
+    data: { labels: ['Omat','Ostot'], datasets: [{data:[ownKust,buyKust], backgroundColor:['rgba(79,124,255,0.8)','rgba(255,107,107,0.8)'], borderWidth:0}] },
+    options: {responsive:true, plugins:{legend:{position:'bottom'}}}
+  });
+  charts.pieKeikat = new Chart(document.getElementById('chartPieKeikat'), {
+    type: 'doughnut',
+    data: { labels: ['Omat','Ostot'], datasets: [{data:[ownKeikat,buyKeikat], backgroundColor:['rgba(79,124,255,0.8)','rgba(255,107,107,0.8)'], borderWidth:0}] },
+    options: {responsive:true, plugins:{legend:{position:'bottom'}}}
+  });
+}
+
+// ============================
+// TAB SWITCHING
+// ============================
+let currentTab = 'yhteenveto';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  destroyCharts();
+  const main = document.getElementById('mainContent');
+  if (tab === 'yhteenveto') {
+    main.innerHTML = renderSummary();
+    setTimeout(initSummaryCharts, 50);
+  } else if (tab === 'roi') {
+    main.innerHTML = renderROI();
+  } else if (tab === 'vertailu') {
+    main.innerHTML = renderComparison();
+    setTimeout(initComparisonCharts, 50);
+  } else if (tab === 'simulaattori') {
+    main.innerHTML = renderSimulator();
+  }
+}
+
+document.getElementById('mainTabs').addEventListener('click', e => {
+  if (e.target.classList.contains('tab')) switchTab(e.target.dataset.tab);
+});
+
+switchTab('yhteenveto');
+</script>
+</body>
+</html>
