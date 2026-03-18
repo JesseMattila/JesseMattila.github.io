@@ -1276,6 +1276,36 @@
             .case-study { padding: 2rem; }
             .calc-result-breakdown { grid-template-columns: 1fr; }
             section { padding: 4rem 1.25rem; }
+
+            /* Theme bar */
+            .theme-bar { padding: 0.75rem 1rem; }
+            .theme-bar p { font-size: 0.78rem; }
+            .theme-buttons { gap: 0.4rem; }
+            .theme-btn { font-size: 0.72rem; padding: 0.4rem 0.8rem; }
+
+            /* Projects */
+            .projects-grid { grid-template-columns: 1fr; }
+            .project-card { padding: 1.5rem; }
+
+            /* Prompt generator */
+            .prompt-gen { padding: 2rem 1.5rem; }
+            .prompt-display { padding: 1.5rem 1.25rem; }
+            .prompt-display p { font-size: 0.95rem; }
+
+            /* Case grid */
+            .case-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .theme-buttons { flex-direction: column; align-items: center; }
+            .theme-btn { width: 100%; text-align: center; }
+            .hero-stats { flex-direction: column; gap: 1rem; }
+            .hero h1 { font-size: 2rem; letter-spacing: -1px; }
+            .case-grid { grid-template-columns: 1fr; }
+            .prompt-gen { padding: 1.5rem 1rem; }
+            .prompt-display { padding: 1.25rem 1rem; }
+            .prompt-display p { font-size: 0.88rem; }
+            .nav-inner { padding: 0 1rem; }
         }
     </style>
 </head>
