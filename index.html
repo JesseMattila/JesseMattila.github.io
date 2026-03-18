@@ -1860,64 +1860,143 @@ const countObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
 
-// Prompt Generator
-const prompts = [
-    { category: 'Controller-tason analyysi', text: 'Kirjoita 500 sanan analyysi siitä miksi kahviautomaatti on yrityksen tärkein investointi. Sisällytä ROI-laskelma ja riskiraportti.' },
-    { category: 'Strateginen suunnittelu', text: 'Laadi liiketoimintasuunnitelma yritykselle, joka vuokraa motivaatiopuhujia Teams-palavereihin jotka olisi voinut olla sähköposteja.' },
-    { category: 'Prosessikehitys', text: 'Suunnittele prosessikaavio sille, miten toimistossa päätetään missä lounas syödään. Huomioi kaikki sidosryhmät ja eskalaatiopolut.' },
-    { category: 'Data-analyysi', text: 'Analysoi korrelaatio maanantaiaamun Slack-viestien sävyn ja perjantain lähtöajan välillä. Tee scatter plot.' },
-    { category: 'Logistiikkaoptimointi', text: 'Optimoi reitti, jolla toimiston kakkukahvitarjoilu saadaan jokaiselle kerrokselle alle 4 minuutissa. Huomioi hissien kapasiteetti.' },
-    { category: 'Riskianalyysi', text: 'Tee riskimatriisi tilanteelle, jossa palaverin vetäjä sanoo "Vielä yksi asia..." kokouksen viimeisellä minuutilla.' },
-    { category: 'Budjetointi', text: 'Laadi vuosibudjetti osastolle, jonka ainoa tehtävä on keksiä motivoivia sähköpostin allekirjoituksia koko organisaatiolle.' },
-    { category: 'Tekoäly & automaatio', text: 'Suunnittele AI-botti joka tunnistaa Teams-palaverista hetken, jolloin kaikki ovat samaa mieltä, ja lopettaa kokouksen automaattisesti.' },
-    { category: 'KPI-suunnittelu', text: 'Määrittele KPI:t työntekijälle, jonka ainoa vastuu on pitää kahvikeittiö siistinä. Sisällytä bonusmalli.' },
-    { category: 'Change management', text: 'Laadi muutosjohtamissuunnitelma siirtymiselle kahden näytön työpisteestä kolmen näytön työpisteeseen. Huomioi muutosvastarinta.' },
-    { category: 'Sopimusoikeus', text: 'Kirjoita NDA-sopimus kahdelle kollegalle jotka näkivät toisiaan K-Marketissa viikonloppuna. Kumpikaan ei halua myöntää käyneensä siellä.' },
-    { category: 'Hankinta', text: 'Tee tarjouspyyntö toimistoon hankittavasta seisomatyöpöydästä, joka myös toimii DJ-pöytänä pikkujouluissa.' },
-    { category: 'Lean Six Sigma', text: 'Suorita 5 Why -analyysi ongelmaan: "Miksi kukaan ei koskaan laita viimeistä kahvia tippumaan?"' },
-    { category: 'Viestintä', text: 'Kirjoita all-hands-esitykseen dia otsikolla "Synergiat Q3:lla" käyttäen ainoastaan golf-metaforia. Ei saa mainita golfia.' },
-    { category: 'Tuotesuunnittelu', text: 'Suunnittele SaaS-tuote, joka mittaa kuinka monta prosenttia ajasta käytät tuottavaan työhön vs. tuottavuustyökalujen konfigurointiin.' },
-    { category: 'HR & kulttuuri', text: 'Kirjoita työnhakuilmoitus positioon: Chief Vibes Officer. Vaatimuksena vähintään 5v kokemus tunnelman lukemisesta.' },
-    { category: 'Excel-taikuutta', text: 'Rakenna Excel-kaava, joka laskee todennäköisyyden sille, että kukaan oikeasti lukee koko PowerPoint-esityksen ennen palaveria.' },
-    { category: 'Benchmarking', text: 'Vertaile kolmea eri strategiaa toimiston lämpötilasodan ratkaisemiseksi. Sisällytä SWOT-analyysi jokaisesta.' },
-    { category: 'Kustannuslaskenta', text: 'Laske työtunnin todellinen kustannus kun huomioidaan: 23 min kahvitauko, 15 min Teams-päivitys, 8 min "luen vaan tämän artikkelin" ja 4 min hukassa oleva kynä.' },
-    { category: 'Prompt engineering', text: 'Kirjoita prompt, jolla saat AI:n myöntämään ettei se oikeasti tiedä mikä on paras CRM-järjestelmä, vaan arpoo vastauksen joka kerta.' }
+// Prompt Generator — combinatorial system (1000+ unique prompts)
+const promptCategories = [
+    'Controller-tason analyysi', 'Strateginen suunnittelu', 'Prosessikehitys',
+    'Data-analyysi', 'Logistiikkaoptimointi', 'Riskianalyysi', 'Budjetointi',
+    'Tekoäly & automaatio', 'KPI-suunnittelu', 'Change management',
+    'Sopimusoikeus', 'Hankinta', 'Lean Six Sigma', 'Viestintä',
+    'Tuotesuunnittelu', 'HR & kulttuuri', 'Excel-taikuutta', 'Benchmarking',
+    'Kustannuslaskenta', 'Prompt engineering', 'Asiakaskokemus', 'Myyntistrategia',
+    'Työhyvinvointi', 'Innovaatio', 'Laadunhallinta'
 ];
 
-let promptHistory = [];
+const promptFormats = [
+    'Kirjoita analyysi', 'Laadi suunnitelma', 'Tee SWOT-analyysi',
+    'Suunnittele prosessikaavio', 'Rakenna dashboard-näkymä',
+    'Kirjoita johdon raportti', 'Tee tarjouspyyntö', 'Laadi budjetti',
+    'Suorita 5 Why -analyysi', 'Kirjoita toimintaohje',
+    'Tee riskimatriisi', 'Laadi muutosjohtamissuunnitelma',
+    'Määrittele KPI:t', 'Kirjoita sopimus', 'Suunnittele koulutusohjelma',
+    'Tee benchmarking-vertailu', 'Kirjoita kehitysehdotus',
+    'Laadi viestintäsuunnitelma', 'Suunnittele automaatio',
+    'Rakenna Excel-malli'
+];
+
+const promptTopics = [
+    'kahviautomaatin sijoittelusta toimistossa',
+    'palavereihin käytetyn ajan optimoinnista',
+    'toimiston lämpötilasodasta',
+    'sähköpostien allekirjoitusten standardoinnista',
+    'etätyöpäivien oikeasta määrästä',
+    'lounaspaikan valintaprosessista',
+    'perjantaipullojen ROI:sta',
+    'seisomatyöpöytien käyttöasteesta',
+    'kahvitaukojen pituuden vaikutuksesta tuottavuuteen',
+    'Teams-palavereista jotka olisivat voineet olla sähköposteja',
+    'toimiston viherkasvien vaikutuksesta työtehoon',
+    'pikkujoulubudjetin kohdentamisesta',
+    'print-tulostimen jonottamisen kustannuksista',
+    'avokonttorissa kuulokkeiden käyttöpolitiikasta',
+    'maanantaiaamujen Slack-viestien sävystä',
+    'oman mukin vs. kertakäyttömukin elinkaarikustannuksista',
+    'parkkipaikan jakamisesta oikeudenmukaisesti',
+    'kokouskahvien hankintaketjun optimoinnista',
+    'pöytälaatikon siisteyden ja uraetenemisen korrelaatiosta',
+    'taukotilan mikroaaltouunin aikataulutuksesta',
+    'lempinimien käytön vaikutuksesta tiimihengestä',
+    'kokoushuoneiden nimivalinnasta',
+    'hissin vs. portaiden käytön kustannusvertailusta',
+    'arkistokaappien digitalisointistrategiasta',
+    'toimiston taustamusiikkivalinnoista',
+    'sähköpostin CC-kentän väärinkäytöstä',
+    'työmatkan optimoinnista kun on kolme kahvilaa reitin varrella',
+    'sairauspoissaolojen ja huonon kahvin korrelaatiosta',
+    'viikonloppuviestittelykulttuurin vaikutuksesta vaihtuvuuteen',
+    'post-it-lappujen vuosikulutuksen analysoinnista',
+    'toimiston ilmanvaihdon ja palaverin pituuden yhteydestä',
+    'kuukausiraportin lukemisprosentin nostamisesta',
+    'Excel-tiedostojen nimeämiskäytännöistä',
+    'joulukorttibudjetin priorisoinnista',
+    'kesätyöntekijän perehdytyksen kustannustehokkuudesta',
+    'kalenterimerkintöjen värikoodauksesta',
+    'langattoman hiiren paristobudjetista',
+    'work-life balance -kyselyiden vastausasteen parantamisesta',
+    'firman logolla varustettujen kynien katoamismysteeristä',
+    'LinkedIn-postausten optimaalisesta julkaisuajasta'
+];
+
+const promptTwists = [
+    'Sisällytä ROI-laskelma.',
+    'Käytä ainoastaan urheilumetaforia.',
+    'Esitä asia kuin se olisi elämän ja kuoleman kysymys.',
+    'Huomioi kaikki sidosryhmät ja eskalaatiopolut.',
+    'Kirjoita kuin se olisi McKinseyn konsulttiraportti.',
+    'Lisää riskiraportti ja varasuunnitelma.',
+    'Tee se niin, että toimitusjohtaja ymmärtää sen 30 sekunnissa.',
+    'Sisällytä vähintään kolme kaavioideaa.',
+    'Perustele kaikki väitteet kuvitteellisilla tilastoilla.',
+    'Kirjoita niin vakuuttavasti, että saat budjetin hyväksytyksi.',
+    'Käytä ainoastaan ruokametaforia.',
+    'Huomioi muutosvastarinta ja laadi vastastrategia.',
+    'Lisää benchmarking kolmeen kilpailevaan toimistoon.',
+    'Esitä kolme skenaariota: optimistinen, realistinen ja katastrofi.',
+    'Kirjoita kuin selittäisit 5-vuotiaalle — mutta vakuuttavasti.',
+    'Ei saa mainita sanaa "synergia" kertaakään.',
+    'Sisällytä Gantt-kaavio ja vastuumatriisi.',
+    'Lisää motivoiva lainaus jokaiseen kappaleeseen.',
+    'Käytä dramaattista kerrontaa — aloita sanoilla "Se oli pimeä ja myrskyinen maanantaiaamu..."',
+    'Perustele kaikki päätökset ympäristövaikutuksilla.',
+    'Kirjoita kuin startup-pitch — maksimissaan 3 minuutin esitys.',
+    'Esitä asia niin, että kesäharjoittelija vakuuttuu.',
+    'Vertaa tilannetta historialliseen tapahtumaan.',
+    'Lisää PESTEL-analyysi.',
+    'Kirjoita kaksikielisenä — suomi ja "corporatespeak".'
+];
+
+// Generate unique prompt from components using a seed
+function buildPrompt(seed) {
+    const f = promptFormats[seed % promptFormats.length];
+    const t = promptTopics[Math.floor(seed / promptFormats.length) % promptTopics.length];
+    const tw = promptTwists[Math.floor(seed / (promptFormats.length * promptTopics.length)) % promptTwists.length];
+    const c = promptCategories[Math.floor(seed / (promptFormats.length * promptTopics.length * promptTwists.length / promptCategories.length)) % promptCategories.length];
+    return { category: c, text: `${f} aiheesta: ${t} ${tw}` };
+}
+
+const TOTAL_PROMPTS = promptFormats.length * promptTopics.length; // 800+
+let usedSeeds = [];
 let promptsGenerated = 0;
 
 function generatePrompt() {
-    // Avoid repeating until all shown
-    if (promptHistory.length >= prompts.length) promptHistory = [];
+    if (usedSeeds.length >= TOTAL_PROMPTS) usedSeeds = [];
 
-    let idx;
+    let seed;
     do {
-        idx = Math.floor(Math.random() * prompts.length);
-    } while (promptHistory.includes(idx));
+        seed = Math.floor(Math.random() * TOTAL_PROMPTS);
+    } while (usedSeeds.includes(seed));
 
-    promptHistory.push(idx);
+    usedSeeds.push(seed);
     promptsGenerated++;
 
-    const prompt = prompts[idx];
+    // Pick a random twist independently for more variety
+    const base = buildPrompt(seed);
+    const twist = promptTwists[Math.floor(Math.random() * promptTwists.length)];
+    const category = promptCategories[Math.floor(Math.random() * promptCategories.length)];
+    const format = promptFormats[seed % promptFormats.length];
+    const topic = promptTopics[Math.floor(seed / promptFormats.length) % promptTopics.length];
+    const prompt = { category, text: `${format} aiheesta: ${topic} ${twist}` };
+
     const display = document.getElementById('promptDisplay');
     const p = display.querySelector('p');
 
-    // Fade out
     p.style.opacity = '0';
     setTimeout(() => {
         p.innerHTML = `<span class="prompt-category">${prompt.category}</span>"${prompt.text}"`;
         p.style.opacity = '1';
     }, 200);
 
-    // Update counter
     const counter = document.getElementById('promptCounter');
-    const remaining = prompts.length - promptHistory.length;
-    if (remaining === 0) {
-        counter.textContent = `Kaikki ${prompts.length} promptia nähty! Paina uudelleen aloittaaksesi alusta.`;
-    } else {
-        counter.textContent = `${promptsGenerated} generoitu · ${remaining} jäljellä`;
-    }
+    counter.textContent = `${promptsGenerated} generoitu · ${(TOTAL_PROMPTS - usedSeeds.length).toLocaleString('fi-FI')} uniikkia yhdistelmää jäljellä`;
 }
 
 // Theme switcher
