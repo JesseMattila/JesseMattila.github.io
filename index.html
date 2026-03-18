@@ -264,6 +264,12 @@
             height: 70px;
         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
         .nav-logo {
             font-weight: 800;
             font-size: 1.25rem;
@@ -1314,7 +1320,12 @@
 <!-- Navigation -->
 <nav id="navbar">
     <div class="nav-inner">
-        <div class="nav-logo">JM</div>
+        <div class="nav-left">
+            <div class="nav-logo">JM</div>
+            <button class="hamburger" id="hamburger" aria-label="Valikko">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
         <ul class="nav-links" id="navLinks">
             <li><a href="#tulokset">Tulokset</a></li>
             <li><a href="#case">Case Study</a></li>
@@ -1325,9 +1336,6 @@
             <li><a href="#promptgen">Prompt-haaste</a></li>
             <li><a href="#yhteystiedot">Yhteystiedot</a></li>
         </ul>
-        <button class="hamburger" id="hamburger" aria-label="Valikko">
-            <span></span><span></span><span></span>
-        </button>
     </div>
 </nav>
 
