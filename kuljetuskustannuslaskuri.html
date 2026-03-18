@@ -644,7 +644,7 @@ function renderSummary() {
 
 function renderROI() {
   let html = `
-    <div class="section-title">Ajoneuvojen paaomakustannukset</div>
+    <div class="section-title">Ajoneuvojen pääomakustannukset</div>
     <div class="roi-grid">
       ${VEHICLES.map(v => {
         const r = calcROI(v);
@@ -716,7 +716,7 @@ function renderComparison() {
   let html = `
     <div class="section-title">Omat vs Ostokuljetukset — vertailu</div>
     <div class="comparison-box">
-      <h3>Yksikkokustannusvertailu (H1/2025)</h3>
+      <h3>Yksikkökustannusvertailu (H1/2025)</h3>
       <div class="comp-grid">
         <div class="comp-item"><div class="comp-label">\u20ac/keikka — Omat</div><div class="comp-val" style="color:var(--own-color)">${fmtEur(ownEurPerKeikka,1)}</div></div>
         <div class="comp-item"><div class="comp-label">\u20ac/keikka — Ostot</div><div class="comp-val" style="color:var(--buy-color)">${fmtEur(buyEurPerKeikka,1)}</div><div class="comp-diff ${ownEurPerKeikka>buyEurPerKeikka?'positive':'negative'}">${fmtEur(Math.abs(buyEurPerKeikka-ownEurPerKeikka),1)} ero</div></div>
@@ -828,14 +828,14 @@ function renderSimulator() {
   let html = `
     <div class="section-title">Tehostamisskenaariot</div>
     <div class="sim-total">
-      <div class="label">Valittujen skenaarioiden yhteissaasto</div>
+      <div class="label">Valittujen skenaarioiden yhteissäästö</div>
       <div class="value">${totalSaastoVuosi > 0 ? '+' : ''}${fmtEur(totalSaastoVuosi)} / vuosi</div>
       <div class="sub">${fmtEur(totalSaastoVuosi / 2)} puolivuosittain (H1-dataan perustuen)</div>
     </div>
 
     <div class="sim-card">
       <h3>1. Lastausajan tehostus</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Lastausajan lyhentaminen vapauttaa tyoaikaa ja laskee yksikkokustannuksia. Liikuta slideria nahdaksesi vaikutus.</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Lastausajan lyhentäminen vapauttaa työaikaa ja laskee yksikkökustannuksia. Liikuta slideriä nähdäksesi vaikutus.</p>
       <div class="sim-control">
         <label>Lastausaika lyhenee</label>
         <input type="range" min="0" max="20" step="1" value="${simState.lastausMin}" oninput="simState.lastausMin=+this.value;switchTab('simulaattori')">
@@ -844,8 +844,8 @@ function renderSimulator() {
       <div class="sim-results">
         <div class="sim-result"><div class="label">Lastauskerrat (H1)</div><div class="value blue">${fmt(sim1.lastauskerrat || totalLastauskerrat)}</div></div>
         <div class="sim-result"><div class="label">Vapautuvat tunnit</div><div class="value blue">${fmt(sim1.tunnit, 0)} h</div></div>
-        <div class="sim-result"><div class="label">Saasto H1</div><div class="value green">${fmtEur(sim1.saastoH1)}</div></div>
-        <div class="sim-result"><div class="label">Saasto / vuosi</div><div class="value green">${fmtEur(sim1.saastoVuosi)}</div></div>
+        <div class="sim-result"><div class="label">Säästö H1</div><div class="value green">${fmtEur(sim1.saastoH1)}</div></div>
+        <div class="sim-result"><div class="label">Säästö / vuosi</div><div class="value green">${fmtEur(sim1.saastoVuosi)}</div></div>
       </div>
       <div class="sim-hint">Ka. lastausaika nyt: ${fmt(avgLastaus, 1)} min/kerta. Toimipiste A: 62 min vs. Toimipiste B: 30 min — yli 30 min ero samassa prosessissa.</div>
     </div>
@@ -863,34 +863,34 @@ function renderSimulator() {
       <div class="sim-results">
         <div class="sim-result"><div class="label">Nykyinen kustannus (H1)</div><div class="value red">${fmtEur(sim2.nykyKust)}</div></div>
         <div class="sim-result"><div class="label">Omana kuljettajana (H1)</div><div class="value blue">${fmtEur(sim2.omaKust)}</div></div>
-        <div class="sim-result"><div class="label">${sim2.erotus >= 0 ? 'Saasto' : 'Lisakulu'} H1</div><div class="value ${sim2.erotus >= 0 ? 'green' : 'red'}">${fmtEur(Math.abs(sim2.erotus))}</div></div>
-        <div class="sim-result"><div class="label">${sim2.erotus >= 0 ? 'Saasto' : 'Lisakulu'} / vuosi</div><div class="value ${sim2.erotus >= 0 ? 'green' : 'red'}">${fmtEur(Math.abs(sim2.erotus * 2))}</div></div>
+        <div class="sim-result"><div class="label">${sim2.erotus >= 0 ? 'Säästö' : 'Lisäkulu'} H1</div><div class="value ${sim2.erotus >= 0 ? 'green' : 'red'}">${fmtEur(Math.abs(sim2.erotus))}</div></div>
+        <div class="sim-result"><div class="label">${sim2.erotus >= 0 ? 'Säästö' : 'Lisäkulu'} / vuosi</div><div class="value ${sim2.erotus >= 0 ? 'green' : 'red'}">${fmtEur(Math.abs(sim2.erotus * 2))}</div></div>
         <div class="sim-result"><div class="label">\u20ac/keikka nyt (osto)</div><div class="value red">${fmtEur(sim2.eurPerKeikkaNow, 1)}</div></div>
         <div class="sim-result"><div class="label">\u20ac/keikka omana</div><div class="value blue">${fmtEur(sim2.eurPerKeikkaOwn, 1)}</div></div>
         <div class="sim-result"><div class="label">Auton hankintahinta</div><div class="value orange">${fmtEur(sim2.autoHinta)}</div></div>
         <div class="sim-result"><div class="label">Takaisinmaksuaika</div><div class="value orange">${sim2.takaisinmaksu != null && sim2.takaisinmaksu > 0 ? fmt(sim2.takaisinmaksu, 1) + ' v' : '\u2014'}</div></div>
       </div>
-      <div class="sim-hint">Laskelmassa oletetaan oma palkka 3 550 \u20ac/kk + keskimaaraiset muut kulut omien autojen perusteella.</div>
+      <div class="sim-hint">Laskelmassa oletetaan oma palkka 3 550 \u20ac/kk + keskimääräiset muut kulut omien autojen perusteella.</div>
       ` : `
       <div class="sim-results">
-        <div class="sim-result" style="grid-column:1/-1;"><div class="label">Valitse ostokuljettaja nahdaksesi vertailu</div><div class="value" style="color:var(--text2);">\u2014</div></div>
+        <div class="sim-result" style="grid-column:1/-1;"><div class="label">Valitse ostokuljettaja nähdäksesi vertailu</div><div class="value" style="color:var(--text2);">\u2014</div></div>
       </div>
-      <div class="sim-hint">Ostokuljettajat keskimaarin kalliimpia per keikka verrattuna omiin.</div>
+      <div class="sim-hint">Ostokuljettajat keskimäärin kalliimpia per keikka verrattuna omiin.</div>
       `}
     </div>
 
     <div class="sim-card">
-      <h3>3. Poissaolojen vahentaminen</h3>
+      <h3>3. Poissaolojen vähentäminen</h3>
       <div class="sim-control">
-        <label>Poissaolot vahenevat</label>
+        <label>Poissaolot vähenevät</label>
         <input type="range" min="0" max="10" step="1" value="${simState.absenceDays}" oninput="simState.absenceDays=+this.value;switchTab('simulaattori')">
         <span class="sim-val">${simState.absenceDays} pv/kk</span>
       </div>
       <div class="sim-results">
         <div class="sim-result"><div class="label">Nykyiset poissaolot (H1)</div><div class="value blue">${fmt(totalPoissaolot)} pv</div></div>
-        <div class="sim-result"><div class="label">Vahennetyt paivat (H1)</div><div class="value blue">${fmt(sim3.poistetutPv)} pv</div></div>
-        <div class="sim-result"><div class="label">Saasto H1 (tuurauskulut)</div><div class="value green">${fmtEur(sim3.saastoH1)}</div></div>
-        <div class="sim-result"><div class="label">Saasto / vuosi</div><div class="value green">${fmtEur(sim3.saastoVuosi)}</div></div>
+        <div class="sim-result"><div class="label">Vähennetyt päivät (H1)</div><div class="value blue">${fmt(sim3.poistetutPv)} pv</div></div>
+        <div class="sim-result"><div class="label">Säästö H1 (tuurauskulut)</div><div class="value green">${fmtEur(sim3.saastoH1)}</div></div>
+        <div class="sim-result"><div class="label">Säästö / vuosi</div><div class="value green">${fmtEur(sim3.saastoVuosi)}</div></div>
       </div>
       <div class="sim-hint">Nykyinen poissaolokeskiarvo: ${fmt(avgPoissaolotPerKk, 1)} pv/kk (omat kuljettajat). Tuuraus ostetaan keskihintaan ${fmtEur(sim3.avgBuyRate || 57, 1)}/h.</div>
     </div>
