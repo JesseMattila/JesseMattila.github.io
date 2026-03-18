@@ -276,8 +276,16 @@
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
             letter-spacing: -0.5px;
             text-decoration: none;
+            display: inline-block;
+            padding: 0.5rem;
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
         }
 
         .nav-links {
