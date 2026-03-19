@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jesse Mattila — Rekrytoijalle</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e94560;
+            --accent-light: #ff6b81;
+            --bg: #0f0f1a;
+            --card: #16213e;
+            --card-hover: #1a2744;
+            --text: #eaeaea;
+            --text-muted: #8892b0;
+            --gradient: linear-gradient(135deg, #e94560, #0f3460);
+            --gradient-accent: linear-gradient(135deg, #e94560 0%, #ff6b81 50%, #0f3460 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== BACK LINK ===== */
+        .back-link {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 100;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-link:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            transform: translateX(-3px);
+        }
+
+        /* ===== LAS VEGAS ARROW ===== */
+        .vegas-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vegas-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 40%, rgba(233, 69, 96, 0.06) 0%, transparent 50%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-1%, -1%) scale(1.03); }
+        }
+
+        /* The big arrow sign */
+        .vegas-sign {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 3rem;
+            cursor: default;
+        }
+
+        .vegas-arrow {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* Arrow body (the rectangle part) */
+        .arrow-body {
+            background: linear-gradient(180deg, #d4243b 0%, #a01a2d 50%, #8b1525 100%);
+            border: 4px solid #ffd700;
+            border-bottom: none;
+            border-radius: 16px 16px 0 0;
+            padding: 1.5rem 2.5rem;
+            position: relative;
+            box-shadow:
+                0 0 15px rgba(233, 69, 96, 0.4),
+                0 0 30px rgba(233, 69, 96, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.15),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .arrow-body-text {
+            font-size: clamp(1.4rem, 4vw, 2.2rem);
+            font-weight: 900;
+            color: #fff8dc;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.5),
+                0 0 10px rgba(255, 215, 0, 0.6),
+                0 0 20px rgba(255, 215, 0, 0.4),
+                0 0 40px rgba(255, 215, 0, 0.2);
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 10px rgba(255,215,0,0.4), 0 0 20px rgba(255,215,0,0.2); }
+            100% { text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(255,215,0,0.8), 0 0 30px rgba(255,215,0,0.5), 0 0 50px rgba(255,215,0,0.3); }
+        }
+
+        /* Arrow head (the triangle) - pointing DOWN */
+        .arrow-head {
+            width: 0;
+            height: 0;
+            border-left: 65px solid transparent;
+            border-right: 65px solid transparent;
+            border-top: 70px solid #b81d30;
+            filter: drop-shadow(0 4px 8px rgba(233, 69, 96, 0.3));
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Gold border on arrow head - pointing DOWN */
+        .arrow-head-border {
+            position: absolute;
+            bottom: -78px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 70px solid transparent;
+            border-right: 70px solid transparent;
+            border-top: 76px solid #ffd700;
+            z-index: 0;
+        }
+
+        /* Bulb lights around the sign */
+        .bulbs {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -80px;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .bulb {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ffd700;
+            box-shadow: 0 0 6px #ffd700, 0 0 12px rgba(255, 215, 0, 0.5);
+        }
+
+        .bulb.off {
+            background: #8b7530;
+            box-shadow: none;
+        }
+
+        /* Animate bulbs */
+        .bulb:nth-child(odd) { animation: bulbFlicker 1s ease-in-out infinite alternate; }
+        .bulb:nth-child(even) { animation: bulbFlicker 1s ease-in-out 0.5s infinite alternate; }
+
+        @keyframes bulbFlicker {
+            0% { background: #ffd700; box-shadow: 0 0 6px #ffd700, 0 0 12px rgba(255, 215, 0, 0.5); }
+            100% { background: #ffed8a; box-shadow: 0 0 10px #ffed8a, 0 0 20px rgba(255, 215, 0, 0.7), 0 0 30px rgba(255, 215, 0, 0.3); }
+        }
+
+        /* Whole sign glow pulse */
+        .vegas-sign {
+            animation: signGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes signGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.3)); }
+            100% { filter: drop-shadow(0 0 40px rgba(233, 69, 96, 0.5)) drop-shadow(0 0 60px rgba(255, 215, 0, 0.2)); }
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: relative;
+            z-index: 1;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeInUp 1s 0.5s ease both;
+        }
+
+        .scroll-hint .chevron {
+            font-size: 1.5rem;
+            animation: bounceDown 1.5s ease-in-out infinite;
+            color: var(--accent);
+        }
+
+        @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== QUESTIONS SECTION ===== */
+        .questions-section {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .questions-intro {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .questions-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .questions-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .questions-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease;
+        }
+
+        .question-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .question-card:hover {
+            border-color: rgba(233, 69, 96, 0.15);
+        }
+
+        .question-number {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.9rem 1.1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: rgba(233, 69, 96, 0.05);
+            color: var(--text);
+        }
+
+        .option.selected {
+            border-color: var(--accent);
+            background: rgba(233, 69, 96, 0.1);
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .option-marker {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .option.selected .option-marker {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .option.selected .option-marker::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        /* Submit */
+        .submit-wrap {
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .submit-btn.active {
+            background: var(--gradient);
+            color: white;
+            pointer-events: auto;
+            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
+        }
+
+        .submit-btn.active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.4);
+        }
+
+        /* Result */
+        .result {
+            max-width: 700px;
+            margin: 2.5rem auto 0;
+            padding: 2.5rem;
+            background: var(--card);
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            border-radius: 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            display: none;
+        }
+
+        .result.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .result-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.25);
+        }
+
+        .result-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(233, 69, 96, 0.4);
+        }
+
+        /* Footer */
+        .rekry-footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rekry-footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+
+        .rekry-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .arrow-body { padding: 1.2rem 1.5rem; }
+            .arrow-body-text { letter-spacing: 2px; }
+            .arrow-head { border-left-width: 50px; border-right-width: 50px; border-top-width: 55px; }
+            .arrow-head-border { border-left-width: 55px; border-right-width: 55px; border-top-width: 60px; bottom: -63px; }
+            .question-card { padding: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .arrow-body { padding: 1rem; }
+            .arrow-body-text { font-size: 1.1rem; letter-spacing: 1.5px; }
+            .arrow-head { border-left-width: 40px; border-right-width: 40px; border-top-width: 42px; }
+            .arrow-head-border { border-left-width: 45px; border-right-width: 45px; border-top-width: 48px; bottom: -52px; }
+            .questions-section { padding: 4rem 1.25rem; }
+            .back-link { top: 1rem; left: 1rem; font-size: 0.75rem; padding: 0.4rem 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">&larr; Takaisin portfolioon</a>
+
+<!-- Las Vegas Arrow Hero -->
+<div class="vegas-hero">
+    <a href="#kysymykset" class="vegas-sign" style="text-decoration: none;">
+        <div class="vegas-arrow">
+            <div class="arrow-body">
+                <div class="arrow-body-text">Rekrytoijalle</div>
+                <!-- Bulbs on top edge -->
+                <div class="bulbs" id="bulbContainer"></div>
+            </div>
+            <div class="arrow-head-border"></div>
+            <div class="arrow-head"></div>
+        </div>
+    </a>
+
+    <a href="#kysymykset" class="scroll-hint" style="margin-top: 2.5rem; text-decoration: none;">
+        Vastaa nelj&auml;&auml;n kysymykseen
+        <div class="chevron">&darr;</div>
+    </a>
+</div>
+
+<!-- Questions -->
+<div class="questions-section" id="kysymykset">
+    <div class="questions-intro">
+        <p class="questions-label">Kulttuuritesti</p>
+        <h1 class="questions-title">Ennen kuin avaat CV:n</h1>
+        <p class="questions-desc">Nelj&auml; kysymyst&auml;. Ei oikeita vastauksia &mdash; vain rehellisi&auml;.</p>
+    </div>
+
+    <div class="questions-list">
+        <div class="question-card">
+            <div class="question-number">Kysymys 1 / 4</div>
+            <div class="question-text">Kun pomo k&auml;velee ohi eik&auml; sinulla ole juuri sill&auml; hetkell&auml; akuuttia ty&ouml;teht&auml;v&auml;&auml; k&auml;sill&auml;. Kumpi on oikea reaktio?</div>
+            <div class="options">
+                <div class="option" data-question="1" data-value="a" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>Jatkaa hyv&auml;&auml; keskustelua ty&ouml;kaverin kanssa &mdash; rentoutunut ty&ouml;ntekij&auml; on tuottava ty&ouml;ntekij&auml;</span>
+                </div>
+                <div class="option" data-question="1" data-value="b" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>Avata jotain n&auml;yt&ouml;lle &mdash; optiikka on t&auml;rke&auml;&auml;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-number">Kysymys 2 / 4</div>
+            <div class="question-text">Tiimil&auml;inen opettelee vapaa-ajallaan AI-ty&ouml;kaluja ja ehdottaa niiden hy&ouml;dynt&auml;mist&auml; ty&ouml;ss&auml;. Ensimm&auml;inen kokeilu ep&auml;onnistuu. Miten reagoit?</div>
+            <div class="options">
+                <div class="option" data-question="2" data-value="a" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>&quot;Hyv&auml; ett&auml; kokeilit &mdash; mit&auml; opit ja miten menn&auml;&auml;n eteenp&auml;in?&quot;</span>
+                </div>
+                <div class="option" data-question="2" data-value="b" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>&quot;Keskityt&auml;&auml;n toimiviin j&auml;rjestelmiin, ei l&auml;hdet&auml; kokeilemaan kaikkea uutta.&quot;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-number">Kysymys 3 / 4</div>
+            <div class="question-text">Tiimiss&auml; on henkil&ouml; joka tekee hyv&auml;&auml; tulosta, mutta kyseenalaistaa &auml;&auml;neen p&auml;&auml;t&ouml;ksi&auml; joista on eri mielt&auml;. Miten suhtaudut?</div>
+            <div class="options">
+                <div class="option" data-question="3" data-value="a" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>Arvostan &mdash; haastaminen pakottaa meid&auml;t perustelemaan p&auml;&auml;t&ouml;ksemme paremmin</span>
+                </div>
+                <div class="option" data-question="3" data-value="b" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>Tulosta tai ei, tiimidynamiikka k&auml;rsii jos auktoriteettia kyseenalaistetaan</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-number">Kysymys 4 / 4</div>
+            <div class="question-text">Kumpi on t&auml;rke&auml;mp&auml;&auml;?</div>
+            <div class="options">
+                <div class="option" data-question="4" data-value="a" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>Oikea lopputulos, vaikka reitti sinne oli sotkuinen</span>
+                </div>
+                <div class="option" data-question="4" data-value="b" onclick="selectOption(this)">
+                    <div class="option-marker"></div>
+                    <span>Oikea prosessi, vaikka lopputulos j&auml;i keskinkertaiseksi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="submit-wrap">
+        <button class="submit-btn" id="submitBtn" onclick="showResult()">
+            N&auml;yt&auml; lopputulos
+        </button>
+    </div>
+
+    <div class="result" id="resultDiv">
+        <div class="result-emoji" id="resultEmoji"></div>
+        <div class="result-text" id="resultText"></div>
+    </div>
+</div>
+
+<footer class="rekry-footer">
+    <p><a href="index.html">&larr; Takaisin portfolioon</a> &middot; Jesse Mattila &copy; 2026</p>
+</footer>
+
+<script>
+// Generate bulb lights around the sign
+(function() {
+    const container = document.getElementById('bulbContainer');
+    const body = document.querySelector('.arrow-body');
+    const w = body.offsetWidth || 260;
+    const h = body.offsetHeight || 80;
+
+    const positions = [];
+
+    // Top edge
+    for (let x = 0; x <= w; x += 28) {
+        positions.push({ left: x + 'px', top: '-8px' });
+    }
+    // Left edge
+    for (let y = 20; y < h - 10; y += 28) {
+        positions.push({ left: '-8px', top: y + 'px' });
+    }
+    // Right edge
+    for (let y = 20; y < h - 10; y += 28) {
+        positions.push({ right: '-8px', top: y + 'px', left: 'auto' });
+    }
+
+    positions.forEach((pos, i) => {
+        const bulb = document.createElement('div');
+        bulb.className = 'bulb';
+        Object.assign(bulb.style, pos);
+        // Stagger animation delay
+        bulb.style.animationDelay = (i * 0.1) % 1 + 's';
+        container.appendChild(bulb);
+    });
+})();
+
+// Fade in question cards on scroll
+const qObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.question-card').forEach(el => qObserver.observe(el));
+
+// Quiz logic
+const answers = {};
+
+function selectOption(el) {
+    const question = el.dataset.question;
+    el.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+    el.classList.add('selected');
+    answers[question] = el.dataset.value;
+
+    if (Object.keys(answers).length === 4) {
+        document.getElementById('submitBtn').classList.add('active');
+    }
+}
+
+function showResult() {
+    const aCount = Object.values(answers).filter(v => v === 'a').length;
+    const resultDiv = document.getElementById('resultDiv');
+    const emojiDiv = document.getElementById('resultEmoji');
+    const textDiv = document.getElementById('resultText');
+
+    let emoji, text;
+
+    if (aCount === 4) {
+        emoji = '\u{1F91D}';
+        text = 'T\u00e4ydellinen tulos \u2014 ja m\u00e4 en edes vilkuillut vastauksia etuk\u00e4teen. Vaikuttaa silt\u00e4, ett\u00e4 meill\u00e4 voisi olla paljonkin puhuttavaa.<br><br><a href="https://www.linkedin.com/in/jessemattila" target="_blank" rel="noopener" class="result-link">\u{1F4BC} Otetaan yhteytt\u00e4 LinkedIniss\u00e4</a>';
+    } else if (aCount === 3) {
+        emoji = '\u{1F44D}';
+        text = 'L\u00e4hell\u00e4! Yksi eri\u00e4v\u00e4 mielipide ei ole este \u2014 p\u00e4invastoin, arvostan sit\u00e4. Jos kiinnostuit, niin jutellaan.<br><br><a href="https://www.linkedin.com/in/jessemattila" target="_blank" rel="noopener" class="result-link">\u{1F4BC} Jutellaan LinkedIniss\u00e4</a>';
+    } else if (aCount === 2) {
+        emoji = '\u{1F64F}';
+        text = 'Kiitos kun vastasit rehellisesti \u2014 se vaatii enemm\u00e4n kuin luulisi. Eri arvot eiv\u00e4t tarkoita v\u00e4\u00e4ri\u00e4 arvoja, mutta todenn\u00e4k\u00f6isesti molemmat olisimme onnellisempia eri p\u00f6ydiss\u00e4.';
+    } else {
+        emoji = '\u{2764}\u{FE0F}';
+        text = 'Kiitos rehellisyydest\u00e4, arvostan sit\u00e4 aidosti. Ei kannata kummankaan alkaa valehtelemaan \u2014 me ei todenn\u00e4k\u00f6isesti olla match, ja se on ihan ok.';
+    }
+
+    emojiDiv.innerHTML = emoji;
+    textDiv.innerHTML = text;
+
+    resultDiv.style.display = 'block';
+    void resultDiv.offsetWidth;
+    resultDiv.classList.add('visible');
+    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+
+</body>
+</html>

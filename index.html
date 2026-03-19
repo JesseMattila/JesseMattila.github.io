@@ -317,6 +317,77 @@
         .nav-links a:hover { color: var(--text); }
         .nav-links a:hover::after { width: 100%; }
 
+        /* Las Vegas rekry-kyltti navissa */
+        .nav-rekry-li { margin-left: 0.5rem; }
+
+        .nav-rekry-link {
+            background: linear-gradient(135deg, #e94560, #ff6b81) !important;
+            color: white !important;
+            padding: 0.45rem 1.1rem 0.45rem 0.9rem !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+            font-size: 0.82rem !important;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            position: relative;
+            animation: vegasPulse 2s ease-in-out infinite alternate;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.4), 0 0 20px rgba(233, 69, 96, 0.2), inset 0 0 8px rgba(255, 255, 255, 0.1);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-rekry-link::after { display: none !important; }
+
+        .nav-rekry-link::before {
+            content: '\2192';
+            margin-left: 0.4rem;
+            font-size: 1rem;
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: arrowBounce 1s ease-in-out infinite;
+            color: var(--accent-light);
+            text-shadow: 0 0 8px rgba(233, 69, 96, 0.6);
+        }
+
+        @keyframes vegasPulse {
+            0% { box-shadow: 0 0 8px rgba(233, 69, 96, 0.4), 0 0 16px rgba(233, 69, 96, 0.15), inset 0 0 8px rgba(255, 255, 255, 0.1); }
+            100% { box-shadow: 0 0 15px rgba(233, 69, 96, 0.7), 0 0 30px rgba(233, 69, 96, 0.3), 0 0 45px rgba(233, 69, 96, 0.15), inset 0 0 12px rgba(255, 255, 255, 0.15); }
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(5px); }
+        }
+
+        .nav-rekry-link:hover {
+            transform: translateY(-1px) scale(1.05);
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.8), 0 0 40px rgba(233, 69, 96, 0.4), 0 0 60px rgba(233, 69, 96, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2) !important;
+        }
+
+        [data-theme="bright"] .nav-rekry-link {
+            background: linear-gradient(135deg, #ff6b2b, #ff9a44) !important;
+            box-shadow: 0 0 10px rgba(255, 107, 43, 0.4), 0 0 20px rgba(255, 107, 43, 0.2), inset 0 0 8px rgba(255, 255, 255, 0.1);
+            animation: vegasPulseBright 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes vegasPulseBright {
+            0% { box-shadow: 0 0 8px rgba(255, 107, 43, 0.4), 0 0 16px rgba(255, 107, 43, 0.15), inset 0 0 8px rgba(255, 255, 255, 0.1); }
+            100% { box-shadow: 0 0 15px rgba(255, 107, 43, 0.7), 0 0 30px rgba(255, 107, 43, 0.3), 0 0 45px rgba(255, 107, 43, 0.15), inset 0 0 12px rgba(255, 255, 255, 0.15); }
+        }
+
+        [data-theme="doom"] .nav-rekry-link {
+            background: linear-gradient(135deg, #cc0000, #ff1a1a) !important;
+            box-shadow: 0 0 10px rgba(204, 0, 0, 0.5), 0 0 20px rgba(204, 0, 0, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.05);
+            animation: vegasPulseDoom 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes vegasPulseDoom {
+            0% { box-shadow: 0 0 8px rgba(204, 0, 0, 0.5), 0 0 16px rgba(204, 0, 0, 0.2), inset 0 0 8px rgba(255, 255, 255, 0.05); }
+            100% { box-shadow: 0 0 15px rgba(255, 26, 26, 0.8), 0 0 30px rgba(204, 0, 0, 0.4), 0 0 50px rgba(204, 0, 0, 0.2), inset 0 0 12px rgba(255, 255, 255, 0.1); }
+        }
+
         .hamburger {
             display: none;
             flex-direction: column;
@@ -1345,6 +1416,7 @@
             <li><a href="#demo">Live Demo</a></li>
             <li><a href="#promptgen">Prompt-haaste</a></li>
             <li><a href="#yhteystiedot">Yhteystiedot</a></li>
+            <li class="nav-rekry-li"><a href="rekrytoijalle.html" class="nav-rekry-link">Rekrytoijalle</a></li>
         </ul>
     </div>
 </nav>
