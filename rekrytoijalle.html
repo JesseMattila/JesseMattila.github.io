@@ -380,6 +380,40 @@
             background: white;
         }
 
+        /* Jesse's reveal comment */
+        .jesse-comment {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.4s ease 0.1s, margin 0.4s ease;
+            margin-top: 0;
+        }
+
+        .jesse-comment.visible {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 1.25rem;
+        }
+
+        .jesse-comment-inner {
+            padding: 1rem 1.2rem;
+            border-left: 3px solid var(--accent);
+            background: rgba(233, 69, 96, 0.05);
+            border-radius: 0 10px 10px 0;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .jesse-comment-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
         /* Submit */
         .submit-wrap {
             text-align: center;
@@ -540,60 +574,84 @@
     <div class="questions-list">
         <div class="question-card">
             <div class="question-number">Kysymys 1 / 4</div>
-            <div class="question-text">Kun pomo k&auml;velee ohi eik&auml; sinulla ole juuri sill&auml; hetkell&auml; akuuttia ty&ouml;teht&auml;v&auml;&auml; k&auml;sill&auml;. Kumpi on oikea reaktio?</div>
+            <div class="question-text">Tehd&auml;&auml;nk&ouml; v&auml;&auml;ri&auml; asioita oikein vai oikeita asioita v&auml;&auml;rin?</div>
             <div class="options">
                 <div class="option" data-question="1" data-value="a" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>Jatkaa hyv&auml;&auml; keskustelua ty&ouml;kaverin kanssa &mdash; rentoutunut ty&ouml;ntekij&auml; on tuottava ty&ouml;ntekij&auml;</span>
+                    <span>Oikeita asioita v&auml;&auml;rin</span>
                 </div>
                 <div class="option" data-question="1" data-value="b" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>Avata jotain n&auml;yt&ouml;lle &mdash; optiikka on t&auml;rke&auml;&auml;</span>
+                    <span>V&auml;&auml;ri&auml; asioita oikein</span>
+                </div>
+            </div>
+            <div class="jesse-comment" id="comment1">
+                <div class="jesse-comment-inner">
+                    <div class="jesse-comment-label">Jessen vastaus</div>
+                    Oikeita asioita v&auml;&auml;rin. Siit&auml; on paljon lyhyempi matka tehd&auml; oikeita asioita oikein kuin k&auml;&auml;nt&auml;&auml; koko suunta.
                 </div>
             </div>
         </div>
 
         <div class="question-card">
             <div class="question-number">Kysymys 2 / 4</div>
-            <div class="question-text">Tiimil&auml;inen opettelee vapaa-ajallaan AI-ty&ouml;kaluja ja ehdottaa niiden hy&ouml;dynt&auml;mist&auml; ty&ouml;ss&auml;. Ensimm&auml;inen kokeilu ep&auml;onnistuu. Miten reagoit?</div>
+            <div class="question-text">Ty&ouml;ntekij&auml; ylitt&auml;&auml; tavoitteet jatkuvasti, mutta tekee asiat t&auml;ysin omalla tavallaan &mdash; ei noudata tiimin yhteisi&auml; prosesseja. H&auml;nen tapansa toimii. Miten suhtaudut?</div>
             <div class="options">
                 <div class="option" data-question="2" data-value="a" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>&quot;Hyv&auml; ett&auml; kokeilit &mdash; mit&auml; opit ja miten menn&auml;&auml;n eteenp&auml;in?&quot;</span>
+                    <span>Annetaan jatkaa &mdash; voittavaa peli&auml; ei vaihdeta</span>
                 </div>
                 <div class="option" data-question="2" data-value="b" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>&quot;Keskityt&auml;&auml;n toimiviin j&auml;rjestelmiin, ei l&auml;hdet&auml; kokeilemaan kaikkea uutta.&quot;</span>
+                    <span>Prosessit on prosesseja syyst&auml; &mdash; kukaan ei ole korvaamaton</span>
+                </div>
+            </div>
+            <div class="jesse-comment" id="comment2">
+                <div class="jesse-comment-inner">
+                    <div class="jesse-comment-label">Jessen vastaus</div>
+                    Tyyli vapaa, kunhan ei h&auml;iritse muiden ty&ouml;t&auml;. Paremmin pit&auml;&auml; aina saada tehd&auml;.
                 </div>
             </div>
         </div>
 
         <div class="question-card">
             <div class="question-number">Kysymys 3 / 4</div>
-            <div class="question-text">Tiimiss&auml; on henkil&ouml; joka tekee hyv&auml;&auml; tulosta, mutta kyseenalaistaa &auml;&auml;neen p&auml;&auml;t&ouml;ksi&auml; joista on eri mielt&auml;. Miten suhtaudut?</div>
+            <div class="question-text">Tiimi saa valita: varma 10&nbsp;% parannus nykyiseen prosessiin vai 50/50 mahdollisuus kolminkertaistaa tulos &mdash; mutta ep&auml;onnistuessa palataan l&auml;ht&ouml;ruutuun. Kumman valitset?</div>
             <div class="options">
                 <div class="option" data-question="3" data-value="a" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>Arvostan &mdash; haastaminen pakottaa meid&auml;t perustelemaan p&auml;&auml;t&ouml;ksemme paremmin</span>
+                    <span>50/50 mahdollisuus kolminkertaistaa</span>
                 </div>
                 <div class="option" data-question="3" data-value="b" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>Tulosta tai ei, tiimidynamiikka k&auml;rsii jos auktoriteettia kyseenalaistetaan</span>
+                    <span>Varma 10&nbsp;% parannus</span>
+                </div>
+            </div>
+            <div class="jesse-comment" id="comment3">
+                <div class="jesse-comment-inner">
+                    <div class="jesse-comment-label">Jessen vastaus</div>
+                    50/50 kolminkertaisena. Laske: varma 10&nbsp;% = odotusarvo 1,10&times;. 50/50 kolminkertaistaa tai l&auml;ht&ouml;ruutu = 0,5 &times; 3,0 + 0,5 &times; 1,0 = 2,00&times;. L&auml;hes tuplat. Pohtimalla asiat avautuvat.
                 </div>
             </div>
         </div>
 
         <div class="question-card">
             <div class="question-number">Kysymys 4 / 4</div>
-            <div class="question-text">Kumpi on t&auml;rke&auml;mp&auml;&auml;?</div>
+            <div class="question-text">Ty&ouml;ntekij&auml; kertoo asiakkaan palaverissa rehellisesti, ettei tuote nykyisell&auml;&auml;n ratkaise asiakkaan ongelmaa &mdash; ja ehdottaa kilpailijan ratkaisua. Asiakas arvostaa rehellisyytt&auml;, mutta kauppa menee ohi. Miten suhtaudut?</div>
             <div class="options">
                 <div class="option" data-question="4" data-value="a" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>Oikea lopputulos, vaikka reitti sinne oli sotkuinen</span>
+                    <span>Oikein toimittu &mdash; luottamus on pitk&auml;n pelin valuuttaa</span>
                 </div>
                 <div class="option" data-question="4" data-value="b" onclick="selectOption(this)">
                     <div class="option-marker"></div>
-                    <span>Oikea prosessi, vaikka lopputulos j&auml;i keskinkertaiseksi</span>
+                    <span>Rehellisyys on hyv&auml; asia, mutta asiakkaan palaverissa edustetaan omaa firmaa</span>
+                </div>
+            </div>
+            <div class="jesse-comment" id="comment4">
+                <div class="jesse-comment-inner">
+                    <div class="jesse-comment-label">Jessen vastaus</div>
+                    Oikein toimittu. Pit&auml;&auml; pysty&auml; seisomaan selk&auml; suorana omien sanojensa ja tekojensa takana.
                 </div>
             </div>
         </div>
@@ -667,6 +725,10 @@ function selectOption(el) {
     el.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
     el.classList.add('selected');
     answers[question] = el.dataset.value;
+
+    // Reveal Jesse's comment
+    const comment = document.getElementById('comment' + question);
+    if (comment) comment.classList.add('visible');
 
     if (Object.keys(answers).length === 4) {
         document.getElementById('submitBtn').classList.add('active');
