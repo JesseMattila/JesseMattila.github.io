@@ -20,7 +20,6 @@
             --gradient-accent: linear-gradient(135deg, #e94560 0%, #ff6b81 50%, #0f3460 100%);
         }
 
-        /* ===== BRIGHT THEME ===== */
         [data-theme="bright"] {
             --primary: #f0f4ff;
             --accent: #ff6b2b;
@@ -33,61 +32,19 @@
             --gradient: linear-gradient(135deg, #ff6b2b, #ffc107);
             --gradient-accent: linear-gradient(135deg, #ff6b2b 0%, #ff9a44 50%, #ffc107 100%);
         }
+        [data-theme="bright"] nav { background: rgba(254,254,254,0.85); border-bottom: 1px solid rgba(255,107,43,0.15); }
+        [data-theme="bright"] nav.scrolled { background: rgba(254,254,254,0.95); }
+        [data-theme="bright"] .hamburger span { background: var(--text); }
+        [data-theme="bright"] .hero::before { background: radial-gradient(circle at 30% 50%, rgba(255,107,43,0.08) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(255,193,7,0.12) 0%, transparent 50%); }
+        [data-theme="bright"] .hero-grid { background-image: linear-gradient(rgba(255,107,43,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,107,43,0.05) 1px, transparent 1px); }
+        [data-theme="bright"] .metric-card { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        [data-theme="bright"] footer { border-top-color: rgba(0,0,0,0.08); }
+        [data-theme="bright"] .theme-bar { background: rgba(0,0,0,0.02); border-bottom: 1px solid rgba(0,0,0,0.06); }
+        [data-theme="bright"] .theme-btn { border-color: rgba(0,0,0,0.12); background: rgba(0,0,0,0.03); }
+        [data-theme="bright"] .theme-btn.active { box-shadow: 0 2px 12px rgba(255,107,43,0.3); }
+        [data-theme="bright"] .nav-rekry-link { background: linear-gradient(135deg, #ff6b2b, #ff9a44) !important; box-shadow: 0 0 10px rgba(255,107,43,0.4), 0 0 20px rgba(255,107,43,0.2); animation: vegasPulseBright 2s ease-in-out infinite alternate; }
+        @keyframes vegasPulseBright { 0% { box-shadow: 0 0 8px rgba(255,107,43,0.4), 0 0 16px rgba(255,107,43,0.15); } 100% { box-shadow: 0 0 15px rgba(255,107,43,0.7), 0 0 30px rgba(255,107,43,0.3), 0 0 45px rgba(255,107,43,0.15); } }
 
-        [data-theme="bright"] nav {
-            background: rgba(254, 254, 254, 0.85);
-            border-bottom: 1px solid rgba(255, 107, 43, 0.15);
-        }
-
-        [data-theme="bright"] nav.scrolled {
-            background: rgba(254, 254, 254, 0.95);
-        }
-
-        [data-theme="bright"] .nav-links.open {
-            background: rgba(254, 254, 254, 0.98);
-            border-bottom: 1px solid rgba(255, 107, 43, 0.15);
-        }
-
-        [data-theme="bright"] .hamburger span {
-            background: var(--text);
-        }
-
-        [data-theme="bright"] .hero::before {
-            background: radial-gradient(circle at 30% 50%, rgba(255, 107, 43, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(255, 193, 7, 0.12) 0%, transparent 50%);
-        }
-
-        [data-theme="bright"] .hero-grid {
-            background-image:
-                linear-gradient(rgba(255, 107, 43, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 107, 43, 0.05) 1px, transparent 1px);
-        }
-
-        [data-theme="bright"] .metric-card,
-        [data-theme="bright"] .skill-card,
-        [data-theme="bright"] .case-study,
-        [data-theme="bright"] .demo-section,
-        [data-theme="bright"] .contact-link {
-            border-color: rgba(0, 0, 0, 0.08);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-        }
-
-        [data-theme="bright"] .calc-group input,
-        [data-theme="bright"] .calc-group select {
-            background: rgba(0, 0, 0, 0.03);
-            border-color: rgba(0, 0, 0, 0.12);
-            color: var(--text);
-        }
-
-        [data-theme="bright"] .calc-group select option {
-            background: #fff;
-        }
-
-        [data-theme="bright"] footer {
-            border-top-color: rgba(0, 0, 0, 0.08);
-        }
-
-        /* ===== DOOM THEME ===== */
         [data-theme="doom"] {
             --primary: #0a0a0a;
             --accent: #cc0000;
@@ -100,1340 +57,174 @@
             --gradient: linear-gradient(135deg, #cc0000, #4a0000);
             --gradient-accent: linear-gradient(135deg, #cc0000 0%, #ff1a1a 50%, #4a0000 100%);
         }
-
-        [data-theme="doom"] .hero::before {
-            background: radial-gradient(circle at 30% 50%, rgba(204, 0, 0, 0.12) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(74, 0, 0, 0.15) 0%, transparent 50%);
-        }
-
-        [data-theme="doom"] .hero-grid {
-            background-image:
-                linear-gradient(rgba(204, 0, 0, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(204, 0, 0, 0.04) 1px, transparent 1px);
-        }
-
-        [data-theme="doom"] nav {
-            background: rgba(5, 5, 5, 0.9);
-            border-bottom: 1px solid rgba(204, 0, 0, 0.2);
-        }
-
-        [data-theme="doom"] .nav-links.open {
-            background: rgba(5, 5, 5, 0.98);
-            border-bottom: 1px solid rgba(204, 0, 0, 0.2);
-        }
-
-        [data-theme="doom"] .metric-card,
-        [data-theme="doom"] .skill-card,
-        [data-theme="doom"] .case-study,
-        [data-theme="doom"] .demo-section {
-            border-color: rgba(204, 0, 0, 0.08);
-        }
-
-        [data-theme="doom"] .metric-card:hover,
-        [data-theme="doom"] .skill-card:hover {
-            border-color: rgba(204, 0, 0, 0.3);
-            box-shadow: 0 20px 40px rgba(204, 0, 0, 0.08);
-        }
-
-        [data-theme="doom"] .calc-group select option {
-            background: #0d0d0d;
-        }
+        [data-theme="doom"] .hero::before { background: radial-gradient(circle at 30% 50%, rgba(204,0,0,0.12) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(74,0,0,0.15) 0%, transparent 50%); }
+        [data-theme="doom"] .hero-grid { background-image: linear-gradient(rgba(204,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(204,0,0,0.04) 1px, transparent 1px); }
+        [data-theme="doom"] nav { background: rgba(5,5,5,0.9); border-bottom: 1px solid rgba(204,0,0,0.2); }
+        [data-theme="doom"] .metric-card { border-color: rgba(204,0,0,0.08); }
+        [data-theme="doom"] .metric-card:hover { border-color: rgba(204,0,0,0.3); box-shadow: 0 20px 40px rgba(204,0,0,0.08); }
+        [data-theme="doom"] .theme-bar { background: rgba(204,0,0,0.03); border-bottom: 1px solid rgba(204,0,0,0.1); }
+        [data-theme="doom"] .theme-btn.active { box-shadow: 0 2px 12px rgba(204,0,0,0.4); }
+        [data-theme="doom"] .nav-rekry-link { background: linear-gradient(135deg, #cc0000, #ff1a1a) !important; box-shadow: 0 0 10px rgba(204,0,0,0.5), 0 0 20px rgba(204,0,0,0.3); animation: vegasPulseDoom 2s ease-in-out infinite alternate; }
+        @keyframes vegasPulseDoom { 0% { box-shadow: 0 0 8px rgba(204,0,0,0.5), 0 0 16px rgba(204,0,0,0.2); } 100% { box-shadow: 0 0 15px rgba(255,26,26,0.8), 0 0 30px rgba(204,0,0,0.4), 0 0 50px rgba(204,0,0,0.2); } }
 
         /* ===== THEME SWITCHER ===== */
-        .theme-bar {
-            position: relative;
-            z-index: 999;
-            margin-top: 70px;
-            text-align: center;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        [data-theme="bright"] .theme-bar {
-            background: rgba(0, 0, 0, 0.02);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        [data-theme="doom"] .theme-bar {
-            background: rgba(204, 0, 0, 0.03);
-            border-bottom: 1px solid rgba(204, 0, 0, 0.1);
-        }
-
-        .theme-bar p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.6rem;
-            font-style: italic;
-        }
-
-        .theme-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        .theme-btn {
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        [data-theme="bright"] .theme-btn {
-            border-color: rgba(0, 0, 0, 0.12);
-            background: rgba(0, 0, 0, 0.03);
-        }
-
-        .theme-btn:hover {
-            transform: translateY(-1px);
-            border-color: var(--accent);
-            color: var(--text);
-        }
-
-        .theme-btn.active {
-            background: var(--gradient);
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 2px 12px rgba(233, 69, 96, 0.3);
-        }
-
-        [data-theme="bright"] .theme-btn.active {
-            box-shadow: 0 2px 12px rgba(255, 107, 43, 0.3);
-        }
-
-        [data-theme="doom"] .theme-btn.active {
-            box-shadow: 0 2px 12px rgba(204, 0, 0, 0.4);
-        }
-
-        .theme-feedback {
-            font-size: 0.8rem;
-            color: var(--accent-light);
-            margin-top: 0.5rem;
-            min-height: 1.2em;
-            transition: opacity 0.3s;
-        }
+        .theme-bar { position: relative; z-index: 999; margin-top: 70px; text-align: center; padding: 1rem 1.5rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .theme-bar p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; font-style: italic; }
+        .theme-buttons { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; }
+        .theme-btn { padding: 0.5rem 1.2rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text-muted); font-size: 0.8rem; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .theme-btn:hover { transform: translateY(-1px); border-color: var(--accent); color: var(--text); }
+        .theme-btn.active { background: var(--gradient); color: white; border-color: transparent; box-shadow: 0 2px 12px rgba(233,69,96,0.3); }
+        .theme-feedback { font-size: 0.8rem; color: var(--accent-light); margin-top: 0.5rem; min-height: 1.2em; transition: opacity 0.3s; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
 
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 80px;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* ===== NAVIGATION ===== */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(15, 15, 26, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(233, 69, 96, 0.15);
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            background: rgba(15, 15, 26, 0.95);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .nav-logo {
-            font-weight: 800;
-            font-size: 1.25rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-            text-decoration: none;
-            display: inline-block;
-            padding: 0.5rem;
-            -webkit-tap-highlight-color: transparent;
-            cursor: pointer;
-            position: relative;
-            z-index: 10;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-
+        /* ===== NAV ===== */
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(15,15,26,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(233,69,96,0.15); transition: all 0.3s ease; }
+        nav.scrolled { background: rgba(15,15,26,0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+        .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .nav-left { display: flex; align-items: center; gap: 0.75rem; }
+        .nav-logo { font-weight: 800; font-size: 1.25rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; padding: 0.5rem; cursor: pointer; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
         .nav-links a:hover { color: var(--text); }
         .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--text); }
+        .nav-links a.active::after { width: 100%; }
 
-        /* Las Vegas rekry-kyltti navissa */
         .nav-rekry-li { margin-left: 0.5rem; }
-
-        .nav-rekry-link {
-            background: linear-gradient(135deg, #e94560, #ff6b81) !important;
-            color: white !important;
-            padding: 0.45rem 1.1rem 0.45rem 0.9rem !important;
-            border-radius: 8px !important;
-            font-weight: 700 !important;
-            font-size: 0.82rem !important;
-            letter-spacing: 0.5px;
-            text-decoration: none;
-            position: relative;
-            animation: vegasPulse 2s ease-in-out infinite alternate;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 10px rgba(233, 69, 96, 0.4), 0 0 20px rgba(233, 69, 96, 0.2), inset 0 0 8px rgba(255, 255, 255, 0.1);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
+        .nav-rekry-link { background: linear-gradient(135deg, #e94560, #ff6b81) !important; color: white !important; padding: 0.45rem 1.1rem 0.45rem 0.9rem !important; border-radius: 8px !important; font-weight: 700 !important; font-size: 0.82rem !important; letter-spacing: 0.5px; text-decoration: none; animation: vegasPulse 2s ease-in-out infinite alternate; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 0 10px rgba(233,69,96,0.4), 0 0 20px rgba(233,69,96,0.2); text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .nav-rekry-link::after { display: none !important; }
+        @keyframes vegasPulse { 0% { box-shadow: 0 0 8px rgba(233,69,96,0.4), 0 0 16px rgba(233,69,96,0.15); } 100% { box-shadow: 0 0 15px rgba(233,69,96,0.7), 0 0 30px rgba(233,69,96,0.3), 0 0 45px rgba(233,69,96,0.15); } }
 
-        .nav-rekry-link::before {
-            content: '\2192';
-            margin-left: 0.4rem;
-            font-size: 1rem;
-            position: absolute;
-            right: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            animation: arrowBounce 1s ease-in-out infinite;
-            color: var(--accent-light);
-            text-shadow: 0 0 8px rgba(233, 69, 96, 0.6);
-        }
-
-        @keyframes vegasPulse {
-            0% { box-shadow: 0 0 8px rgba(233, 69, 96, 0.4), 0 0 16px rgba(233, 69, 96, 0.15), inset 0 0 8px rgba(255, 255, 255, 0.1); }
-            100% { box-shadow: 0 0 15px rgba(233, 69, 96, 0.7), 0 0 30px rgba(233, 69, 96, 0.3), 0 0 45px rgba(233, 69, 96, 0.15), inset 0 0 12px rgba(255, 255, 255, 0.15); }
-        }
-
-        @keyframes arrowBounce {
-            0%, 100% { transform: translateY(-50%) translateX(0); }
-            50% { transform: translateY(-50%) translateX(5px); }
-        }
-
-        .nav-rekry-link:hover {
-            transform: translateY(-1px) scale(1.05);
-            box-shadow: 0 0 20px rgba(233, 69, 96, 0.8), 0 0 40px rgba(233, 69, 96, 0.4), 0 0 60px rgba(233, 69, 96, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2) !important;
-        }
-
-        [data-theme="bright"] .nav-rekry-link {
-            background: linear-gradient(135deg, #ff6b2b, #ff9a44) !important;
-            box-shadow: 0 0 10px rgba(255, 107, 43, 0.4), 0 0 20px rgba(255, 107, 43, 0.2), inset 0 0 8px rgba(255, 255, 255, 0.1);
-            animation: vegasPulseBright 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes vegasPulseBright {
-            0% { box-shadow: 0 0 8px rgba(255, 107, 43, 0.4), 0 0 16px rgba(255, 107, 43, 0.15), inset 0 0 8px rgba(255, 255, 255, 0.1); }
-            100% { box-shadow: 0 0 15px rgba(255, 107, 43, 0.7), 0 0 30px rgba(255, 107, 43, 0.3), 0 0 45px rgba(255, 107, 43, 0.15), inset 0 0 12px rgba(255, 255, 255, 0.15); }
-        }
-
-        [data-theme="doom"] .nav-rekry-link {
-            background: linear-gradient(135deg, #cc0000, #ff1a1a) !important;
-            box-shadow: 0 0 10px rgba(204, 0, 0, 0.5), 0 0 20px rgba(204, 0, 0, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.05);
-            animation: vegasPulseDoom 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes vegasPulseDoom {
-            0% { box-shadow: 0 0 8px rgba(204, 0, 0, 0.5), 0 0 16px rgba(204, 0, 0, 0.2), inset 0 0 8px rgba(255, 255, 255, 0.05); }
-            100% { box-shadow: 0 0 15px rgba(255, 26, 26, 0.8), 0 0 30px rgba(204, 0, 0, 0.4), 0 0 50px rgba(204, 0, 0, 0.2), inset 0 0 12px rgba(255, 255, 255, 0.1); }
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 5px;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 2px;
-            background: var(--text);
-            transition: all 0.3s;
-        }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; }
+        .hamburger span { width: 25px; height: 2px; background: var(--text); transition: all 0.3s; }
 
         /* ===== HERO ===== */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 2rem;
-            overflow: hidden;
-        }
+        .hero { min-height: calc(100vh - 140px); display: flex; align-items: center; justify-content: center; position: relative; padding: 2rem; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 50%, rgba(233,69,96,0.08) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(15,52,96,0.12) 0%, transparent 50%); animation: heroGlow 8s ease-in-out infinite alternate; }
+        @keyframes heroGlow { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(-2%,-1%) scale(1.05); } }
+        .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(233,69,96,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(233,69,96,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+        .hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+        .hero-badge { display: inline-block; background: rgba(233,69,96,0.15); border: 1px solid rgba(233,69,96,0.3); color: var(--accent-light); padding: 0.5rem 1.25rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 2rem; letter-spacing: 0.5px; }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -2px; }
+        .hero h1 .gradient-text { background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-sub { font-size: 1.15rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(233, 69, 96, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(15, 52, 96, 0.12) 0%, transparent 50%);
-            animation: heroGlow 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes heroGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-2%, -1%) scale(1.05); }
-        }
-
-        .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(233, 69, 96, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(233, 69, 96, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            max-width: 800px;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(233, 69, 96, 0.15);
-            border: 1px solid rgba(233, 69, 96, 0.3);
-            color: var(--accent-light);
-            padding: 0.5rem 1.25rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            letter-spacing: 0.5px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -2px;
-        }
-
-        .hero h1 .gradient-text {
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-sub {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.7;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-top: 3rem;
-        }
-
-        .hero-stat {
-            text-align: center;
-        }
-
-        .hero-stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 0.25rem;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.9rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.05);
-            transform: translateY(-2px);
-        }
-
-        /* ===== SECTIONS ===== */
-        section {
-            padding: 6rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .section-title {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 1rem;
-        }
-
-        .section-desc {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin-bottom: 3rem;
-        }
-
-        /* ===== KEY METRICS ===== */
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .metric-card {
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(233, 69, 96, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
+        /* ===== METRICS ===== */
+        .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 900px; margin: 3rem auto 0; }
+        .metric-card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient); opacity: 0; transition: opacity 0.3s; }
+        .metric-card:hover { transform: translateY(-4px); border-color: rgba(233,69,96,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
         .metric-card:hover::before { opacity: 1; }
-
-        .metric-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            background: rgba(233, 69, 96, 0.1);
-        }
-
-        .metric-value {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-        }
-
-        .metric-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .metric-value { font-size: 1.8rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.25rem; }
+        .metric-label { color: var(--text-muted); font-size: 0.78rem; line-height: 1.4; }
 
         /* ===== CASE STUDY ===== */
-        .case-study {
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 3rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .case-study::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(233, 69, 96, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .case-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .case-tag {
-            display: inline-block;
-            background: rgba(233, 69, 96, 0.15);
-            color: var(--accent-light);
-            padding: 0.3rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .case-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .case-subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .case-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .case-metric {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 1.25rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .case-metric-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-light);
-        }
-
-        .case-metric-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-            margin-top: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--accent), rgba(233, 69, 96, 0.1));
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-bottom: 1.5rem;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2rem;
-            top: 6px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: 2px solid var(--bg);
-            transform: translateX(-4px);
-        }
-
-        .timeline-item h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .timeline-item p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* ===== PROJECTS ===== */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .project-card {
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(233, 69, 96, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .project-card:hover::before { opacity: 1; }
-
-        [data-theme="bright"] .project-card {
-            border-color: rgba(0, 0, 0, 0.08);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-        }
-
-        [data-theme="bright"] .project-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .project-emoji {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .project-tag {
-            display: inline-block;
-            background: rgba(233, 69, 96, 0.15);
-            color: var(--accent-light);
-            padding: 0.25rem 0.7rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.75rem;
-        }
-
-        .project-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-card p {
-            color: var(--text-muted);
-            font-size: 0.88rem;
-            line-height: 1.6;
-            flex-grow: 1;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 1rem;
-        }
-
-        .project-tech span {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-            padding: 0.2rem 0.6rem;
-            border-radius: 5px;
-            font-size: 0.7rem;
-            font-weight: 500;
-        }
-
-        [data-theme="bright"] .project-tech span {
-            background: rgba(0, 0, 0, 0.04);
-        }
-
-        .project-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1.25rem;
-            padding: 0.7rem 1.5rem;
-            background: var(--gradient);
-            color: white;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 700;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.25);
-        }
-
-        .project-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(233, 69, 96, 0.4);
-        }
-
-        /* ===== SKILLS ===== */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .skill-card {
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(233, 69, 96, 0.2);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .skill-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .skill-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-
-        .skill-icon.analytics { background: rgba(99, 102, 241, 0.15); }
-        .skill-icon.logistics { background: rgba(16, 185, 129, 0.15); }
-        .skill-icon.ai { background: rgba(233, 69, 96, 0.15); }
-        .skill-icon.process { background: rgba(245, 158, 11, 0.15); }
-        .skill-icon.bi { background: rgba(59, 130, 246, 0.15); }
-        .skill-icon.law { background: rgba(168, 85, 247, 0.15); }
-
-        .skill-name {
-            font-weight: 700;
-            font-size: 1.05rem;
-        }
-
-        .skill-desc {
-            color: var(--text-muted);
-            font-size: 0.88rem;
-            line-height: 1.6;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .skill-tag {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-            padding: 0.25rem 0.7rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        /* ===== PROMPT GENERATOR ===== */
-        .prompt-gen {
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 3rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .prompt-gen::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: -100px;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(233, 69, 96, 0.06) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .prompt-gen-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .prompt-gen h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .prompt-gen-sub {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-
-        .prompt-display {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 2rem 2.5rem;
-            margin-bottom: 1.5rem;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="bright"] .prompt-display {
-            background: rgba(0, 0, 0, 0.02);
-            border-color: rgba(0, 0, 0, 0.08);
-        }
-
-        [data-theme="doom"] .prompt-display {
-            border-color: rgba(204, 0, 0, 0.12);
-        }
-
-        .prompt-display p {
-            font-size: 1.1rem;
-            font-style: italic;
-            line-height: 1.7;
-            color: var(--text);
-            transition: opacity 0.3s;
-        }
-
-        .prompt-display .prompt-category {
-            display: block;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--accent);
-            font-style: normal;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .prompt-gen-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            background: var(--gradient);
-            color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
-            font-family: inherit;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.25);
-        }
-
-        .prompt-gen-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(233, 69, 96, 0.35);
-        }
-
-        .prompt-gen-btn:active {
-            transform: scale(0.97);
-        }
-
-        .prompt-cta {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        [data-theme="bright"] .prompt-cta {
-            border-top-color: rgba(0, 0, 0, 0.06);
-        }
-
-        .prompt-cta p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .prompt-cta a {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="bright"] .prompt-cta a {
-            background: rgba(0, 0, 0, 0.03);
-            border-color: rgba(0, 0, 0, 0.12);
-        }
-
-        .prompt-cta a:hover {
-            border-color: var(--accent);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .prompt-counter {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 1rem;
-        }
-
-        /* ===== ABOUT / STORY ===== */
-        .story-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .story-highlights {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .highlight {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .highlight-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(233, 69, 96, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .highlight-text h4 {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .highlight-text p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* ===== INTERACTIVE DEMO ===== */
-        .demo-section {
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 3rem;
-            margin-top: 2rem;
-        }
-
-        .demo-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .demo-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .demo-dot.red { background: #ff5f57; }
-        .demo-dot.yellow { background: #ffbd2e; }
-        .demo-dot.green { background: #28c840; }
-
-        .calculator {
-            margin-top: 2rem;
-        }
-
-        .calc-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .calc-group label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .calc-group input, .calc-group select {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        .calc-group input:focus, .calc-group select:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .calc-group select option {
-            background: var(--card);
-        }
-
-        .calc-result {
-            background: rgba(233, 69, 96, 0.08);
-            border: 1px solid rgba(233, 69, 96, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
-        .calc-result-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .calc-result-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
-        }
-
-        .calc-result-breakdown {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
-        .breakdown-item-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-light);
-        }
-
-        .breakdown-item-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-        }
-
-        /* ===== CONTACT ===== */
-        .contact-section {
-            text-align: center;
-            padding: 6rem 2rem 4rem;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.5rem;
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .contact-link:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
+        .case-section { max-width: 900px; margin: 3.5rem auto 0; }
+        .case-study { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 2.5rem; position: relative; overflow: hidden; }
+        .case-study::after { content: ''; position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: radial-gradient(circle, rgba(233,69,96,0.05) 0%, transparent 70%); pointer-events: none; }
+        [data-theme="bright"] .case-study { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        [data-theme="bright"] .case-metric { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.06); }
+        .case-tag { display: inline-block; background: rgba(233,69,96,0.15); color: var(--accent-light); padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .case-title { font-size: 1.4rem; font-weight: 700; margin: 0.75rem 0 0.25rem; }
+        .case-subtitle { color: var(--text-muted); font-size: 0.9rem; }
+        .case-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        .case-metric { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 1rem; border: 1px solid rgba(255,255,255,0.05); }
+        .case-metric-value { font-size: 1.3rem; font-weight: 700; color: var(--accent-light); }
+        .case-metric-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+        .timeline { position: relative; padding-left: 2rem; margin-top: 1.5rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), rgba(233,69,96,0.1)); }
+        .timeline-item { position: relative; padding-bottom: 1.2rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); transform: translateX(-4px); }
+        [data-theme="bright"] .timeline-item::before { border-color: var(--bg); }
+        .timeline-item h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.15rem; }
+        .timeline-item p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* ===== CTA CARDS ===== */
+        .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 1000px; margin: 3rem auto 0; }
+        .cta-card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 2.5rem 2rem; text-decoration: none; color: var(--text); transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .cta-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient); opacity: 0; transition: opacity 0.3s; }
+        .cta-card:hover { transform: translateY(-4px); border-color: rgba(233,69,96,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .cta-card:hover::before { opacity: 1; }
+        .cta-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .cta-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .cta-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem; }
+        .cta-card .arrow { color: var(--accent-light); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+        [data-theme="bright"] .cta-card { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        [data-theme="bright"] .cta-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
 
         /* ===== FOOTER ===== */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy { color: var(--text-muted); font-size: 0.75rem; opacity: 0.6; }
 
-        /* ===== ANIMATIONS ===== */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+        /* ===== PROMPT GENERATOR ===== */
+        .prompt-section { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }
+        .prompt-gen { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 3rem; text-align: center; position: relative; overflow: hidden; }
+        .prompt-gen::before { content: ''; position: absolute; top: -100px; right: -100px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(233,69,96,0.06) 0%, transparent 70%); pointer-events: none; }
+        [data-theme="bright"] .prompt-gen { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        [data-theme="bright"] .prompt-display { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); }
+        .prompt-gen-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+        .prompt-gen h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .prompt-gen-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+        .prompt-display { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem 2.5rem; margin-bottom: 1.5rem; min-height: 80px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .prompt-display p { font-size: 1.05rem; font-style: italic; line-height: 1.7; color: var(--text); transition: opacity 0.3s; }
+        .prompt-display .prompt-category { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); font-style: normal; font-weight: 600; margin-bottom: 0.75rem; }
+        .prompt-gen-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 2rem; border-radius: 50px; background: var(--gradient); color: white; font-weight: 600; font-size: 0.9rem; font-family: inherit; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(233,69,96,0.25); }
+        .prompt-gen-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(233,69,96,0.35); }
+        .prompt-gen-btn:active { transform: scale(0.97); }
+        .prompt-counter { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.75rem; }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ===== COUNT ANIMATION ===== */
-        .count-up {
-            display: inline-block;
-        }
-
-        /* ===== RESPONSIVE ===== */
+        /* ===== MOBILE ===== */
         @media (max-width: 768px) {
-            .nav-inner { justify-content: flex-start; }
-            .nav-links { display: none; }
             .hamburger { display: flex; }
-
-            .nav-links.open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: rgba(15, 15, 26, 0.98);
-                padding: 1.5rem 2rem;
-                gap: 1rem;
-                border-bottom: 1px solid rgba(233, 69, 96, 0.15);
-            }
-
-            .hero-stats { gap: 1.5rem; }
-            .story-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .calc-row { grid-template-columns: 1fr; }
-            .case-study { padding: 2rem; }
-            .calc-result-breakdown { grid-template-columns: 1fr; }
-            section { padding: 4rem 1.25rem; }
-
-            /* Theme bar */
-            .theme-bar { padding: 0.75rem 1rem; }
-            .theme-bar p { font-size: 0.78rem; }
-            .theme-buttons { gap: 0.4rem; }
-            .theme-btn { font-size: 0.72rem; padding: 0.4rem 0.8rem; }
-
-            /* Projects */
-            .projects-grid { grid-template-columns: 1fr; }
-            .project-card { padding: 1.5rem; }
-
-            /* Prompt generator */
-            .prompt-gen { padding: 2rem 1.5rem; }
-            .prompt-display { padding: 1.5rem 1.25rem; }
-            .prompt-display p { font-size: 0.95rem; }
-
-            /* Case grid */
-            .case-grid { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; position: fixed; top: 70px; left: 0; right: 0; flex-direction: column; background: rgba(15,15,26,0.98); padding: 2rem; gap: 1.5rem; border-bottom: 1px solid rgba(233,69,96,0.15); }
+            .nav-links.open { display: flex; }
+            .metrics { grid-template-columns: 1fr 1fr; }
+            .case-metrics { grid-template-columns: 1fr 1fr; }
+            .cta-grid { grid-template-columns: 1fr !important; }
         }
 
-        @media (max-width: 480px) {
-            .theme-buttons { flex-direction: column; align-items: center; }
-            .theme-btn { width: 100%; text-align: center; }
-            .hero-stats { flex-direction: column; gap: 1rem; }
-            .hero h1 { font-size: 2rem; letter-spacing: -1px; }
-            .case-grid { grid-template-columns: 1fr; }
-            .prompt-gen { padding: 1.5rem 1rem; }
-            .prompt-display { padding: 1.25rem 1rem; }
-            .prompt-display p { font-size: 0.88rem; }
-            .nav-inner { padding: 0 1rem; }
-        }
+        /* ===== FADE IN ===== */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-<!-- Navigation -->
 <nav id="navbar">
     <div class="nav-inner">
         <div class="nav-left">
-            <a href="#" class="nav-logo">JM</a>
+            <a href="index.html" class="nav-logo">Jesse Mattila</a>
             <button class="hamburger" id="hamburger" aria-label="Valikko">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#tulokset">Tulokset</a></li>
-            <li><a href="#case">Case Study</a></li>
-            <li><a href="#projektit">Projektit</a></li>
-            <li><a href="#osaaminen">Osaaminen</a></li>
-            <li><a href="#tarina">Tarina</a></li>
-            <li><a href="#demo">Live Demo</a></li>
-            <li><a href="#promptgen">Prompt-haaste</a></li>
-            <li><a href="#yhteystiedot">Yhteystiedot</a></li>
+            <li><a href="osaaminen.html">Osaaminen</a></li>
+            <li><a href="tyokalut.html">Työkalut</a></li>
             <li class="nav-rekry-li"><a href="rekrytoijalle.html" class="nav-rekry-link">Rekrytoijalle</a></li>
         </ul>
     </div>
 </nav>
 
-<!-- Theme Switcher -->
 <div class="theme-bar" id="themeBar">
     <p>Tuntuuko tämä sivu liian synkältä... vai kenties liian kirkkaalta?</p>
     <div class="theme-buttons">
-        <button class="theme-btn" onclick="setTheme('bright')">☀️ Kaipaan piristystä päivääni</button>
-        <button class="theme-btn active" onclick="setTheme('default')">🌙 Tämä on ihan fine</button>
-        <button class="theme-btn" onclick="setTheme('doom')">🩸 Pidän ennemmin synkkyydestä</button>
+        <button class="theme-btn" onclick="setTheme('bright')">Kaipaan piristystä päivääni</button>
+        <button class="theme-btn active" onclick="setTheme('default')">Tämä on ihan fine</button>
+        <button class="theme-btn" onclick="setTheme('doom')">Pidän ennemmin synkkyydestä</button>
     </div>
     <div class="theme-feedback" id="themeFeedback"></div>
 </div>
 
-<!-- Hero -->
-<section class="hero" style="margin-top: 0; min-height: calc(100vh - 140px);">
+<section class="hero" style="margin-top: 0;">
     <div class="hero-grid"></div>
     <div class="hero-content fade-in">
         <div class="hero-badge">KTM — Talousoikeus & Tuotantotalous</div>
@@ -1444,634 +235,203 @@
         <p class="hero-sub">
             Rakennan järjestelmiä joilla yritykset ymmärtävät kustannuksensa, optimoivat toimintansa ja tekevät parempia päätöksiä — tekoälyavusteisesti.
         </p>
-        <div class="hero-cta">
-            <a href="#case" class="btn btn-primary">Katso mitä olen tehnyt &darr;</a>
-            <a href="#yhteystiedot" class="btn btn-outline">Ota yhteyttä</a>
-        </div>
-        <div class="hero-stats">
-            <div class="hero-stat">
-                <div class="hero-stat-value">6 kk</div>
-                <div class="hero-stat-label">Kustannusdata analysoitu</div>
+
+        <!-- Avainluvut suoraan herossa -->
+        <div class="metrics">
+            <div class="metric-card fade-in">
+                <div class="metric-value">6 kk</div>
+                <div class="metric-label">Kustannusdata analysoitu</div>
             </div>
-            <div class="hero-stat">
-                <div class="hero-stat-value">6-num.</div>
-                <div class="hero-stat-label">Tunnistettu säästöpotentiaali</div>
+            <div class="metric-card fade-in">
+                <div class="metric-value">6-num.</div>
+                <div class="metric-label">Tunnistettu säästöpotentiaali</div>
             </div>
-            <div class="hero-stat">
-                <div class="hero-stat-value count-up" data-target="50" data-prefix="" data-suffix="+">50+</div>
-                <div class="hero-stat-label">Kehitysideaa johdolle</div>
+            <div class="metric-card fade-in">
+                <div class="metric-value">14 kk</div>
+                <div class="metric-label">KTM työn ohessa</div>
+            </div>
+            <div class="metric-card fade-in">
+                <div class="metric-value">50+</div>
+                <div class="metric-label">Kehitysideaa johdolle</div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Key Metrics -->
-<section id="tulokset">
-    <p class="section-label fade-in">Konkreettiset tulokset</p>
-    <h2 class="section-title fade-in">Ei mutuilua — tekoja.</h2>
-    <p class="section-desc fade-in">Kaikki alla olevat tulokset on saavutettu oman työn ohessa, ilman erillistä toimeksiantoa.</p>
-
-    <div class="metrics">
-        <div class="metric-card fade-in">
-            <div class="metric-icon">📊</div>
-            <div class="metric-value">6 kk</div>
-            <div class="metric-label">Kuljetuskustannusdata analysoitu autokohtaiselle tasolle puolen vuoden ajalta</div>
-        </div>
-        <div class="metric-card fade-in">
-            <div class="metric-icon">💰</div>
-            <div class="metric-value">6-numer.</div>
-            <div class="metric-label">Tunnistettu säästöpotentiaali vuositasolla (kuusinumeroinen summa)</div>
-        </div>
-        <div class="metric-card fade-in">
-            <div class="metric-icon">⏱️</div>
-            <div class="metric-value">−50 %</div>
-            <div class="metric-label">Lastausaikaero toimipisteiden välillä — tehostuspotentiaali tunnistettu</div>
-        </div>
-        <div class="metric-card fade-in">
-            <div class="metric-icon">🔄</div>
-            <div class="metric-value">50+</div>
-            <div class="metric-label">Kehitysideaa tuotu johdolle oma-aloitteisesti</div>
-        </div>
-    </div>
-</section>
-
-<!-- Case Study -->
-<section id="case">
-    <p class="section-label fade-in">Pääcase</p>
-    <h2 class="section-title fade-in">Kuljetuskustannusjärjestelmä</h2>
-    <p class="section-desc fade-in">Kaaoksesta pysyväksi kustannusseurantajärjestelmäksi — ilman budjettia, ilman toimeksiantoa.</p>
-
-    <div class="case-study fade-in">
-        <div class="case-header">
-            <div>
+        <!-- Case Study -->
+        <div class="case-section fade-in">
+            <div class="case-study">
                 <span class="case-tag">B2B-jakelu &middot; 2025</span>
-                <h3 class="case-title" style="margin-top: 0.75rem;">Kuljetuskustannusten analysointi ja seurantajärjestelmä</h3>
+                <h3 class="case-title">Kuljetuskustannusten analysointi ja seurantajärjestelmä</h3>
                 <p class="case-subtitle">~10 ajoneuvoa &middot; useita kuljettajia &middot; monta toimipistettä &middot; tuhansia keikkoja</p>
-            </div>
-        </div>
 
-        <div class="case-grid">
-            <div class="case-metric">
-                <div class="case-metric-value">0 → 1</div>
-                <div class="case-metric-label">Seurantajärjestelmä rakennettu tyhjästä</div>
-            </div>
-            <div class="case-metric">
-                <div class="case-metric-value">Oma vs. osto</div>
-                <div class="case-metric-label">Kuljettajatyyppien kustannusvertailu</div>
-            </div>
-            <div class="case-metric">
-                <div class="case-metric-value">−50 %</div>
-                <div class="case-metric-label">Lastausaikaero parhaiden ja heikoimpien toimipisteiden välillä</div>
-            </div>
-            <div class="case-metric">
-                <div class="case-metric-value">€/keikka, €/h, €/km</div>
-                <div class="case-metric-label">Yksikkökustannukset jokaiselle autolle</div>
-            </div>
-        </div>
-
-        <h4 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.1rem;">Lähtötilanne → Lopputulos</h4>
-        <div class="timeline">
-            <div class="timeline-item">
-                <h4>Kaaos — Ei kustannustietoa</h4>
-                <p>Käsinkirjoitettuja tuntilistoja. Kukaan ei tiennyt paljonko kuljetukset oikeasti maksoivat. GPS-data vaati siivoamista.</p>
-            </div>
-            <div class="timeline-item">
-                <h4>Selvitys — Data haltuun</h4>
-                <p>Yhdistin tuntilistat, GPS-datan, Helpten-lastausajat ja taloushallinnon kulut autokohtaiseksi kustannusnäkymäksi.</p>
-            </div>
-            <div class="timeline-item">
-                <h4>Analyysi — €/keikka, €/h, €/km joka autolle</h4>
-                <p>ROI-laskelmat, omat vs. ostokuljettajat, lastausaika-analyysit toimipisteittäin, poissaolojen kustannusvaikutus.</p>
-            </div>
-            <div class="timeline-item">
-                <h4>Prosessi — Pysyvä seurantamalli</h4>
-                <p>Ohjeistin ajojärjestelijät, taloushallinnon ja logistiikkapäällikön. Kirjoitin AI-promptit datan analysointiin. Järjestelmä toimii ilman minua.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mini cases -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-        <div class="case-study fade-in" style="padding: 2rem;">
-            <span class="case-tag">Prosessit</span>
-            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Teams-keräilyjärjestelmä</h3>
-            <p class="case-subtitle" style="margin-top: 0.5rem;">Suunnittelin myymälän keräilyprosessin Teamsin avulla — paransi läpimenoaikaa ja vähensi virheitä.</p>
-        </div>
-        <div class="case-study fade-in" style="padding: 2rem;">
-            <span class="case-tag">Organisaatio</span>
-            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Uuden työntekijän käsikirja</h3>
-            <p class="case-subtitle" style="margin-top: 0.5rem;">Kiersin myymälät, keräsin parhaat käytännöt ja kokosin standardoidun perehdytysoppaan.</p>
-        </div>
-        <div class="case-study fade-in" style="padding: 2rem;">
-            <span class="case-tag">Palkitseminen</span>
-            <h3 class="case-title" style="margin-top: 0.75rem; font-size: 1.2rem;">Tulospalkka-ehdotus</h3>
-            <p class="case-subtitle" style="margin-top: 0.5rem;">Vein johdolle ehdotuksen tulospalkkiojärjestelmästä — mittarit, tavoitteet ja kustannusarvio.</p>
-        </div>
-    </div>
-</section>
-
-<!-- Projects -->
-<section id="projektit">
-    <p class="section-label fade-in">Portfolio</p>
-    <h2 class="section-title fade-in">Rakennettu, ei vain suunniteltu.</h2>
-    <p class="section-desc fade-in">Työkaluja ja järjestelmiä joita olen rakentanut — oikeisiin ongelmiin, oikeilla tuloksilla.</p>
-
-    <div class="projects-grid">
-        <div class="project-card fade-in">
-            <div class="project-emoji">📊</div>
-            <span class="project-tag">Analytiikka · Meltex</span>
-            <h3>Kuljetuskustannuslaskuri</h3>
-            <p>Interaktiivinen dashboard 10 ajoneuvon kustannusseurantaan. Kuukausitabit, trendinuolet, kategoriaryhmittely (Kaappi/HIAB/Pakut) ja simulaattori lastausaikojen, kuljettajavaihtojen ja poissaolojen kustannusvaikutuksille.</p>
-            <div class="project-tech">
-                <span>HTML/CSS/JS</span>
-                <span>Chart.js</span>
-                <span>Simulaattori</span>
-                <span>Oikea kustannusdata</span>
-            </div>
-            <a href="kuljetuskustannuslaskuri.html" class="project-link">Kokeile live-versiota →</a>
-        </div>
-
-    </div>
-</section>
-
-<!-- Skills -->
-<section id="osaaminen">
-    <p class="section-label fade-in">Osaaminen</p>
-    <h2 class="section-title fade-in">Mitä tuon pöytään</h2>
-    <p class="section-desc fade-in">KTM-tutkinnon ja käytännön kokemuksen yhdistelmä — painotus analytiikassa, prosesseissa ja tekoälyssä.</p>
-
-    <div class="skills-grid">
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon analytics">📈</div>
-                <div class="skill-name">Talousanalyysi & Controller</div>
-            </div>
-            <p class="skill-desc">Kustannuslaskenta, sopimusanalyysi, ROI-laskelmat, yksikkö- ja vaihtoehtoiskustannukset. Osaan kaivaa datan esiin ja kertoa mitä se tarkoittaa euroina.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Kustannuslaskenta</span>
-                <span class="skill-tag">ROI-analyysi</span>
-                <span class="skill-tag">Budjetointi</span>
-            </div>
-        </div>
-
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon logistics">🚛</div>
-                <div class="skill-name">Logistiikka & Toimitusketju</div>
-            </div>
-            <p class="skill-desc">Ajojärjestely 10 ajoneuvolle, kuljetuskustannusoptimointi, GPS-data-analyysi, toimipistekohtaiset vertailut. Käytännön kokemus kentältä.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Ajojärjestely</span>
-                <span class="skill-tag">Kustannusoptimointi</span>
-                <span class="skill-tag">GPS-data</span>
-            </div>
-        </div>
-
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon ai">🤖</div>
-                <div class="skill-name">Tekoäly & Automaatio</div>
-            </div>
-            <p class="skill-desc">Käytän AI:ta työn tehostamiseen: data-analyysi, raporttien generointi, prosessiautomaatio. Rakennan AI-avusteisia työkaluja ja prompteja loppukäyttäjille.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Claude / GPT</span>
-                <span class="skill-tag">Prompt Engineering</span>
-                <span class="skill-tag">Python + AI</span>
-            </div>
-        </div>
-
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon process">⚙️</div>
-                <div class="skill-name">Prosessikehitys</div>
-            </div>
-            <p class="skill-desc">Tunnistan pullonkaulat, rakennan seurantamallit ja standardoin työtavat. Kaaoksesta järjestelmäksi — niin että homma pyörii ilman minua.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Prosessiketjut</span>
-                <span class="skill-tag">Standardointi</span>
-                <span class="skill-tag">Kehitysideat</span>
-            </div>
-        </div>
-
-
-        <div class="skill-card fade-in">
-            <div class="skill-header">
-                <div class="skill-icon law">⚖️</div>
-                <div class="skill-name">Talousoikeus</div>
-            </div>
-            <p class="skill-desc">KTM-pääaine. Sopimusoikeus, yhtiöoikeus, vero-oikeus. Ymmärrän liiketoiminnan juridisen kehyksen ja sääntelyympäristön.</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Sopimusoikeus</span>
-                <span class="skill-tag">Yhtiöoikeus</span>
-                <span class="skill-tag">KTM</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Story -->
-<section id="tarina">
-    <p class="section-label fade-in">Tarina</p>
-    <h2 class="section-title fade-in">Miksi juuri minä?</h2>
-
-    <div class="story-grid fade-in">
-        <div>
-            <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 1.5rem;">
-                Keskeytin kauppiksen 108 opintopisteen kohdalla. Moni olisi jäänyt siihen. Minä palasin — ja vedin maisterin valmiiksi <strong style="color: var(--text);">14 kuukaudessa työn ohessa</strong>.
-            </p>
-            <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 1.5rem;">
-                Meltexillä en tyytynyt myyjän rooliin. Tein kuljetuskustannusanalyysin jota kukaan ei pyytänyt, koska näin tarpeen. Rakensin seurantajärjestelmän joka toimii ilman minua. Vein 50+ kehitysideaa johdolle.
-            </p>
-            <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-muted);">
-                En etsi <em>jotain työtä</em>. Etsin paikkaa jossa analyyttisyys, oma-aloitteisuus ja suorapuheisuus ovat vahvuuksia — eivät ongelmia.
-            </p>
-        </div>
-        <div class="story-highlights">
-            <div class="highlight">
-                <div class="highlight-icon">🎓</div>
-                <div class="highlight-text">
-                    <h4>KTM 14 kuukaudessa työn ohessa</h4>
-                    <p>Vaasan yliopisto, talousoikeus + tuotantotalous. Valmistunut 12/2025.</p>
-                </div>
-            </div>
-            <div class="highlight">
-                <div class="highlight-icon">🧠</div>
-                <div class="highlight-text">
-                    <h4>Analyyttinen ongelmanratkaisija</h4>
-                    <p>Numerot eivät valehtele. Kaivan datan esiin, analysoin ja kerron mitä tehdä.</p>
-                </div>
-            </div>
-            <div class="highlight">
-                <div class="highlight-icon">🚀</div>
-                <div class="highlight-text">
-                    <h4>Tekee ilman pyytämistä</h4>
-                    <p>50+ kehitysideaa, kustannusanalyysi, prosessimuutokset — kaikki oma-aloitteisesti.</p>
-                </div>
-            </div>
-            <div class="highlight">
-                <div class="highlight-icon">🤖</div>
-                <div class="highlight-text">
-                    <h4>AI-osaaminen käytännössä</h4>
-                    <p>Rakennan AI-avusteisia työkaluja, automaatioita ja analyysejä. Tämäkin sivu on AI:n avulla tehty.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Interactive Demo -->
-<section id="demo">
-    <p class="section-label fade-in">Live Demo</p>
-    <h2 class="section-title fade-in">Kuljetuskustannuslaskuri</h2>
-    <p class="section-desc fade-in">Kokeile itse — syötä luvut ja näe kuinka analysoin kustannuksia. Tämä on yksinkertaistettu versio rakentamastani työkalusta.</p>
-
-    <div class="demo-section fade-in">
-        <div class="demo-header">
-            <div class="demo-dot red"></div>
-            <div class="demo-dot yellow"></div>
-            <div class="demo-dot green"></div>
-            <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.5rem;">kuljetuskustannuslaskuri.app</span>
-        </div>
-
-        <div class="calculator">
-            <div class="calc-row">
-                <div class="calc-group">
-                    <label>Kuukausikustannus (€)</label>
-                    <input type="number" id="monthlyCost" value="6500" min="0" step="100">
-                </div>
-                <div class="calc-group">
-                    <label>Keikkoja / kuukausi</label>
-                    <input type="number" id="tripsPerMonth" value="180" min="1">
-                </div>
-            </div>
-            <div class="calc-row">
-                <div class="calc-group">
-                    <label>Kilometrejä / kuukausi</label>
-                    <input type="number" id="kmPerMonth" value="3500" min="1">
-                </div>
-                <div class="calc-group">
-                    <label>Keskim. lastausaika (min)</label>
-                    <input type="number" id="loadTime" value="45" min="1">
-                </div>
-            </div>
-            <div class="calc-row">
-                <div class="calc-group">
-                    <label>Kuljettajatyyppi</label>
-                    <select id="driverType">
-                        <option value="own">Oma kuljettaja</option>
-                        <option value="external">Ostokuljettaja (+30 %)</option>
-                    </select>
-                </div>
-                <div class="calc-group">
-                    <label>Lastausajan tavoite (min)</label>
-                    <input type="number" id="targetLoadTime" value="30" min="1">
-                </div>
-            </div>
-
-            <div class="calc-result" id="calcResult">
-                <div class="calc-result-value" id="costPerTrip">36,11 €</div>
-                <div class="calc-result-label">Kustannus per keikka</div>
-                <div class="calc-result-breakdown">
-                    <div>
-                        <div class="breakdown-item-value" id="costPerKm">1,86 €</div>
-                        <div class="breakdown-item-label">€ / km</div>
+                <div class="case-metrics">
+                    <div class="case-metric">
+                        <div class="case-metric-value">0 &#8594; 1</div>
+                        <div class="case-metric-label">Seurantajärjestelmä rakennettu tyhjästä</div>
                     </div>
-                    <div>
-                        <div class="breakdown-item-value" id="annualCost">78 000 €</div>
-                        <div class="breakdown-item-label">Vuosikustannus</div>
+                    <div class="case-metric">
+                        <div class="case-metric-value">Oma vs. osto</div>
+                        <div class="case-metric-label">Kuljettajatyyppien kustannusvertailu</div>
                     </div>
-                    <div>
-                        <div class="breakdown-item-value" id="savings">0 €</div>
-                        <div class="breakdown-item-label">Säästöpotentiaali / vuosi</div>
+                    <div class="case-metric">
+                        <div class="case-metric-value">6-numer.</div>
+                        <div class="case-metric-label">Tunnistettu säästöpotentiaali vuositasolla</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-value">&#8364;/keikka, &#8364;/h, &#8364;/km</div>
+                        <div class="case-metric-label">Yksikkökustannukset jokaiselle autolle</div>
+                    </div>
+                </div>
+
+                <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Lähtötilanne &#8594; Lopputulos</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Kaaos — Ei kustannustietoa</h4>
+                        <p>Käsinkirjoitettuja tuntilistoja. Kukaan ei tiennyt paljonko kuljetukset oikeasti maksoivat.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Selvitys — Data haltuun</h4>
+                        <p>Yhdistin tuntilistat, GPS-datan, Helpten-lastausajat ja taloushallinnon kulut autokohtaiseksi kustannusnäkymäksi.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Analyysi — &#8364;/keikka, &#8364;/h, &#8364;/km joka autolle</h4>
+                        <p>ROI-laskelmat, omat vs. ostokuljettajat, lastausaika-analyysit toimipisteittäin.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Prosessi — Pysyvä seurantamalli</h4>
+                        <p>Ohjeistin ajojärjestelijät, taloushallinnon ja logistiikkapäällikön. Järjestelmä toimii ilman minua.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Prompt Generator -->
-<section id="promptgen">
-    <div class="prompt-gen fade-in">
-        <div class="prompt-gen-label">Interaktiivinen demo</div>
-        <h3>Päivän prompt-haaste</h3>
-        <p class="prompt-gen-sub">50 käsinkirjoitettua AI-promptia. Osa on hyödyllisiä. Osa on... kokeilemisen arvoisia.</p>
-
-        <div class="prompt-display" id="promptDisplay">
-            <p>
-                <span class="prompt-category">Paina nappia aloittaaksesi</span>
-                "Valmiina generoimaan ensimmäisen promptisi..."
-            </p>
-        </div>
-
-        <button class="prompt-gen-btn" onclick="generatePrompt()">
-            🎲 Generoi prompt
-        </button>
-
-        <div class="prompt-counter" id="promptCounter"></div>
-
-        <div class="prompt-cta">
-            <p>Kokeilit promptia ja sait hyvän tuloksen? Tai huonon? Kerro kumpi!</p>
-            <a href="https://www.linkedin.com/in/jessemattila" target="_blank" rel="noopener">
-                💼 Näytä lopputuloksesi minulle LinkedIn-viestillä
+        <!-- CTA-kortit -->
+        <div class="cta-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <a href="osaaminen.html" class="cta-card fade-in">
+                <div class="cta-card-icon">&#9733;</div>
+                <h3>Osaaminen & arvot</h3>
+                <p>Kuka olen, mitä osaan ja millaista työpaikkaa etsin.</p>
+                <span class="arrow">Lue lisää &#8594;</span>
+            </a>
+            <a href="tyokalut.html" class="cta-card fade-in">
+                <div class="cta-card-icon">&#9881;</div>
+                <h3>Rakennetut työkalut</h3>
+                <p>Interaktiivisia demoja ja Python-työkaluja — näytän, en vain kerro.</p>
+                <span class="arrow">Katso työkalut &#8594;</span>
+            </a>
+            <a href="#promptgen" class="cta-card fade-in" onclick="event.preventDefault(); document.getElementById('promptgen').scrollIntoView({behavior:'smooth'});">
+                <div class="cta-card-icon">&#9889;</div>
+                <h3>Prompt-haaste</h3>
+                <p>Kopioi tuotettu prompti omalle tekoälyllesi.</p>
+                <span class="arrow">Kokeile &#8594;</span>
             </a>
         </div>
     </div>
 </section>
 
-<!-- Contact -->
-<section id="yhteystiedot" class="contact-section">
-    <p class="section-label fade-in">Yhteystiedot</p>
-    <h2 class="section-title fade-in">Otetaan yhteyttä</h2>
-    <p class="section-desc fade-in" style="margin: 1rem auto 0; max-width: 500px;">Kiinnostuitko? Olen avoin uusille mahdollisuuksille controller-, logistiikka-, hankinta- ja myyntitehtävissä.</p>
-
-    <div class="contact-links fade-in">
-        <a href="mailto:jesse.mattila@icloud.com" class="contact-link">
-            ✉️ jesse.mattila@icloud.com
-        </a>
-        <a href="https://www.linkedin.com/in/jessemattila" class="contact-link" target="_blank" rel="noopener">
-            💼 LinkedIn
-        </a>
+<!-- Prompt Generator -->
+<div class="prompt-section" id="promptgen">
+    <div class="prompt-gen fade-in">
+        <div class="prompt-gen-label">Interaktiivinen demo</div>
+        <h3>Prompt-haaste</h3>
+        <p class="prompt-gen-sub">20 AI-promptia. Osa on hyödyllisiä. Osa on... kokeilemisen arvoisia. Kopioi tuotettu prompti omalle tekoälyllesi.</p>
+        <div class="prompt-display" id="promptDisplay">
+            <p>Paina nappia ja saat promptin.</p>
+        </div>
+        <button class="prompt-gen-btn" onclick="generatePrompt()">Generoi prompt &#9889;</button>
+        <div class="prompt-counter" id="promptCounter"></div>
     </div>
-</section>
+</div>
 
 <footer>
-    <p>Jesse Mattila &copy; 2026 — Rakennettu tekoälyavusteisesti</p>
+    <div class="footer-links">
+        <a href="mailto:jesse.mattila@icloud.com">jesse.mattila@icloud.com</a>
+        <a href="https://www.linkedin.com/in/jessemattila/">LinkedIn</a>
+        <a href="https://github.com/JesseMattila">GitHub</a>
+    </div>
+    <div class="footer-copy">Jesse Mattila 2026</div>
 </footer>
 
 <script>
-// Scroll animations
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    // Prompts
+    const prompts = [
+        { category: 'Lämpötilasota', text: 'Toimistossa on kaksi koulukuntaa: ne jotka haluavat 19°C ja ne jotka haluavat 24°C. Laadi rauhanneuvottelusuunnitelma YK:n tyyliin.' },
+        { category: 'Verkkolevyt', text: 'Verkkolevyltä löytyy kansio nimeltä "LOPULLINEN versio FINAL (2) kopio - KÄYTÄ TÄTÄ". Kirjoita kansion sukupuu.' },
+        { category: 'Tulostin', text: 'Toimiston tulostin jumittaa 3,2 kertaa päivässä. Kirjoita sille irtisanomiskirje: varoitushistoria, kehityskeskustelujen yhteenveto ja siirtymäsuunnitelma seuraajalle.' },
+        { category: 'Kynät', text: 'Firma tilaa 500 logokynää vuodessa. Kukaan ei tiedä minne ne katoavat. Suorita tutkinta: todistajanlausunnot, epäiltyjen profilointi ja loppuraportti.' },
+        { category: 'Jääkaappi', text: 'Taukotilan jääkaapissa on ollut sama muovipurkki maaliskuusta. Kukaan ei omista sitä. Kirjoita kolme viestiä: johdon virallinen tiedote, rento Slack-viesti ja passiivisaggressiivinen sähköposti.' },
+        { category: 'Parkkipaikka', text: 'Firmalla on 20 parkkipaikkaa ja 35 autoa. Laadi oikeudenmukainen jakojärjestelmä. Mikko tulee aina klo 6:50 "varmuuden vuoksi" ja joku pysäköi aina vinoon.' },
+        { category: 'Excel-kriisi', text: 'Kollegasi lähettää Excel-tiedoston jossa on 14 välilehteä ja kaava joka viittaa välilehteen jota ei ole olemassa. Kirjoita kohtelias arvio tiedostosta — kuin kyseessä olisi viiniarvostelu.' },
+        { category: 'Lounas', text: 'Toimiston ainoa mikro on varattu klo 11:45–12:15 tauotta. Laadi ruuhkanhallintasuunnitelma, mutta ehdotuksesi ei saa sisältää sanoja "vuoronumero", "aikataulu" tai "toinen mikroaaltouuni".' },
+        { category: 'Kokoushuone', text: 'Kokoushuone "Innovaatio" on varattuna 8 tuntia päivässä mutta fyysisesti tyhjä 60 % ajasta. Kirjoita haamuvaraajille kohtelias mutta tiukka sähköposti.' },
+        { category: 'Kahvihuone', text: 'Firma vaihtaa kahvimerkin halvempaan. Kirjoita muutoksesta tiedote kolmella aikajänteellä: proaktiivinen viestintä, kriisiviestintä ja jälkihoito.' },
+        { category: 'Sähköposti', text: 'Laske "Vastaa kaikille" -sähköpostin todellinen hinta euroissa: 200 henkilöä × lukuaika × palkka/minuutti. Kirjoita lopuksi firman "Reply All -ohjesääntö".' },
+        { category: 'Pikkujoulut', text: 'Pikkujoulubudjetti: 5000 € ja 43 mielipidettä. Laadi kolme suunnitelmaa ja ennuste siitä, mistä valitetaan seuraavana maanantaina.' },
+        { category: 'Palaverit', text: 'Vertaile: Firma A (ei palavereita, kaikki Slackissa), Firma B (2h "nopea päivitys" JOKA AAMU), Firma C (yksi 8h megapalaveri perjantaisin). Pisteytä tuottavuus ja henkinen kuormitus.' },
+        { category: 'Etätyö', text: 'Kirjoita "Etätyöperjantain pelisäännöt" kahdesti: versio jota johto haluaa (webcam päällä klo 8–16) ja versio jota oikeasti noudatetaan. Laadi kompromissi.' },
+        { category: 'Raportointi', text: 'Pomo haluaa "yhden luvun joka kertoo miten firmalla menee". Selitä miksi se on kuin kysyisi lääkäriltä "olenko terve, vastaa yhdellä numerolla." Rakenna silti se luku.' },
+        { category: 'Sopimukset', text: 'Kirjoita sopimuspykälä joka vapauttaa vastuusta kun: pandemia, kyberuhka, toimitusketju hajoaa, tai toimitusjohtaja näki TikTokissa trendin ja muutti strategiaa yön yli.' },
+        { category: 'Toimittajat', text: 'Arvioi toimittajia viidellä kriteerillä. Lisää kuudes: "kuinka nopeasti myyjä vastaa puhelimeen perjantaina klo 15:30." Perustele miksi se kertoo enemmän kuin kaikki muut yhteensä.' },
+        { category: 'Tekoäly', text: 'Suunnittele AI-botti joka lukee firman Slack-kanavat ja jakaa viikoittain "Viikon turhin keskustelu" -palkinnon.' },
+        { category: 'Myynti', text: 'Asiakas on ostanut samaa tuotetta 3 vuotta. Hän on allerginen kaikelle uudelle. Myy hänelle lisäpalvelu niin ettei hän huomaa ostavansa mitään uutta.' },
+        { category: 'Budjetointi', text: 'Perustele kaikki toimiston kulut nollasta alkaen. Ensimmäinen haaste: miksi tarvitaan 3 kokoushuonetta kun "voidaan puhua käytävälläkin"?' }
+    ];
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    let usedIndices = [];
+    let promptsGenerated = 0;
 
-// Navbar scroll effect
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
-});
-
-// Hamburger menu
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-});
-navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
-});
-
-// Calculator
-const fmt = (n) => n.toLocaleString('fi-FI', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-const fmtDec = (n) => n.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-function calculate() {
-    let cost = parseFloat(document.getElementById('monthlyCost').value) || 0;
-    const trips = parseFloat(document.getElementById('tripsPerMonth').value) || 1;
-    const km = parseFloat(document.getElementById('kmPerMonth').value) || 1;
-    const loadTime = parseFloat(document.getElementById('loadTime').value) || 1;
-    const targetLoadTime = parseFloat(document.getElementById('targetLoadTime').value) || 1;
-    const driverType = document.getElementById('driverType').value;
-
-    if (driverType === 'external') cost *= 1.30;
-
-    const perTrip = cost / trips;
-    const perKm = cost / km;
-    const annual = cost * 12;
-
-    // Savings from load time optimization
-    const timeSavedMin = Math.max(0, loadTime - targetLoadTime);
-    const hourlyRate = cost / (trips * (loadTime / 60));
-    const monthlySavings = (timeSavedMin / 60) * hourlyRate * trips;
-    const annualSavings = monthlySavings * 12;
-
-    document.getElementById('costPerTrip').textContent = fmtDec(perTrip) + ' €';
-    document.getElementById('costPerKm').textContent = fmtDec(perKm) + ' €';
-    document.getElementById('annualCost').textContent = fmt(Math.round(annual)) + ' €';
-    document.getElementById('savings').textContent = annualSavings > 0 ? fmt(Math.round(annualSavings)) + ' €' : '0 €';
-
-    // Highlight savings
-    const savingsEl = document.getElementById('savings');
-    savingsEl.style.color = annualSavings > 0 ? '#28c840' : '';
-}
-
-document.querySelectorAll('.calculator input, .calculator select').forEach(el => {
-    el.addEventListener('input', calculate);
-});
-
-calculate();
-
-// Count-up animation for hero stats
-const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const el = entry.target;
-            const target = parseInt(el.dataset.target);
-            const prefix = el.dataset.prefix || '';
-            const suffix = el.dataset.suffix || '';
-            let current = 0;
-            const step = target / 60;
-            const interval = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(interval);
-                }
-                el.textContent = prefix + fmt(Math.round(current)) + suffix;
-            }, 16);
-            countObserver.unobserve(el);
-        }
-    });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
-
-// Prompt Generator — 50 handcrafted prompts
-const prompts = [
-    { category: 'Lämpötilasota', text: 'Toimistossa on kaksi koulukuntaa: ne jotka haluavat 19°C ja ne jotka haluavat 24°C. Laadi rauhanneuvottelusuunnitelma YK:n tyyliin: osapuolten vaatimukset, kompromissiehdotus ja rangaistukset niille jotka koskevan termostaattiin salaa.' },
-    { category: 'Verkkolevyt', text: 'Verkkolevyltä löytyy kansio nimeltä "LOPULLINEN versio FINAL (2) kopio - KÄYTÄ TÄTÄ". Kirjoita kansion sukupuu: mistä se polveutuu, miten se lisääntyi ja miksi sen sisällä on tiedosto nimeltä "alkuperäinen.xlsx.bak.old".' },
-    { category: 'Tulostin', text: 'Toimiston tulostin jumittaa 3,2 kertaa päivässä. Kirjoita sille irtisanomiskirje: varoitushistoria, kehityskeskustelujen yhteenveto, irtisanomisperusteet ja siirtymäsuunnitelma seuraajalle.' },
-    { category: 'Kynät', text: 'Firma tilaa 500 logokynää vuodessa. Kukaan ei tiedä minne ne katoavat. Suorita tutkinta: todistajanlausunnot, epäiltyjen profilointi ja loppuraportti jossa paljastetaan kynävarkauden todellinen laajuus.' },
-    { category: 'Jääkaappi', text: 'Taukotilan jääkaapissa on ollut sama muovipurkki maaliskuusta. Kukaan ei omista sitä. Kirjoita kolme viestiä: johdon virallinen tiedote, rento Slack-viesti ja passiivisaggressiivinen sähköposti. Purkin on poistuttava perjantaihin mennessä.' },
-    { category: 'Parkkipaikka', text: 'Firmalla on 20 parkkipaikkaa ja 35 autoa. Laadi oikeudenmukainen jakojärjestelmä. Huomioi: toimitusjohtaja olettaa saavansa aina paikan, Mikko tulee aina klo 6:50 "varmuuden vuoksi" ja joku pysäköi aina vinoon.' },
-    { category: 'Nimikyltti', text: 'Firma tilaa uudet nimikyltit oviin. Kenellä on oikeus nimikylttiin? Mitä titteleitä saa käyttää? Ja miten ratkaistaan Jannen vaatimus saada kylttiin "Senior Vice Assistant to the Regional Manager"?' },
-    { category: 'Excel-kriisi', text: 'Kollegasi lähettää Excel-tiedoston jossa on 14 välilehteä ja kaava joka viittaa välilehteen jota ei ole olemassa. Kirjoita kollegallesi kohtelias mutta rehellinen arvio tiedostosta — kuin kyseessä olisi viiniarvostelu.' },
-    { category: 'Lounas', text: 'Toimiston ainoa mikro on varattu klo 11:45–12:15 tauotta. Laadi ruuhkanhallintasuunnitelma, mutta ehdotuksesi ei saa sisältää sanoja "vuoronumero", "aikataulu" tai "toinen mikroaaltouuni".' },
-    { category: 'Taukotila', text: 'Taukotilan sohva on ollut toimistossa niin kauan ettei kukaan muista kuka sen toi. Kirjoita sohvalle elämäkerta: alkuperä, parhaat vuodet, nykyinen kunto ja eläkesuunnitelma. Sisällytä kollegoiden muistelot.' },
-    { category: 'Kokoushuone', text: 'Kokoushuone "Innovaatio" on varattuna kalenterissa 8 tuntia päivässä mutta fyysisesti tyhjä 60 % ajasta. Kirjoita haamuvaraajille kohtelias mutta tiukka sähköposti — ja laadi samalla vaihtoehtoinen käyttö tyhjille tunneille.' },
-    { category: 'Kahvihuone', text: 'Firma vaihtaa kahvimerkin halvempaan. Kirjoita muutoksesta tiedote kolmella aikajänteellä: 1) proaktiivinen viestintä ennen vaihtoa, 2) kriisiviestintä ensimmäisenä päivänä, 3) jälkihoito kun puolet porukasta käy jo viereisessä kahvilassa.' },
-    { category: 'Sähköposti', text: 'Laske "Vastaa kaikille" -sähköpostin todellinen hinta euroissa: 200 henkilöä × lukuaika × palkka/minuutti. Entä kun joku vastaa "koskeeko tämä minua?" ja syntyy 14 viestin ketju? Kirjoita lopuksi firman "Reply All -ohjesääntö".' },
-    { category: 'Hissi', text: 'Firmassa on 4 kerrosta ja 1 hissi. Aamulla klo 8–8:15 syntyy kaaos. Laadi liikennesuunnitelma jossa huomioidaan se, ettei kukaan halua kävellä portaita mutta kaikki väittävät olevansa "ihan ok" portaiden kanssa.' },
-    { category: 'Pikkujoulut', text: 'Pikkujoulubudjetti: 5 000 € ja 43 mielipidettä. Laadi kolme suunnitelmaa: "kaikki yhteen iltaan", "äänestys" ja "ei budjettia mutta silti odotukset". Kirjoita jokaisesta myös ennuste siitä, mistä valitetaan seuraavana maanantaina.' },
-    { category: 'Excel-kriisi', text: 'Firman ainoa Excel-osaaja jää eläkkeelle kuukauden päästä. Kukaan muu ei tiedä miksi kvartaaliraportin rivi 847 on kovakoodattu arvolla 1,17. Kirjoita Excel-gurulle jäähyväispuhe jossa samalla dokumentoidaan kaikki hiljainen tieto.' },
-    { category: 'Palaverit', text: 'Vertaile kolmen firman palaverikulttuuria: Firma A (palavereita ei ole, kaikki Slackissa), Firma B (2 tunnin "nopea päivitys" JOKA AAMU), Firma C (yksi 8h megapalaveri perjantaisin). Pisteytä tuottavuus, viestintä ja henkilöstön henkinen kuormitus.' },
-    { category: 'Avokonttori', text: 'Pekka (52 v.) on istunut samassa nurkkahuoneessa 14 vuotta. Nyt firma siirtyy avokonttorimalliin. Kirjoita Pekan näkökulmasta valituskirje — ja sitten johdon vastaus jossa Pekka yritetään käännyttää loukkaamatta hänen 14 vuoden reviiritunnettaan.' },
-    { category: 'Toimistotarvikkeet', text: 'Kuvaile matka jonka post-it-lappu tekee nettitilauksesta Pekan näyttöön. Pekka ei hyväksy kuin tietyn keltaisen sävyn — mutta tilausjärjestelmässä ei ole sävyvalintaa. Kirjoita Pekan reklamaatio ja tilausvastaavan vastaus.' },
-    { category: 'Tekoäly', text: 'Suunnittele AI-botti joka lukee firman Slack-kanavat ja jakaa viikoittain "Viikon turhin keskustelu" -palkinnon. Palkinnon perusteet: viestien määrä suhteessa päätöksiin, emojireaktioiden inflaatio ja ajan hukka per osallistuja.' },
-    { category: 'Kahvihuone', text: 'Kahvihuoneen juoruverkosto on tehokkaampi tiedonvälityskanava kuin yrityksen intra. Piirrä sanallisesti organisaatiokaavio joka näyttää miten tieto OIKEASTI kulkee firmassa — ja vertaa sitä viralliseen organisaatiokaavioon.' },
-    { category: 'Etätyö', text: 'Kirjoita "Etätyöperjantain pelisäännöt" kahdesti: ensin versio jota johto haluaa (webcam päällä klo 8–16), sitten versio jota oikeasti noudatetaan (Teams-status vihreänä, todellisuudessa kaupassa klo 14). Laadi kompromissi.' },
-    { category: 'Palaverit', text: 'Laske palaverin todellinen hinta: 8 henkilöä × tunti × palkka. Lisää bonuksena: 15 min "kuka jakaa ruudun" -säätöä, 10 min "kuuluuko mun ääni" ja se tosiasia ettei kukaan muista ensi viikolla mistä sovittiin. Esitä lasku pomolle.' },
-    { category: 'Jääkaappi', text: 'Taukotilan jääkaapin siisteysvuorolista on roikkunut seinällä 2 vuotta. Kukaan ei ole noudattanut sitä kertaakaan. Kirjoita jääkaapille itsellensä puolustuspuhe: "ei ole minun vikani mitä minuun laitetaan".' },
-    { category: 'Tulostin', text: 'Toimiston tulostimella on oma persoonallisuus: se jumittaa aina kun on kiire ja toimii moitteettomasti viikonloppuisin. Kirjoita tulostimen päiväkirja yhden työviikon ajalta — maanantaista perjantaihin.' },
-    { category: 'Raportointi', text: 'Pomo haluaa "yhden luvun joka kertoo miten firmalla menee". Selitä miksi se on kuin kysyisi lääkäriltä "olenko terve, vastaa yhdellä numerolla." Rakenna silti se yksi luku — ja anna sille niin tarttuva nimi, että pomo alkaa käyttää sitä joka kokouksessa.' },
-    { category: 'Kokoushuone', text: 'Kirjoita kokoushuoneiden uudelleennimeämisprojektin projektipäällikön päiväkirja. Päivä 1: "Helppo homma." Päivä 3: "Markkinointi haluaa teeman." Päivä 7: "Toimitusjohtaja haluaa kokonaan eri kielen." Päivä 14: "Miksi suostuin tähän."' },
-    { category: 'Sopimukset', text: 'Kirjoita sopimuspykälä joka vapauttaa vastuusta kun: 1) pandemia, 2) kyberuhka, 3) toimitusketju hajoaa, 4) toimitusjohtaja näki TikTokissa trendin ja muutti strategiaa yön yli. Selkokielellä niin että kaikki ymmärtää.' },
-    { category: 'Toimittajat', text: 'Arvioi toimittajia viidellä kriteerillä. Lisää kuudes piilotettu kriteeri: "kuinka nopeasti myyjä vastaa puhelimeen perjantaina klo 15:30." Kirjoita perustelut miksi tämä yksi mittari kertoo toimittajasta enemmän kuin kaikki muut yhteensä.' },
-    { category: 'Hedelmäkori', text: 'Toimiston hedelmäkori tilataan maanantaisin. Keskiviikkona jäljellä on vain vihreitä omenoita. Kirjoita hedelmäkorin elinkaaritarina maanantaista perjantaihin ja laadi suunnitelma jolla torstain iltapäivälläkin on jotain muuta kuin se omena.' },
-    { category: 'Koulutus', text: 'Suunnittele perehdytysopas jossa uuden työntekijän ensimmäisen viikon tärkeimmät opit eivät tule intrasta vaan epävirallisista lähteistä: kenen kanssa kannattaa mennä lounaalle, ketä ei saa häiritä ennen kymmentä ja miksi kokoushuone Aura on aina kylmä.' },
-    { category: 'Tekoäly', text: 'Suunnittele "Sähköpostivelan mittari" -työkalu: se laskee montako viestiä odottaa vastaustasi yli 2 päivää, häpeäpisteet per viesti ja generoi automaattisen "pahoittelen viivettä" -vastauksen. Lisäominaisuus: tunnistaa viestit jotka on merkitty kiireellisiksi ilman syytä.' },
-    { category: 'Kahvihuone', text: 'Kahviautomaatin äärellä syntyneet päätökset ovat historiallisesti parempia kuin kokoushuoneissa tehdyt. Kirjoita tieteellisen näköinen tutkimusraportti aiheesta: hypoteesi, aineisto (kuvitteellinen), tulokset ja johtopäätökset.' },
-    { category: 'Verkkolevyt', text: 'Verkkolevyn kansiorakenne on niin sekava, että tiedoston etsiminen kestää keskimäärin 7 minuuttia. Kirjoita selviytymisopas uudelle työntekijälle: "Näin navigoit kaaoksen — ja miksi kansio \'Sekalaista 2019\' on oikeasti tärkein."' },
-    { category: 'Palaverit', text: 'Suunnittele sovellus "PalaveriTappaja Pro" joka antaa jokaiselle kalenterikutsulle "tämä olisi voinut olla sähköposti" -todennäköisyysprosentin. Kirjoita sovelluksen mainoslause, ominaisuuslista ja yksi käyttäjäarvio viiden tähden palaverihelvettistä selvinneeltä.' },
-    { category: 'Sähköposti', text: 'Joku lähetti koko firman sähköpostilistalle viestin joka oli tarkoitettu yhdelle henkilölle. Kirjoita tilanteen jälkihoitosuunnitelma: vahinkoviesti, anteeksipyyntö, Slackissa leviävän meemien hallinta ja HR:n ohje "miten tästä selvitään".' },
-    { category: 'Lounas', text: 'Toimiston lounasvalinnoissa on selvä hierarkia: johto käy ravintolassa, keskijohto tilaa Wolttia, ja rivityöntekijä lämmittää eilisen. Analysoi ilmiö vakavasti: mistä se kertoo, mitä se maksaa ja miten sen voisi kääntää tiimihengeksi.' },
-    { category: 'Parkkipaikka', text: 'Firma muuttaa uuteen toimistoon jossa on 15 parkkipaikkaa vähemmän. Laadi viestintäsuunnitelma: miten kerrot porukalle ettei kaikille riitä paikkaa? Huomioi Mikon (klo 6:50 -mies) reaktio ja toimitusjohtajan oletus omasta paikasta.' },
-    { category: 'Kynät', text: 'Toimiston kynäkulutus on kasvanut 340 % kolmessa vuodessa. Kukaan ei ole ottanut kynää kirjaimellisesti — vai onko? Laadi data-analyysin näköinen raportti jossa visualisoit kynäkadon, epäiltyjen osaston ja suositellut vastatoimet.' },
-    { category: 'Excel-kriisi', text: 'Pomo pyytää "nopean Excelin" joka laskee paljonko aikaa tiimi käyttää Excelien tekemiseen. Ironia ei ole kenellekään ilmeistä. Tee tämä meta-Excel ja lisää viimeiseksi sarakkeeksi "olisiko tämä voitu tehdä muualla kuin Excelissä? (kyllä)".' },
-    { category: 'Taukotila', text: 'Kuka pesee taukotilan tiskit? Laadi oikeustieteellinen analyysi: kenellä on velvollisuus, kenellä on oikeus jättää muki tiskipöydälle "likoamaan" ja mikä on kohtuullinen likoamisaika ennen kuin muki katsotaan hylätyksi omaisuudeksi.' },
-    { category: 'Raportointi', text: 'Kuukausiraporttia ei lue kukaan. Se on 40 sivua. Kirjoita raportin näkökulmasta kirje sen tekijälle: "Minuun käytetään 16 työtuntia kuukaudessa. Minut avataan keskimäärin 1,3 kertaa. Haluaisin puhua tunteistani."' },
-    { category: 'Uusi järjestelmä', text: 'Firma otti uuden järjestelmän käyttöön 6 kuukautta sitten. Puolet porukasta käyttää edelleen vanhaa rinnalla "varmuuden vuoksi". Kirjoita vanhan järjestelmän hautajaispuhe — liikuttava, kunnioittava ja lopullinen.' },
-    { category: 'Ilmastointi', text: 'Kokoushuoneessa on aina joko +30°C (liikaa ihmisiä) tai +16°C (ilmastointi ylikompensoi). Kirjoita ilmastointilaitteen ja kokoushuoneen välinen parisuhdeterapiaistunto: molemmat saavat puheenvuoron.' },
-    { category: 'Budjetointi', text: 'Perustele kaikki toimiston kulut nollasta alkaen. Ensimmäinen haaste: miksi tarvitaan 3 kokoushuonetta kun "voidaan puhua käytävälläkin"? Kirjoita sekä puolustuspuhe kokoushuoneille että vastapuolen argumentit. Tuomari on toimitusjohtaja jolla on huono päivä.' },
-    { category: 'Kahvihuone', text: 'Toimistoon tarvitaan uusi kahvikone. Kirjoita kolmen ehdokkaan tietoiskut vaali-illan tyyliin: Premium-Pekka (yksi kallis laite), Demo-Duo (kaksi eri merkkiä) ja Halpa-Heikki (joka kerrokselle oma perusmalli). Järjestä äänestys ja ennusta lopputulos.' },
-    { category: 'Rekrytointi', text: 'Suunnittele rekrytointikampanja firmalle jota kukaan ei tunne. Budjetti: 0 €. Käytettävissä: LinkedIn ja omat työntekijät, joista kolme ei tiedä mikä LinkedIn on. Laadi 4 viikon suunnitelma jossa sisältö on niin aitoa ettei se näytä markkinoinnilta.' },
-    { category: 'Myynti', text: 'Asiakas on ostanut samaa tuotetta samalla määrällä 3 vuotta. Hän on allerginen kaikelle uudelle, epäilee kaikkea erilaista ja pitää muutosta henkilökohtaisena loukkauksena. Myy hänelle lisäpalvelu niin ettei hän huomaa ostavansa mitään uutta.' },
-    { category: 'Kilpailu', text: 'Kilpailija kopioi tuotteenne ja myy 30 % halvemmalla. Kirjoita kolme vastastrategiaa: "hintasota" (jonka häviätte), "erottautuminen" (joka kestää vuoden) ja "jotain ihan muuta" (joka on hullu mutta saattaisi toimia). Suosittele yksi ja puolusta se.' },
-    { category: 'Hinnoittelu', text: 'Hinnoittele kuvitteellinen palvelu kolmella tavalla: tuntihinta (kukaan ei tiedä montako tuntia menee), kiinteä hinta (lisätyötä tulee aina) ja "maksa sen mukaan mitä hyödyit". Kirjoita jokaisen malli asiakkaan sisäisenä ajatuksena: mitä hän oikeasti miettii kuullessaan hinnan.' }
-];
-
-const TOTAL_PROMPTS = prompts.length;
-let usedIndices = [];
-let promptsGenerated = 0;
-
-function generatePrompt() {
-    if (usedIndices.length >= TOTAL_PROMPTS) usedIndices = [];
-
-    let idx;
-    do {
-        idx = Math.floor(Math.random() * TOTAL_PROMPTS);
-    } while (usedIndices.includes(idx));
-
-    usedIndices.push(idx);
-    promptsGenerated++;
-
-    const prompt = prompts[idx];
-    const display = document.getElementById('promptDisplay');
-    const p = display.querySelector('p');
-
-    p.style.opacity = '0';
-    setTimeout(() => {
-        p.innerHTML = `<span class="prompt-category">${prompt.category}</span>"${prompt.text}"`;
-        p.style.opacity = '1';
-    }, 200);
-
-    const counter = document.getElementById('promptCounter');
-    counter.textContent = `${promptsGenerated} generoitu`;
-}
-
-// Theme switcher
-const themeFeedback = {
-    bright: [
-        'Ahh, paljon parempi! Nyt näkee sentään jotain. 😎',
-        'Silmät kiittää! Tervetuloa valoisalle puolelle. ☀️',
-        'Hyvä valinta — vitamiini D suoraan näytöltä!'
-    ],
-    default: [
-        'Turvallinen valinta. Respect. 🤝',
-        'Ei liian kirkas, ei liian synkkä — kultainen keskitie.',
-        'Klassikko on klassikko.'
-    ],
-    doom: [
-        'Ah, näen että olet kulttuurin ihminen. 🖤',
-        'Tervetuloa pimeälle puolelle. Verta ja koodiriviä.',
-        'Kaikki toivo jätetään tästä eteenpäin... mutta CV on silti hyvä.'
-    ]
-};
-
-function setTheme(theme) {
-    const html = document.documentElement;
-
-    if (theme === 'default') {
-        html.removeAttribute('data-theme');
-    } else {
-        html.setAttribute('data-theme', theme);
+    function generatePrompt() {
+        if (usedIndices.length >= prompts.length) usedIndices = [];
+        let idx;
+        do { idx = Math.floor(Math.random() * prompts.length); } while (usedIndices.includes(idx));
+        usedIndices.push(idx);
+        promptsGenerated++;
+        const prompt = prompts[idx];
+        const display = document.getElementById('promptDisplay');
+        const p = display.querySelector('p');
+        p.style.opacity = '0';
+        setTimeout(() => {
+            p.innerHTML = '<span class="prompt-category">' + prompt.category + '</span>"' + prompt.text + '"';
+            p.style.opacity = '1';
+        }, 200);
+        document.getElementById('promptCounter').textContent = promptsGenerated + ' generoitu';
     }
 
-    // Update active button
-    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    // Theme
+    const themes = {
+        bright: { feedback: 'Parempi? Silmät kiittävät.' },
+        default: { feedback: '' },
+        doom: { feedback: 'Koodarin valinta. Respect.' }
+    };
 
-    // Show random feedback
-    const messages = themeFeedback[theme];
-    const msg = messages[Math.floor(Math.random() * messages.length)];
-    const feedbackEl = document.getElementById('themeFeedback');
-    feedbackEl.style.opacity = '0';
-    setTimeout(() => {
-        feedbackEl.textContent = msg;
-        feedbackEl.style.opacity = '1';
-    }, 150);
-
-    // Save preference
-    localStorage.setItem('jm-theme', theme);
-}
-
-// Restore saved theme
-(function() {
-    const saved = localStorage.getItem('jm-theme');
-    if (saved && saved !== 'default') {
-        document.documentElement.setAttribute('data-theme', saved);
-        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-        const buttons = document.querySelectorAll('.theme-btn');
-        if (saved === 'bright') buttons[0].classList.add('active');
-        if (saved === 'doom') buttons[2].classList.add('active');
+    function setTheme(theme) {
+        const root = document.documentElement;
+        root.setAttribute('data-theme', theme === 'default' ? '' : theme);
+        document.querySelectorAll('.theme-btn').forEach((btn, i) => {
+            btn.classList.toggle('active', ['bright','default','doom'][i] === theme);
+        });
+        document.getElementById('themeFeedback').textContent = themes[theme].feedback;
+        localStorage.setItem('theme', theme);
     }
-})();
+
+    // Restore theme
+    const saved = localStorage.getItem('theme');
+    if (saved && saved !== 'default') setTheme(saved);
+
+    // Scroll nav
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Hamburger
+    document.getElementById('hamburger').addEventListener('click', () => {
+        document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // Fade in
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 
 </body>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osaaminen — Jesse Mattila</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #1a1a2e; --accent: #e94560; --accent-light: #ff6b81;
+            --bg: #0f0f1a; --card: #16213e; --card-hover: #1a2744;
+            --text: #eaeaea; --text-muted: #8892b0;
+            --gradient: linear-gradient(135deg, #e94560, #0f3460);
+            --gradient-accent: linear-gradient(135deg, #e94560 0%, #ff6b81 50%, #0f3460 100%);
+        }
+        [data-theme="bright"] { --primary: #f0f4ff; --accent: #ff6b2b; --accent-light: #ff8f5e; --bg: #fefefe; --card: #ffffff; --card-hover: #fff5ee; --text: #1a1a2e; --text-muted: #555b6e; --gradient: linear-gradient(135deg, #ff6b2b, #ffc107); --gradient-accent: linear-gradient(135deg, #ff6b2b 0%, #ff9a44 50%, #ffc107 100%); }
+        [data-theme="bright"] nav { background: rgba(254,254,254,0.85); border-bottom: 1px solid rgba(255,107,43,0.15); }
+        [data-theme="bright"] .hamburger span { background: var(--text); }
+        [data-theme="bright"] .skill-card, [data-theme="bright"] .value-card { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        [data-theme="bright"] .skill-card:hover, [data-theme="bright"] .value-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        [data-theme="bright"] .story-block { border-color: rgba(0,0,0,0.06); }
+        [data-theme="bright"] .nav-rekry-link { background: linear-gradient(135deg, #ff6b2b, #ff9a44) !important; box-shadow: 0 0 10px rgba(255,107,43,0.4); animation: vegasPulseBright 2s ease-in-out infinite alternate; }
+        @keyframes vegasPulseBright { 0% { box-shadow: 0 0 8px rgba(255,107,43,0.4); } 100% { box-shadow: 0 0 15px rgba(255,107,43,0.7), 0 0 30px rgba(255,107,43,0.3); } }
+        [data-theme="doom"] { --primary: #0a0a0a; --accent: #cc0000; --accent-light: #ff1a1a; --bg: #050505; --card: #0d0d0d; --card-hover: #141010; --text: #c8c8c8; --text-muted: #666; --gradient: linear-gradient(135deg, #cc0000, #4a0000); --gradient-accent: linear-gradient(135deg, #cc0000 0%, #ff1a1a 50%, #4a0000 100%); }
+        [data-theme="doom"] nav { background: rgba(5,5,5,0.9); border-bottom: 1px solid rgba(204,0,0,0.2); }
+        [data-theme="doom"] .skill-card, [data-theme="doom"] .value-card { border-color: rgba(204,0,0,0.08); }
+        [data-theme="doom"] .skill-card:hover, [data-theme="doom"] .value-card:hover { border-color: rgba(204,0,0,0.3); box-shadow: 0 20px 40px rgba(204,0,0,0.08); }
+        [data-theme="doom"] .nav-rekry-link { background: linear-gradient(135deg, #cc0000, #ff1a1a) !important; box-shadow: 0 0 10px rgba(204,0,0,0.5); animation: vegasPulseDoom 2s ease-in-out infinite alternate; }
+        @keyframes vegasPulseDoom { 0% { box-shadow: 0 0 8px rgba(204,0,0,0.5); } 100% { box-shadow: 0 0 15px rgba(255,26,26,0.8), 0 0 30px rgba(204,0,0,0.4); } }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(15,15,26,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(233,69,96,0.15); transition: all 0.3s ease; }
+        nav.scrolled { background: rgba(15,15,26,0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+        .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .nav-left { display: flex; align-items: center; gap: 0.75rem; }
+        .nav-logo { font-weight: 800; font-size: 1.25rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; padding: 0.5rem; cursor: pointer; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--text); }
+        .nav-links a.active::after { width: 100%; }
+        .nav-rekry-li { margin-left: 0.5rem; }
+        .nav-rekry-link { background: linear-gradient(135deg, #e94560, #ff6b81) !important; color: white !important; padding: 0.45rem 1.1rem !important; border-radius: 8px !important; font-weight: 700 !important; font-size: 0.82rem !important; text-decoration: none; animation: vegasPulse 2s ease-in-out infinite alternate; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 0 10px rgba(233,69,96,0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .nav-rekry-link::after { display: none !important; }
+        @keyframes vegasPulse { 0% { box-shadow: 0 0 8px rgba(233,69,96,0.4); } 100% { box-shadow: 0 0 15px rgba(233,69,96,0.7), 0 0 30px rgba(233,69,96,0.3); } }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; }
+        .hamburger span { width: 25px; height: 2px; background: var(--text); transition: all 0.3s; }
+
+        /* ===== CONTENT ===== */
+        .page-header { padding: 8rem 2rem 3rem; max-width: 1200px; margin: 0 auto; }
+        .section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); font-weight: 600; margin-bottom: 0.75rem; }
+        .page-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; }
+        .page-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; line-height: 1.7; }
+
+        section { padding: 0 2rem 4rem; max-width: 1200px; margin: 0 auto; }
+
+        /* Skills grid */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .skill-card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 2rem; transition: all 0.3s ease; }
+        .skill-card:hover { transform: translateY(-3px); border-color: rgba(233,69,96,0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .skill-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .skill-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .skill-icon.analytics { background: rgba(99,102,241,0.15); }
+        .skill-icon.logistics { background: rgba(16,185,129,0.15); }
+        .skill-icon.ai { background: rgba(233,69,96,0.15); }
+        .skill-icon.process { background: rgba(245,158,11,0.15); }
+        .skill-icon.law { background: rgba(168,85,247,0.15); }
+        .skill-name { font-weight: 700; font-size: 1.05rem; }
+        .skill-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .skill-tag { background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 0.25rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; }
+        [data-theme="bright"] .skill-tag { background: rgba(0,0,0,0.04); }
+
+        /* Values */
+        .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .value-card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 2rem; transition: all 0.3s ease; }
+        .value-card:hover { transform: translateY(-3px); border-color: rgba(233,69,96,0.2); }
+        .value-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .value-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .value-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+        /* Story */
+        .story-block { border-left: 3px solid var(--accent); padding: 1.5rem 0 1.5rem 2rem; margin-top: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .story-block:last-child { border-bottom: none; }
+        .story-block h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .story-block p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+        .story-block .highlight { color: var(--text); font-weight: 600; }
+
+        /* Quote */
+        .quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+        .quote { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 1.5rem; }
+        .quote p { font-style: italic; font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.5rem; }
+        .quote cite { color: var(--text-muted); font-size: 0.8rem; font-style: normal; }
+
+        footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy { color: var(--text-muted); font-size: 0.75rem; opacity: 0.6; }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links { display: none; position: fixed; top: 70px; left: 0; right: 0; flex-direction: column; background: rgba(15,15,26,0.98); padding: 2rem; gap: 1.5rem; }
+            .nav-links.open { display: flex; }
+            .quotes { grid-template-columns: 1fr; }
+        }
+
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<nav id="navbar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">Jesse Mattila</a>
+            <button class="hamburger" id="hamburger" aria-label="Valikko"><span></span><span></span><span></span></button>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="osaaminen.html" class="active">Osaaminen</a></li>
+            <li><a href="tyokalut.html">Työkalut</a></li>
+            <li class="nav-rekry-li"><a href="rekrytoijalle.html" class="nav-rekry-link">Rekrytoijalle</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-header">
+    <p class="section-label fade-in">Osaaminen & arvot</p>
+    <h1 class="page-title fade-in">Mitä tuon pöytään</h1>
+    <p class="page-desc fade-in">KTM-tutkinnon ja käytännön kokemuksen yhdistelmä. Painotus analytiikassa, prosesseissa ja tekoälyssä.</p>
+</div>
+
+<section>
+    <div class="skills-grid">
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon analytics">&#128200;</div>
+                <div class="skill-name">Talousanalyysi & Controller</div>
+            </div>
+            <p class="skill-desc">Kustannuslaskenta, sopimusanalyysi, ROI-laskelmat, yksikkö- ja vaihtoehtoiskustannukset. Osaan kaivaa datan esiin ja kertoa mitä se tarkoittaa euroina.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Kustannuslaskenta</span>
+                <span class="skill-tag">ROI-analyysi</span>
+                <span class="skill-tag">Budjetointi</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon logistics">&#128666;</div>
+                <div class="skill-name">Logistiikka & Toimitusketju</div>
+            </div>
+            <p class="skill-desc">Ajojärjestely 10 ajoneuvolle, kuljetuskustannusoptimointi, GPS-data-analyysi, toimipistekohtaiset vertailut. Käytännön kokemus kentältä.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Ajojärjestely</span>
+                <span class="skill-tag">Kustannusoptimointi</span>
+                <span class="skill-tag">GPS-data</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon ai">&#129302;</div>
+                <div class="skill-name">Tekoäly & Automaatio</div>
+            </div>
+            <p class="skill-desc">AI on päivittäinen työkaluni. Ohjaan tekoälyä rakentamaan analyysejä, työkaluja ja automaatioita — en koodaa tyhjästä, mutta tiedän mitä pyytää ja miten arvioida tulosta.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Claude / GPT</span>
+                <span class="skill-tag">Python + AI</span>
+                <span class="skill-tag">Automaatio</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon process">&#9881;</div>
+                <div class="skill-name">Prosessikehitys</div>
+            </div>
+            <p class="skill-desc">Tunnistan pullonkaulat, rakennan seurantamallit ja standardoin työtavat. Kaaoksesta järjestelmäksi — niin että homma pyörii ilman minua.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Prosessiketjut</span>
+                <span class="skill-tag">Standardointi</span>
+                <span class="skill-tag">Kehitysideat</span>
+            </div>
+        </div>
+
+        <div class="skill-card fade-in">
+            <div class="skill-header">
+                <div class="skill-icon law">&#9878;</div>
+                <div class="skill-name">Talousoikeus</div>
+            </div>
+            <p class="skill-desc">KTM-pääaine. Sopimusoikeus, yhtiöoikeus, vero-oikeus. Ymmärrän liiketoiminnan juridisen kehyksen ja sääntelyympäristön.</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Sopimusoikeus</span>
+                <span class="skill-tag">Yhtiöoikeus</span>
+                <span class="skill-tag">KTM</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mitä arvostan -->
+<section>
+    <p class="section-label fade-in">Arvot</p>
+    <h2 class="page-title fade-in" style="font-size: 1.8rem;">Millaista työpaikkaa etsin</h2>
+
+    <div class="values-grid">
+        <div class="value-card fade-in">
+            <div class="value-icon">&#128269;</div>
+            <h3>Data > mutuilu</h3>
+            <p>Päätösten pitää perustua lukuihin, ei tunteisiin. Jos kukaan ei tiedä paljonko jokin maksaa, se on ensimmäinen asia joka pitää selvittää.</p>
+        </div>
+        <div class="value-card fade-in">
+            <div class="value-icon">&#128172;</div>
+            <h3>Suorapuheisuus</h3>
+            <p>Etsin paikkaa jossa analyyttisyys, oma-aloitteisuus ja suorapuheisuus ovat vahvuuksia — eivät ongelmia.</p>
+        </div>
+        <div class="value-card fade-in">
+            <div class="value-icon">&#127793;</div>
+            <h3>Potentiaali > historia</h3>
+            <p>Titteli ei kerro mitä ihminen osaa. Tein kuljetuskustannusanalyysin jota kukaan ei pyytänyt, koska näin tarpeen. Se kertoo enemmän kuin nimike.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Tarina -->
+<section>
+    <p class="section-label fade-in">Tarina</p>
+    <h2 class="page-title fade-in" style="font-size: 1.8rem;">Miksi juuri minä?</h2>
+
+    <div class="story-block fade-in">
+        <h3>Keskeytti ja palasi</h3>
+        <p>Keskeytin kauppiksen 108 opintopisteen kohdalla. Moni olisi jäänyt siihen. Minä palasin — ja vedin <span class="highlight">maisterin valmiiksi 14 kuukaudessa työn ohessa</span>.</p>
+    </div>
+
+    <div class="story-block fade-in">
+        <h3>Tekee ilman toimeksiantoa</h3>
+        <p>Meltexillä en tyytynyt myyjän rooliin. Tein kuljetuskustannusanalyysin jota kukaan ei pyytänyt, rakensin seurantajärjestelmän joka toimii ilman minua, ja vein <span class="highlight">50+ kehitysideaa johdolle</span>.</p>
+    </div>
+
+    <div class="story-block fade-in">
+        <h3>AI on työkalu, ei temppu</h3>
+        <p>Rakennan AI-avusteisesti toimivia työkaluja ja automaatioita. En koodaa ilman tekoälyä — mutta tiedän mitä pyytää, miten arvioida tulosta, ja milloin tulos ei ole riittävän hyvä. <span class="highlight">Lopputulos ratkaisee — prosessi on uusi.</span></p>
+    </div>
+
+    <div class="quotes">
+        <div class="quote fade-in">
+            <p>"Poikkeuksellinen kyky nähdä asioita joita muut ei näe ja perustella kantansa järkevästi."</p>
+            <cite>— Esimies</cite>
+        </div>
+        <div class="quote fade-in">
+            <p>"En haluaisi istua toisella puolella neuvottelupöytää."</p>
+            <cite>— Esimies</cite>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-links">
+        <a href="mailto:jesse.mattila@icloud.com">jesse.mattila@icloud.com</a>
+        <a href="https://www.linkedin.com/in/jessemattila/">LinkedIn</a>
+        <a href="https://github.com/JesseMattila">GitHub</a>
+    </div>
+    <div class="footer-copy">Jesse Mattila 2026</div>
+</footer>
+
+<script>
+    // Restore theme
+    const saved = localStorage.getItem('theme');
+    if (saved && saved !== 'default') document.documentElement.setAttribute('data-theme', saved);
+
+    // Scroll nav
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Hamburger
+    document.getElementById('hamburger').addEventListener('click', () => {
+        document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // Fade in
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

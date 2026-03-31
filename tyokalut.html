@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Työkalut — Jesse Mattila</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #1a1a2e; --accent: #e94560; --accent-light: #ff6b81;
+            --bg: #0f0f1a; --card: #16213e; --card-hover: #1a2744;
+            --text: #eaeaea; --text-muted: #8892b0;
+            --gradient: linear-gradient(135deg, #e94560, #0f3460);
+            --gradient-accent: linear-gradient(135deg, #e94560 0%, #ff6b81 50%, #0f3460 100%);
+        }
+        [data-theme="bright"] { --primary: #f0f4ff; --accent: #ff6b2b; --accent-light: #ff8f5e; --bg: #fefefe; --card: #ffffff; --card-hover: #fff5ee; --text: #1a1a2e; --text-muted: #555b6e; --gradient: linear-gradient(135deg, #ff6b2b, #ffc107); --gradient-accent: linear-gradient(135deg, #ff6b2b 0%, #ff9a44 50%, #ffc107 100%); }
+        [data-theme="bright"] nav { background: rgba(254,254,254,0.85); border-bottom: 1px solid rgba(255,107,43,0.15); }
+        [data-theme="bright"] .hamburger span { background: var(--text); }
+        [data-theme="bright"] .tool-card { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        [data-theme="bright"] .tool-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        [data-theme="bright"] .tech-tag { background: rgba(0,0,0,0.04); }
+        [data-theme="bright"] .nav-rekry-link { background: linear-gradient(135deg, #ff6b2b, #ff9a44) !important; box-shadow: 0 0 10px rgba(255,107,43,0.4); animation: vegasPulseBright 2s ease-in-out infinite alternate; }
+        @keyframes vegasPulseBright { 0% { box-shadow: 0 0 8px rgba(255,107,43,0.4); } 100% { box-shadow: 0 0 15px rgba(255,107,43,0.7), 0 0 30px rgba(255,107,43,0.3); } }
+        [data-theme="doom"] { --primary: #0a0a0a; --accent: #cc0000; --accent-light: #ff1a1a; --bg: #050505; --card: #0d0d0d; --card-hover: #141010; --text: #c8c8c8; --text-muted: #666; --gradient: linear-gradient(135deg, #cc0000, #4a0000); --gradient-accent: linear-gradient(135deg, #cc0000 0%, #ff1a1a 50%, #4a0000 100%); }
+        [data-theme="doom"] nav { background: rgba(5,5,5,0.9); border-bottom: 1px solid rgba(204,0,0,0.2); }
+        [data-theme="doom"] .tool-card { border-color: rgba(204,0,0,0.08); }
+        [data-theme="doom"] .tool-card:hover { border-color: rgba(204,0,0,0.3); box-shadow: 0 20px 40px rgba(204,0,0,0.08); }
+        [data-theme="doom"] .nav-rekry-link { background: linear-gradient(135deg, #cc0000, #ff1a1a) !important; box-shadow: 0 0 10px rgba(204,0,0,0.5); animation: vegasPulseDoom 2s ease-in-out infinite alternate; }
+        @keyframes vegasPulseDoom { 0% { box-shadow: 0 0 8px rgba(204,0,0,0.5); } 100% { box-shadow: 0 0 15px rgba(255,26,26,0.8), 0 0 30px rgba(204,0,0,0.4); } }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(15,15,26,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(233,69,96,0.15); transition: all 0.3s ease; }
+        nav.scrolled { background: rgba(15,15,26,0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+        .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .nav-left { display: flex; align-items: center; gap: 0.75rem; }
+        .nav-logo { font-weight: 800; font-size: 1.25rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; padding: 0.5rem; cursor: pointer; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--text); }
+        .nav-links a.active::after { width: 100%; }
+        .nav-rekry-li { margin-left: 0.5rem; }
+        .nav-rekry-link { background: linear-gradient(135deg, #e94560, #ff6b81) !important; color: white !important; padding: 0.45rem 1.1rem !important; border-radius: 8px !important; font-weight: 700 !important; font-size: 0.82rem !important; text-decoration: none; animation: vegasPulse 2s ease-in-out infinite alternate; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 0 10px rgba(233,69,96,0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .nav-rekry-link::after { display: none !important; }
+        @keyframes vegasPulse { 0% { box-shadow: 0 0 8px rgba(233,69,96,0.4); } 100% { box-shadow: 0 0 15px rgba(233,69,96,0.7), 0 0 30px rgba(233,69,96,0.3); } }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; }
+        .hamburger span { width: 25px; height: 2px; background: var(--text); transition: all 0.3s; }
+
+        /* ===== CONTENT ===== */
+        .page-header { padding: 8rem 2rem 3rem; max-width: 1200px; margin: 0 auto; }
+        .section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); font-weight: 600; margin-bottom: 0.75rem; }
+        .page-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; }
+        .page-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 700px; line-height: 1.7; }
+
+        section { padding: 0 2rem 4rem; max-width: 1200px; margin: 0 auto; }
+
+        /* Category header */
+        .category-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .category-header h2 { font-size: 1.2rem; font-weight: 700; white-space: nowrap; }
+        .category-line { flex-grow: 1; height: 1px; background: rgba(255,255,255,0.08); }
+        [data-theme="bright"] .category-line { background: rgba(0,0,0,0.08); }
+        .category-badge { background: rgba(233,69,96,0.15); color: var(--accent-light); padding: 0.2rem 0.7rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+
+        /* Tool cards */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+        .tool-card { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 2rem; transition: all 0.3s ease; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .tool-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient); opacity: 0; transition: opacity 0.3s; }
+        .tool-card:hover { transform: translateY(-4px); border-color: rgba(233,69,96,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .tool-card:hover::before { opacity: 1; }
+
+        .tool-status { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-dot.live { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.4); }
+        .status-dot.coming { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+        .status-live { color: #10b981; }
+        .status-coming { color: #f59e0b; }
+
+        .tool-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .tool-card .tool-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; flex-grow: 1; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+        .tech-tag { background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 0.2rem 0.6rem; border-radius: 5px; font-size: 0.7rem; font-weight: 500; }
+        .tool-link { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.25rem; padding: 0.7rem 1.5rem; background: var(--gradient); color: white; text-decoration: none; font-size: 0.85rem; font-weight: 700; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(233,69,96,0.25); align-self: flex-start; }
+        .tool-link:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(233,69,96,0.4); }
+        .tool-link.outline { background: transparent; border: 1px solid rgba(255,255,255,0.15); box-shadow: none; color: var(--text-muted); }
+        .tool-link.outline:hover { border-color: var(--accent); color: var(--text); background: rgba(233,69,96,0.05); box-shadow: none; }
+
+        /* AI disclaimer */
+        .ai-note { background: var(--card); border: 1px solid rgba(233,69,96,0.15); border-radius: 12px; padding: 1.5rem 2rem; margin-top: 3rem; display: flex; gap: 1rem; align-items: flex-start; }
+        .ai-note-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+        .ai-note p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+        .ai-note strong { color: var(--text); }
+
+        footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy { color: var(--text-muted); font-size: 0.75rem; opacity: 0.6; }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links { display: none; position: fixed; top: 70px; left: 0; right: 0; flex-direction: column; background: rgba(15,15,26,0.98); padding: 2rem; gap: 1.5rem; }
+            .nav-links.open { display: flex; }
+            .tools-grid { grid-template-columns: 1fr; }
+        }
+
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<nav id="navbar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">Jesse Mattila</a>
+            <button class="hamburger" id="hamburger" aria-label="Valikko"><span></span><span></span><span></span></button>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="osaaminen.html">Osaaminen</a></li>
+            <li><a href="tyokalut.html" class="active">Työkalut</a></li>
+            <li class="nav-rekry-li"><a href="rekrytoijalle.html" class="nav-rekry-link">Rekrytoijalle</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-header">
+    <p class="section-label fade-in">Rakennettu, ei vain suunniteltu</p>
+    <h1 class="page-title fade-in">Työkalut</h1>
+    <p class="page-desc fade-in">Interaktiivisia demoja ja Python-työkaluja oikeisiin ongelmiin. Kaikki rakennettu AI-avusteisesti — tärkeintä on lopputulos, ei se kirjoitinko jokaisen rivin itse.</p>
+</div>
+
+<!-- Web-demot -->
+<section>
+    <div class="category-header fade-in">
+        <h2>Web-demot</h2>
+        <div class="category-line"></div>
+        <span class="category-badge">HTML / JS</span>
+    </div>
+
+    <div class="tools-grid">
+        <div class="tool-card fade-in">
+            <div class="tool-status">
+                <span class="status-dot live"></span>
+                <span class="status-live">Live</span>
+            </div>
+            <h3>Kuljetuskustannuslaskuri</h3>
+            <p class="tool-desc">Interaktiivinen dashboard 10 ajoneuvon kustannusseurantaan. Kuukausitabit, trendinuolet, kategoriaryhmittely ja simulaattori lastausaikojen, kuljettajavaihtojen ja poissaolojen kustannusvaikutuksille.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">HTML/CSS/JS</span>
+                <span class="tech-tag">Chart.js</span>
+                <span class="tech-tag">Simulaattori</span>
+                <span class="tech-tag">Anonymisoitu data</span>
+            </div>
+            <a href="kuljetuskustannuslaskuri.html" class="tool-link">Kokeile live-versiota &#8594;</a>
+        </div>
+
+        <div class="tool-card fade-in">
+            <div class="tool-status">
+                <span class="status-dot coming"></span>
+                <span class="status-coming">Tulossa</span>
+            </div>
+            <h3>Toimittajavertailu</h3>
+            <p class="tool-desc">Painotettu pisteytystyökalu toimittajien vertailuun. Syötä tarjoukset, aseta kriteerien painot (hinta, laatu, toimitusaika, joustavuus) ja saat pisteytyksen + visualisoinnin.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">HTML/CSS/JS</span>
+                <span class="tech-tag">Chart.js</span>
+                <span class="tech-tag">Radar chart</span>
+            </div>
+            <span class="tool-link outline">Tulossa pian</span>
+        </div>
+    </div>
+</section>
+
+<!-- Python-työkalut -->
+<section>
+    <div class="category-header fade-in">
+        <h2>Python-työkalut</h2>
+        <div class="category-line"></div>
+        <span class="category-badge">Python</span>
+    </div>
+
+    <div class="tools-grid">
+        <div class="tool-card fade-in">
+            <div class="tool-status">
+                <span class="status-dot coming"></span>
+                <span class="status-coming">Tulossa</span>
+            </div>
+            <h3>Toimittajavertailu (CLI)</h3>
+            <p class="tool-desc">Komentorivityökalu toimittajien vertailuun CSV-datasta. Painotettu pisteytys, tulosyhteenveto ja matplotlib-visualisointi. Sama logiikka kuin web-versiossa, mutta skriptattavissa.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">pandas</span>
+                <span class="tech-tag">matplotlib</span>
+                <span class="tech-tag">CLI</span>
+            </div>
+            <span class="tool-link outline">Tulossa pian</span>
+        </div>
+
+        <div class="tool-card fade-in">
+            <div class="tool-status">
+                <span class="status-dot coming"></span>
+                <span class="status-coming">Tulossa</span>
+            </div>
+            <h3>Sopimusanalysaattori</h3>
+            <p class="tool-desc">Lukee sopimustekstin (PDF), tunnistaa riskilausekkeet, hintamekanismit ja indeksiehdot AI:n avulla. Tuottaa tiivistelmän ja nostaa esiin epätavalliset ehdot.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Claude API</span>
+                <span class="tech-tag">PDF-parsinta</span>
+            </div>
+            <span class="tool-link outline">Suunnitteilla</span>
+        </div>
+    </div>
+
+    <!-- AI note -->
+    <div class="ai-note fade-in">
+        <div class="ai-note-icon">&#129302;</div>
+        <div>
+            <p><strong>Kaikki työkalut on rakennettu AI-avusteisesti.</strong> Käytän Claudea ja GPT:tä päivittäin koodin tuottamiseen, analysointiin ja debuggaukseen. En ole koodari — olen liiketoimintaosaaja joka käyttää tekoälyä työkaluna rakentaakseen ratkaisuja oikeisiin ongelmiin. Lähdekoodi on avoimesti GitHubissa.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-links">
+        <a href="mailto:jesse.mattila@icloud.com">jesse.mattila@icloud.com</a>
+        <a href="https://www.linkedin.com/in/jessemattila/">LinkedIn</a>
+        <a href="https://github.com/JesseMattila">GitHub</a>
+    </div>
+    <div class="footer-copy">Jesse Mattila 2026</div>
+</footer>
+
+<script>
+    // Restore theme
+    const saved = localStorage.getItem('theme');
+    if (saved && saved !== 'default') document.documentElement.setAttribute('data-theme', saved);
+
+    // Scroll nav
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Hamburger
+    document.getElementById('hamburger').addEventListener('click', () => {
+        document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // Fade in
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
