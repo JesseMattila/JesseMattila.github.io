@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toimittajavertailu — Landed Cost Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface2: #242836;
+            --border: #2e3348;
+            --text: #e4e5ea;
+            --text-dim: #8b8fa3;
+            --accent: #3b82f6;
+            --green: #22c55e;
+            --red: #ef4444;
+            --yellow: #eab308;
+            --cyan: #06b6d4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+        }
+
+        header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(100vh - 80px);
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar h2 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.8rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .control-group label .value {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: 2px solid var(--bg);
+        }
+
+        .profiilit {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .profiilit button {
+            flex: 1;
+            padding: 0.5rem 0.3rem;
+            font-size: 0.65rem;
+            font-family: inherit;
+            background: var(--surface2);
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .profiilit button:hover { border-color: var(--accent); color: var(--text); }
+        .profiilit button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        .painot-summa {
+            font-size: 0.75rem;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        .painot-summa.ok { color: var(--green); }
+        .painot-summa.error { color: var(--red); }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 1.5rem 0;
+        }
+
+        /* ── Incoterms override ── */
+        .incoterms-overrides {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .override-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.35rem 0;
+            font-size: 0.7rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .override-row .nimi {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 0.5rem;
+        }
+
+        .override-row select {
+            font-family: inherit;
+            font-size: 0.7rem;
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.3rem;
+        }
+
+        /* ── Main content ── */
+        .main {
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        /* ── Ranking table ── */
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+            margin-bottom: 2rem;
+        }
+
+        .ranking-table th {
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .ranking-table th.num { text-align: right; }
+
+        .ranking-table td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .ranking-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+        .ranking-table tr:hover td { background: var(--surface2); }
+
+        .ranking-table tr.rank-1 td { border-left: 3px solid var(--green); }
+        .ranking-table tr.rank-2 td,
+        .ranking-table tr.rank-3 td { border-left: 3px solid var(--accent); }
+        .ranking-table tr.moq-fail td { opacity: 0.6; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .badge-moq { background: rgba(239,68,68,0.15); color: var(--red); }
+        .badge-1 { background: rgba(34,197,94,0.15); color: var(--green); }
+
+        .coface-link {
+            display: inline-flex;
+            gap: 0.25rem;
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+
+        .coface-link:hover { opacity: 0.7; }
+
+        .coface-badge {
+            display: inline-block;
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .pisteet-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pisteet-bar .bar {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .pisteet-bar .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease, background 0.4s ease;
+        }
+
+        .pisteet-bar .score { font-weight: 700; min-width: 2rem; text-align: right; }
+
+        /* ── Radar grid ── */
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .radar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .radar-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+
+        .radar-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .radar-card.rank-1 { border-color: var(--green); }
+        .radar-card.rank-bottom { border-color: var(--red); border-style: dashed; }
+
+        .radar-card .card-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .radar-card .card-sub {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .radar-card canvas {
+            max-height: 180px;
+        }
+
+        .card-coface {
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .card-coface-badges {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 0.4rem;
+            justify-content: center;
+        }
+
+        .card-coface-desc {
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+            margin-bottom: 0.4rem;
+            text-align: center;
+        }
+
+        .card-coface-link {
+            display: block;
+            text-align: center;
+            font-size: 0.62rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.15s;
+        }
+
+        .card-coface-link:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        /* ── Volume chart ── */
+        .volume-chart-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .volume-chart-container canvas {
+            max-height: 400px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1200px) {
+            .radar-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 900px) {
+            .layout { grid-template-columns: 1fr; }
+            .sidebar {
+                position: static;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .radar-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Toimittajavertailu — Landed Cost Calculator</h1>
+    <p>Vertaa 10 toimittajaa kokonaiskustannuksen perusteella. Säädä volyymia, painotuksia ja Incoterms-ehtoja.</p>
+</header>
+
+<div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Tilausvolyymi</h2>
+        <div class="control-group">
+            <label>Kappalemäärä <span class="value" id="qty-value">1000</span></label>
+            <input type="range" id="qty-slider" min="100" max="10000" step="100" value="1000">
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>Painotusprofiili</h2>
+        <div class="profiilit">
+            <button data-profile="tasapainoinen" class="active">Tasapainoinen</button>
+            <button data-profile="hintakriittinen">Hintakriittinen</button>
+            <button data-profile="laatukriittinen">Laatukriittinen</button>
+        </div>
+
+        <div class="control-group">
+            <label>Landed cost <span class="value" id="w-landed-value">25%</span></label>
+            <input type="range" id="w-landed" min="0" max="60" step="5" value="25">
+        </div>
+        <div class="control-group">
+            <label>Laatu <span class="value" id="w-laatu-value">25%</span></label>
+            <input type="range" id="w-laatu" min="0" max="60" step="5" value="25">
+        </div>
+        <div class="control-group">
+            <label>Toimitus <span class="value" id="w-toimitus-value">20%</span></label>
+            <input type="range" id="w-toimitus" min="0" max="60" step="5" value="20">
+        </div>
+        <div class="control-group">
+            <label>Riski <span class="value" id="w-riski-value">20%</span></label>
+            <input type="range" id="w-riski" min="0" max="60" step="5" value="20">
+        </div>
+        <div class="control-group">
+            <label>Maksuehto <span class="value" id="w-maksuehto-value">10%</span></label>
+            <input type="range" id="w-maksuehto" min="0" max="60" step="5" value="10">
+        </div>
+        <div class="painot-summa ok" id="painot-summa">Yhteensä: 100%</div>
+
+        <div class="divider"></div>
+
+        <h2>Incoterms-override</h2>
+        <div class="incoterms-overrides" id="incoterms-overrides"></div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <h2 class="section-title">Ranking</h2>
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Toimittaja</th>
+                    <th>Maa</th>
+                    <th>Ehto</th>
+                    <th class="num">Yksikkö</th>
+                    <th class="num">Landed/kpl</th>
+                    <th class="num">Yhteensä</th>
+                    <th>Coface</th>
+                    <th style="width:180px">Pisteet</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-body"></tbody>
+        </table>
+
+        <h2 class="section-title">Toimittajaprofiilit</h2>
+        <div class="radar-grid" id="radar-grid"></div>
+
+        <h2 class="section-title">Volyymi-optimointikäyrä</h2>
+        <div class="volume-chart-container">
+            <canvas id="volume-chart"></canvas>
+        </div>
+    </main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+
+// Coface-luokitukset: A1 (paras) → A2 → A3 → A4 → B → C → D → E (huonoin)
+const COFACE_NUMERO = { A1: 1, A2: 2, A3: 3, A4: 4, B: 5, C: 6, D: 7, E: 8 };
+
+const MAAT = {
+    "Suomi":        { rahti: 150,  tulli_pct: 0,    lisaaika_pv: 1,  eu: true,  coface_maa: "A3", coface_bisnes: "A1", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/finland" },
+    "Viro":         { rahti: 300,  tulli_pct: 0,    lisaaika_pv: 2,  eu: true,  coface_maa: "A3", coface_bisnes: "A1", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/estonia" },
+    "Liettua":      { rahti: 450,  tulli_pct: 0,    lisaaika_pv: 3,  eu: true,  coface_maa: "A4", coface_bisnes: "A1", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/lithuania" },
+    "Puola":        { rahti: 700,  tulli_pct: 0,    lisaaika_pv: 4,  eu: true,  coface_maa: "A3", coface_bisnes: "A2", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/poland" },
+    "Saksa":        { rahti: 800,  tulli_pct: 0,    lisaaika_pv: 4,  eu: true,  coface_maa: "A3", coface_bisnes: "A1", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/germany" },
+    "Turkki":       { rahti: 1800, tulli_pct: 0.04, lisaaika_pv: 12, eu: false, coface_maa: "C",  coface_bisnes: "A4", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/turkey" },
+    "Saudi-Arabia": { rahti: 2800, tulli_pct: 0.04, lisaaika_pv: 20, eu: false, coface_maa: "A3", coface_bisnes: "B",  coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/saudi-arabia" },
+    "Intia":        { rahti: 3200, tulli_pct: 0.05, lisaaika_pv: 30, eu: false, coface_maa: "B",  coface_bisnes: "A4", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/india" },
+    "Kiina":        { rahti: 3500, tulli_pct: 0.06, lisaaika_pv: 35, eu: false, coface_maa: "B",  coface_bisnes: "B",  coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/china" },
+    "USA":          { rahti: 2500, tulli_pct: 0.03, lisaaika_pv: 18, eu: false, coface_maa: "A2", coface_bisnes: "A1", coface_url: "https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/united-states-of-america" },
+};
+
+const TOIMITTAJAT = [
+    { toimittaja: "PuutarhaPro Oy",           maa: "Suomi",        yksikkohinta: 8.90, incoterms: "DDP", toimitusaika_pv: 3,  maksuehto_pv: 14, moq: 100,  laatu: 5, alennus_1000: 3,  alennus_5000: 5 },
+    { toimittaja: "GardenTools OÜ",           maa: "Viro",         yksikkohinta: 7.20, incoterms: "FOB", toimitusaika_pv: 7,  maksuehto_pv: 30, moq: 300,  laatu: 4, alennus_1000: 4,  alennus_5000: 8 },
+    { toimittaja: "Baltijos Grėbliai UAB",    maa: "Liettua",      yksikkohinta: 5.80, incoterms: "FOB", toimitusaika_pv: 9,  maksuehto_pv: 30, moq: 400,  laatu: 4, alennus_1000: 4,  alennus_5000: 7 },
+    { toimittaja: "Gardena Polska",           maa: "Puola",        yksikkohinta: 6.50, incoterms: "CIF", toimitusaika_pv: 10, maksuehto_pv: 45, moq: 500,  laatu: 4, alennus_1000: 5,  alennus_5000: 10 },
+    { toimittaja: "RakeKing GmbH",            maa: "Saksa",        yksikkohinta: 9.80, incoterms: "DDP", toimitusaika_pv: 5,  maksuehto_pv: 30, moq: 200,  laatu: 5, alennus_1000: 2,  alennus_5000: 4 },
+    { toimittaja: "Antalya Bahçe A.Ş.",       maa: "Turkki",       yksikkohinta: 4.60, incoterms: "FOB", toimitusaika_pv: 18, maksuehto_pv: 45, moq: 600,  laatu: 3, alennus_1000: 4,  alennus_5000: 8 },
+    { toimittaja: "Mumbai Garden Pvt",        maa: "Intia",        yksikkohinta: 3.10, incoterms: "EXW", toimitusaika_pv: 35, maksuehto_pv: 60, moq: 1500, laatu: 3, alennus_1000: 3,  alennus_5000: 6 },
+    { toimittaja: "Ningbo Garden Co",         maa: "Kiina",        yksikkohinta: 2.40, incoterms: "EXW", toimitusaika_pv: 45, maksuehto_pv: 60, moq: 2000, laatu: 3, alennus_1000: 3,  alennus_5000: 7 },
+    { toimittaja: "Riyadh Industrial",        maa: "Saudi-Arabia", yksikkohinta: 4.10, incoterms: "FOB", toimitusaika_pv: 25, maksuehto_pv: 45, moq: 1000, laatu: 3, alennus_1000: 5,  alennus_5000: 9 },
+    { toimittaja: "American Garden Tools Inc",maa: "USA",          yksikkohinta: 7.50, incoterms: "CIF", toimitusaika_pv: 15, maksuehto_pv: 30, moq: 300,  laatu: 5, alennus_1000: 2,  alennus_5000: 5 },
+];
+
+const PROFIILIT = {
+    tasapainoinen:   { landed_cost: 25, laatu: 25, toimitus: 20, riski: 20, maksuehto: 10 },
+    hintakriittinen: { landed_cost: 40, laatu: 15, toimitus: 15, riski: 20, maksuehto: 10 },
+    laatukriittinen: { landed_cost: 15, laatu: 35, toimitus: 20, riski: 20, maksuehto: 10 },
+};
+
+const MAARISKIT = {
+    "Suomi":        "Kotimainen toimittaja. Ei logistisia riskejä, nopea toimitus.",
+    "Viro":         "EU-naapurimaa. Lyhyt toimitusmatka, ei tullia. Luotettava.",
+    "Liettua":      "EU-maa, Baltia. Edullinen tuotanto, hyvä infra. Ei tullia.",
+    "Puola":        "EU:n suurin itäinen talous. Vahva teollisuus, ei tullia.",
+    "Saksa":        "Korkea laatu ja luotettavuus. Premium-hintataso. EU-maa.",
+    "Turkki":       "EU:n ulkopuolella. Tulliriskit, valuuttavaihtelut (liira). Kohtuullinen logistiikka.",
+    "Saudi-Arabia": "Vakaa talous, mutta kulttuurierot liiketoiminnassa. Logistiikka toimii.",
+    "Intia":        "Halpa tuotanto mutta pitkät toimitusajat. Laadunvaihtelu. Byrokratiaa.",
+    "Kiina":        "Pitkät toimitusajat, geopoliittinen epävarmuus, tulliriskit. IP-suojan haasteet.",
+    "USA":          "Korkea laatu, mutta kallis logistiikka Eurooppaan. Dollarivaihtelut.",
+};
+
+const VAKUUTUS_PCT = 0.01;
+const HUOLINTA_EI_EU = 200;
+
+const VARIT_10 = [
+    "#22c55e","#3b82f6","#3b82f6","#6b7280","#6b7280",
+    "#6b7280","#6b7280","#6b7280","#ef4444","#ef4444"
+];
+
+// ══════════════════════════════════════════════
+// LASKENTA
+// ══════════════════════════════════════════════
+
+function volyymialennus(hinta, qty, a1000, a5000) {
+    if (qty >= 5000 && a5000 > 0) return hinta * (1 - a5000 / 100);
+    if (qty >= 1000 && a1000 > 0) return hinta * (1 - a1000 / 100);
+    return hinta;
+}
+
+function laskeLandedCost(t, qty, icOverride) {
+    const maa = MAAT[t.maa];
+    const ic = icOverride || t.incoterms;
+    const hinta = volyymialennus(t.yksikkohinta, qty, t.alennus_1000, t.alennus_5000);
+    const tavarahinta = hinta * qty;
+    const tulli = tavarahinta * maa.tulli_pct;
+    const vakuutus = tavarahinta * VAKUUTUS_PCT;
+    const huolinta = maa.eu ? 0 : HUOLINTA_EI_EU;
+
+    let landed;
+    if (ic === "EXW") landed = tavarahinta + maa.rahti + tulli + vakuutus + huolinta;
+    else if (ic === "FOB") landed = tavarahinta + maa.rahti * 0.6 + tulli + vakuutus + huolinta;
+    else if (ic === "CIF") landed = tavarahinta + tulli + huolinta;
+    else landed = tavarahinta; // DDP
+
+    return {
+        ...t,
+        incoterms_used: ic,
+        alennettu_hinta: hinta,
+        landed_total: landed,
+        landed_per_kpl: landed / qty,
+        alle_moq: qty < t.moq,
+        kokonaisaika_pv: t.toimitusaika_pv + maa.lisaaika_pv,
+        coface_maa: maa.coface_maa,
+        coface_bisnes: maa.coface_bisnes,
+        coface_url: maa.coface_url,
+        maa_riski: COFACE_NUMERO[maa.coface_maa],
+    };
+}
+
+function normKaant(val, min, max) { return max === min ? 1 : 1 - (val - min) / (max - min); }
+function norm(val, min, max) { return max === min ? 1 : (val - min) / (max - min); }
+
+function pisteyta(tulokset, painot) {
+    const summa = painot.landed_cost + painot.laatu + painot.toimitus + painot.riski + painot.maksuehto;
+    const w = {
+        landed_cost: painot.landed_cost / summa,
+        laatu: painot.laatu / summa,
+        toimitus: painot.toimitus / summa,
+        riski: painot.riski / summa,
+        maksuehto: painot.maksuehto / summa,
+    };
+
+    const vals = {
+        landed: tulokset.map(t => t.landed_per_kpl),
+        laatu: tulokset.map(t => t.laatu),
+        aika: tulokset.map(t => t.kokonaisaika_pv),
+        riski: tulokset.map(t => t.maa_riski),
+        maksu: tulokset.map(t => t.maksuehto_pv),
+    };
+
+    const mm = k => [Math.min(...vals[k]), Math.max(...vals[k])];
+
+    for (const t of tulokset) {
+        const p = {};
+        p.landed_cost = normKaant(t.landed_per_kpl, ...mm("landed"));
+        p.laatu = norm(t.laatu, ...mm("laatu"));
+        p.toimitus = normKaant(t.kokonaisaika_pv, ...mm("aika"));
+        p.riski = normKaant(t.maa_riski, ...mm("riski"));
+        p.maksuehto = norm(t.maksuehto_pv, ...mm("maksu"));
+
+        t.pisteet_osa = p;
+        t.pisteet = Math.round((p.landed_cost * w.landed_cost + p.laatu * w.laatu +
+            p.toimitus * w.toimitus + p.riski * w.riski + p.maksuehto * w.maksuehto) * 100);
+    }
+
+    tulokset.sort((a, b) => b.pisteet - a.pisteet);
+    return tulokset;
+}
+
+// ══════════════════════════════════════════════
+// UI STATE
+// ══════════════════════════════════════════════
+
+let radarCharts = [];
+let volumeChart = null;
+let icOverrides = {};
+
+function getQty() { return parseInt(document.getElementById("qty-slider").value); }
+
+function getPainot() {
+    return {
+        landed_cost: parseInt(document.getElementById("w-landed").value),
+        laatu: parseInt(document.getElementById("w-laatu").value),
+        toimitus: parseInt(document.getElementById("w-toimitus").value),
+        riski: parseInt(document.getElementById("w-riski").value),
+        maksuehto: parseInt(document.getElementById("w-maksuehto").value),
+    };
+}
+
+// ══════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════
+
+function sijoitusVari(i, n) {
+    if (i === 0) return "#22c55e";
+    if (i <= 2) return "#3b82f6";
+    if (i >= n - 2) return "#ef4444";
+    return "#6b7280";
+}
+
+function cofaceVari(luokitus) {
+    if (luokitus === "A1" || luokitus === "A2") return "#22c55e";
+    if (luokitus === "A3" || luokitus === "A4") return "#06b6d4";
+    if (luokitus === "B") return "#eab308";
+    return "#ef4444"; // C, D, E
+}
+
+function paivitaRanking(tulokset) {
+    const tbody = document.getElementById("ranking-body");
+    tbody.innerHTML = "";
+
+    for (let i = 0; i < tulokset.length; i++) {
+        const t = tulokset[i];
+        const vari = sijoitusVari(i, tulokset.length);
+        const tr = document.createElement("tr");
+        if (i === 0) tr.className = "rank-1";
+        else if (i <= 2) tr.className = "rank-" + (i + 1);
+        if (t.alle_moq) tr.classList.add("moq-fail");
+
+        const moqBadge = t.alle_moq ? ' <span class="badge badge-moq">MOQ</span>' : "";
+        const rankBadge = i === 0 ? ' <span class="badge badge-1">#1</span>' : "";
+
+        const cmVari = cofaceVari(t.coface_maa);
+        const cbVari = cofaceVari(t.coface_bisnes);
+
+        tr.innerHTML = `
+            <td>${i + 1}</td>
+            <td>${t.toimittaja}${rankBadge}${moqBadge}</td>
+            <td>${t.maa}</td>
+            <td>${t.incoterms_used}</td>
+            <td class="num">${t.alennettu_hinta.toFixed(2)}€</td>
+            <td class="num">${t.landed_per_kpl.toFixed(2)}€</td>
+            <td class="num">${Math.round(t.landed_total).toLocaleString("fi")}€</td>
+            <td>
+                <a href="${t.coface_url}" target="_blank" rel="noopener" class="coface-link" title="Avaa Coface: ${t.maa}">
+                    <span class="coface-badge" style="background:${cmVari}20;color:${cmVari}">${t.coface_maa}</span>
+                    <span class="coface-badge" style="background:${cbVari}20;color:${cbVari}">${t.coface_bisnes}</span>
+                </a>
+            </td>
+            <td>
+                <div class="pisteet-bar">
+                    <div class="bar"><div class="bar-fill" style="width:${t.pisteet}%;background:${vari}"></div></div>
+                    <span class="score" style="color:${vari}">${t.pisteet}</span>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    }
+}
+
+function paivitaRadarit(tulokset) {
+    const grid = document.getElementById("radar-grid");
+
+    // Luo kortit ensimmäisellä kerralla
+    if (radarCharts.length === 0) {
+        grid.innerHTML = "";
+        for (let i = 0; i < tulokset.length; i++) {
+            const card = document.createElement("div");
+            card.className = "radar-card";
+            card.innerHTML = `
+                <div class="card-title" id="radar-title-${i}"></div>
+                <div class="card-sub" id="radar-sub-${i}"></div>
+                <canvas id="radar-canvas-${i}"></canvas>
+                <div class="card-coface" id="radar-coface-${i}"></div>
+            `;
+            grid.appendChild(card);
+
+            const ctx = document.getElementById(`radar-canvas-${i}`).getContext("2d");
+            const chart = new Chart(ctx, {
+                type: "radar",
+                data: {
+                    labels: ["Hinta", "Laatu", "Toimitus", "Riski", "Maksuehto"],
+                    datasets: [{
+                        data: [0, 0, 0, 0, 0],
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    animation: { duration: 400, easing: "easeOutQuart" },
+                    scales: {
+                        r: {
+                            min: 0, max: 1,
+                            ticks: { display: false, stepSize: 0.25 },
+                            grid: { color: "rgba(255,255,255,0.08)" },
+                            angleLines: { color: "rgba(255,255,255,0.08)" },
+                            pointLabels: {
+                                color: "#8b8fa3",
+                                font: { size: 10, family: "'SF Mono', monospace" }
+                            }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+            radarCharts.push(chart);
+        }
+    }
+
+    // Päivitä data
+    for (let i = 0; i < tulokset.length; i++) {
+        const t = tulokset[i];
+        const vari = sijoitusVari(i, tulokset.length);
+        const p = t.pisteet_osa;
+        const arvot = [p.landed_cost, p.laatu, p.toimitus, p.riski, p.maksuehto];
+
+        const chart = radarCharts[i];
+        chart.data.datasets[0].data = arvot;
+        chart.data.datasets[0].borderColor = vari;
+        chart.data.datasets[0].backgroundColor = vari + "25";
+        chart.data.datasets[0].pointBackgroundColor = vari;
+        chart.update();
+
+        const moq = t.alle_moq ? " ⛔" : "";
+        document.getElementById(`radar-title-${i}`).textContent = `#${i + 1} ${t.toimittaja}`;
+        document.getElementById(`radar-title-${i}`).style.color = vari;
+        document.getElementById(`radar-sub-${i}`).textContent = `${t.maa} · ${t.pisteet}p · ${t.landed_per_kpl.toFixed(2)}€/kpl${moq}`;
+
+        // Coface-osio kortin alaosassa
+        const cmV = cofaceVari(t.coface_maa);
+        const cbV = cofaceVari(t.coface_bisnes);
+        const cofaceEl = document.getElementById(`radar-coface-${i}`);
+        cofaceEl.innerHTML = `
+            <div class="card-coface-badges">
+                <span class="coface-badge" style="background:${cmV}20;color:${cmV}" title="Country Risk">🏳 ${t.coface_maa}</span>
+                <span class="coface-badge" style="background:${cbV}20;color:${cbV}" title="Business Climate">🏢 ${t.coface_bisnes}</span>
+            </div>
+            <div class="card-coface-desc">${MAARISKIT[t.maa]}</div>
+            <a href="${t.coface_url}" target="_blank" rel="noopener" class="card-coface-link">Coface → ${t.maa}</a>
+        `;
+
+        const card = chart.canvas.closest(".radar-card");
+        card.className = "radar-card";
+        if (i === 0) card.classList.add("rank-1");
+        if (i >= tulokset.length - 2) card.classList.add("rank-bottom");
+    }
+}
+
+function paivitaVolyymikayra(tulokset) {
+    const ctx = document.getElementById("volume-chart").getContext("2d");
+    const volyymit = [];
+    for (let v = 100; v <= 10000; v += 100) volyymit.push(v);
+
+    const datasets = tulokset.map((t, i) => {
+        const data = volyymit.map(v => laskeLandedCost(t, v, icOverrides[t.toimittaja]).landed_per_kpl);
+        const vari = sijoitusVari(i, tulokset.length);
+        return {
+            label: t.toimittaja,
+            data: data,
+            borderColor: vari,
+            backgroundColor: "transparent",
+            borderWidth: i === 0 ? 3 : 1.5,
+            pointRadius: 0,
+            tension: 0.3,
+        };
+    });
+
+    if (volumeChart) {
+        volumeChart.data.labels = volyymit;
+        volumeChart.data.datasets = datasets;
+        volumeChart.update();
+    } else {
+        volumeChart = new Chart(ctx, {
+            type: "line",
+            data: { labels: volyymit, datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                animation: { duration: 400 },
+                interaction: { mode: "index", intersect: false },
+                scales: {
+                    x: {
+                        title: { display: true, text: "Kappalemäärä", color: "#8b8fa3" },
+                        ticks: { color: "#8b8fa3", maxTicksLimit: 10 },
+                        grid: { color: "rgba(255,255,255,0.05)" },
+                    },
+                    y: {
+                        title: { display: true, text: "Landed cost / kpl (€)", color: "#8b8fa3" },
+                        ticks: { color: "#8b8fa3", callback: v => v.toFixed(0) + "€" },
+                        grid: { color: "rgba(255,255,255,0.05)" },
+                        suggestedMax: 25,
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: "#e4e5ea", font: { size: 10, family: "'SF Mono', monospace" }, boxWidth: 12 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}€/kpl`
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+function luoIncotermsOverrides() {
+    const container = document.getElementById("incoterms-overrides");
+    container.innerHTML = "";
+    for (const t of TOIMITTAJAT) {
+        const row = document.createElement("div");
+        row.className = "override-row";
+        row.innerHTML = `
+            <span class="nimi" title="${t.toimittaja}">${t.toimittaja}</span>
+            <select data-toimittaja="${t.toimittaja}">
+                <option value="" ${!icOverrides[t.toimittaja] ? "selected" : ""}>CSV (${t.incoterms})</option>
+                <option value="EXW" ${icOverrides[t.toimittaja] === "EXW" ? "selected" : ""}>EXW</option>
+                <option value="FOB" ${icOverrides[t.toimittaja] === "FOB" ? "selected" : ""}>FOB</option>
+                <option value="CIF" ${icOverrides[t.toimittaja] === "CIF" ? "selected" : ""}>CIF</option>
+                <option value="DDP" ${icOverrides[t.toimittaja] === "DDP" ? "selected" : ""}>DDP</option>
+            </select>
+        `;
+        container.appendChild(row);
+    }
+
+    container.querySelectorAll("select").forEach(sel => {
+        sel.addEventListener("change", () => {
+            const nimi = sel.dataset.toimittaja;
+            if (sel.value) icOverrides[nimi] = sel.value;
+            else delete icOverrides[nimi];
+            paivitaKaikki();
+        });
+    });
+}
+
+function paivitaKaikki() {
+    const qty = getQty();
+    const painot = getPainot();
+
+    // Laske
+    let tulokset = TOIMITTAJAT.map(t => laskeLandedCost(t, qty, icOverrides[t.toimittaja]));
+    tulokset = pisteyta(tulokset, painot);
+
+    // Renderöi
+    paivitaRanking(tulokset);
+    paivitaRadarit(tulokset);
+    paivitaVolyymikayra(tulokset);
+}
+
+// ══════════════════════════════════════════════
+// EVENT LISTENERS
+// ══════════════════════════════════════════════
+
+document.getElementById("qty-slider").addEventListener("input", e => {
+    document.getElementById("qty-value").textContent = parseInt(e.target.value).toLocaleString("fi");
+    paivitaKaikki();
+});
+
+["landed", "laatu", "toimitus", "riski", "maksuehto"].forEach(key => {
+    const slider = document.getElementById(`w-${key}`);
+    slider.addEventListener("input", () => {
+        document.getElementById(`w-${key}-value`).textContent = slider.value + "%";
+
+        // Deactivate profile buttons when manually adjusting
+        document.querySelectorAll(".profiilit button").forEach(b => b.classList.remove("active"));
+
+        const painot = getPainot();
+        const summa = Object.values(painot).reduce((a, b) => a + b, 0);
+        const el = document.getElementById("painot-summa");
+        el.textContent = `Yhteensä: ${summa}%`;
+        el.className = "painot-summa " + (summa === 100 ? "ok" : "error");
+
+        paivitaKaikki();
+    });
+});
+
+document.querySelectorAll(".profiilit button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".profiilit button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const p = PROFIILIT[btn.dataset.profile];
+        document.getElementById("w-landed").value = p.landed_cost;
+        document.getElementById("w-laatu").value = p.laatu;
+        document.getElementById("w-toimitus").value = p.toimitus;
+        document.getElementById("w-riski").value = p.riski;
+        document.getElementById("w-maksuehto").value = p.maksuehto;
+
+        ["landed", "laatu", "toimitus", "riski", "maksuehto"].forEach(k => {
+            document.getElementById(`w-${k}-value`).textContent =
+                document.getElementById(`w-${k}`).value + "%";
+        });
+
+        const el = document.getElementById("painot-summa");
+        el.textContent = "Yhteensä: 100%";
+        el.className = "painot-summa ok";
+
+        paivitaKaikki();
+    });
+});
+
+// ── Init ──
+luoIncotermsOverrides();
+paivitaKaikki();
+</script>
+
+</body>
+</html>

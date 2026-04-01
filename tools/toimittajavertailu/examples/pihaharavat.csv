@@ -1,0 +1,11 @@
+toimittaja,maa,yksikkohinta_eur,incoterms,toimitusaika_pv,maksuehto_pv,moq,laatu_arvio,reklamaatio_pct,sertifikaatit,alennus_1000,alennus_5000
+PuutarhaPro Oy,Suomi,8.90,DDP,3,14,100,5,0.5,"ISO 9001, Avainlippu",3,5
+GardenTools OÜ,Viro,7.20,FOB,7,30,300,4,1.2,"ISO 9001",4,8
+Baltijos Grėbliai UAB,Liettua,5.80,FOB,9,30,400,4,1.5,"ISO 9001",4,7
+Gardena Polska,Puola,6.50,CIF,10,45,500,4,1.8,"ISO 9001, ISO 14001",5,10
+RakeKing GmbH,Saksa,9.80,DDP,5,30,200,5,0.3,"ISO 9001, TÜV",2,4
+Antalya Bahçe A.Ş.,Turkki,4.60,FOB,18,45,600,3,2.2,"TSE",4,8
+Mumbai Garden Pvt,Intia,3.10,EXW,35,60,1500,3,3.0,"ISO 9001, BIS",3,6
+Ningbo Garden Co,Kiina,2.40,EXW,45,60,2000,3,3.5,"ISO 9001",3,7
+Riyadh Industrial,Saudi-Arabia,4.10,FOB,25,45,1000,3,2.8,"SASO",5,9
+American Garden Tools Inc,USA,7.50,CIF,15,30,300,5,0.8,"ANSI, ISO 9001",2,5
