@@ -132,8 +132,36 @@
 <div class="page-header">
     <p class="section-label fade-in">Rakennettu, ei vain suunniteltu</p>
     <h1 class="page-title fade-in">Työkalut</h1>
-    <p class="page-desc fade-in">Interaktiivisia demoja ja Python-työkaluja oikeisiin ongelmiin. Kaikki rakennettu AI-avusteisesti — tärkeintä on lopputulos, ei se kirjoitinko jokaisen rivin itse.</p>
+    <p class="page-desc fade-in">Oikeisiin ongelmiin rakennettuja työkaluja: agenttijärjestelmä, joka on päivittäisessä käytössä, ja interaktiivisia demoja. Määrittely ja päätöslogiikka ovat minun, koodin kirjoittaa agentti.</p>
 </div>
+
+<!-- Agenttijärjestelmät -->
+<section>
+    <div class="category-header fade-in">
+        <h2>Agenttijärjestelmät</h2>
+        <div class="category-line"></div>
+        <span class="category-badge">Orkestrointi</span>
+    </div>
+
+    <div class="tools-grid">
+        <div class="tool-card fade-in">
+            <div class="tool-status">
+                <span class="status-dot live"></span>
+                <span class="status-live">Päivittäisessä käytössä</span>
+            </div>
+            <h3>Työnhaun agenttijärjestelmä (v2)</h3>
+            <p class="tool-desc">Agentti hakee avoimet paikat, pisteyttää ne erillisessä tiedostossa määritellyillä kriteereillä, kirjoittaa räätälöidyn hakukirjeen, kokoaa hakemuksen ja täyttää hakulomakkeen. Lukee sivun elävänä, joten lomakerakenteen muutos ei riko sitä — ensimmäinen, kovakoodattu Python-versio hajosi juuri siihen. Ratkaistuja tapauksia: iframe-upotukset, shadow DOM, dropzone-liitteet, monivaiheiset lomakkeet. Toimii yli kahdeksassa eri rekrytointijärjestelmässä.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Agenttiorkestrointi</span>
+                <span class="tech-tag">Selainautomaatio</span>
+                <span class="tech-tag">Kriteerisuodatus</span>
+                <span class="tech-tag">Tilanhallinta</span>
+                <span class="tech-tag">Dokumenttien tuotanto</span>
+            </div>
+            <a href="index.html#case" class="tool-link">Lue miten se rakennettiin &#8594;</a>
+        </div>
+    </div>
+</section>
 
 <!-- Web-demot -->
 <section>
@@ -166,7 +194,7 @@
                 <span class="status-live">Live</span>
             </div>
             <h3>Toimittajavertailu</h3>
-            <p class="tool-desc">Painotettu pisteytystyökalu toimittajien vertailuun. Syötä tarjoukset, aseta kriteerien painot (hinta, laatu, toimitusaika, joustavuus) ja saat pisteytyksen + visualisoinnin.</p>
+            <p class="tool-desc">Painotettu pisteytystyökalu toimittajien vertailuun. Syötä tarjoukset, aseta kriteerien painot (hinta, laatu, toimitusaika, joustavuus) ja saat pisteytyksen + visualisoinnin. Integroi Cofacen maakohtaisen riskidatan suoraan vertailutauluun: näet heti, mihin riskeihin toimittajan sijaintimaa altistuu, ilman erillistä selvitystä.</p>
             <div class="tech-tags">
                 <span class="tech-tag">HTML/CSS/JS</span>
                 <span class="tech-tag">Chart.js</span>
@@ -222,7 +250,7 @@
     <div class="ai-note fade-in">
         <div class="ai-note-icon">&#129302;</div>
         <div>
-            <p><strong>Kaikki työkalut on rakennettu AI-avusteisesti.</strong> Käytän Claudea ja GPT:tä päivittäin koodin tuottamiseen, analysointiin ja debuggaukseen. En ole koodari — olen liiketoimintaosaaja joka käyttää tekoälyä työkaluna rakentaakseen ratkaisuja oikeisiin ongelmiin. Lähdekoodi on avoimesti GitHubissa.</p>
+            <p><strong>Työnjako on selvä: määrittely, kriteerit ja päätöslogiikka ovat minun, koodin kirjoittaa agentti.</strong> En ole ohjelmistokehittäjä enkä esitä olevani. Osaamiseni on ongelman määrittelyssä, tuloksen arvioinnissa ja siinä, että tunnistan milloin tulos ei ole riittävän hyvä. Se on työtä, jota kukaan ei tee agentin puolesta. Lähdekoodi on avoimesti GitHubissa.</p>
         </div>
     </div>
 </section>

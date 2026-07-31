@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jesse Mattila — KTM | Analytiikka & Prosessikehitys</title>
+    <title>Jesse Mattila — KTM | Agenttivetoinen rakentaminen & analytiikka</title>
     <meta property="og:title" content="Jesse Mattila – Portfolio" />
     <meta property="og:description" content="Rakennan käytännön työkaluja tekoälyavusteisesti: kuljetuskustannuslaskuri, automaattinen työnhakurobotti (Python, Playwright) ja portfoliosivusto. Suunnittelen logiikan, ohjaan AI:ta ja debuggaan tulokset." />
     <meta property="og:url" content="https://jessemattila.github.io/" />
@@ -140,6 +140,23 @@
         .case-metric { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 1rem; border: 1px solid rgba(255,255,255,0.05); }
         .case-metric-value { font-size: 1.3rem; font-weight: 700; color: var(--accent-light); }
         .case-metric-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+        /* Agenttiputki */
+        .pipeline { margin: 1.75rem 0 0.5rem; }
+        .pipeline-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 0.9rem; font-weight: 600; }
+        .pipeline-flow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.9rem; }
+        .pipe-step { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 0.85rem 0.7rem; text-align: center; position: relative; transition: all 0.3s ease; }
+        .pipe-step:not(:last-child)::after { content: ''; position: absolute; right: -0.62rem; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid var(--accent); top: 50%; transform: translateY(-50%); color: var(--accent); opacity: 0.45; font-size: 0.85rem; font-weight: 700; }
+        .pipe-step:hover { border-color: rgba(233,69,96,0.35); transform: translateY(-3px); }
+        .pipe-step .pipe-num { font-size: 0.65rem; font-weight: 700; color: var(--accent-light); letter-spacing: 1px; }
+        .pipe-step .pipe-name { font-size: 0.82rem; font-weight: 700; margin: 0.3rem 0 0.2rem; }
+        .pipe-step .pipe-desc { font-size: 0.68rem; color: var(--text-muted); line-height: 1.45; }
+        .pipe-step.human { border-color: rgba(233,69,96,0.4); background: rgba(233,69,96,0.06); }
+        .pipe-step.human .pipe-num { color: var(--accent-light); }
+        [data-theme="bright"] .pipe-step { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.07); }
+        [data-theme="bright"] .pipe-step.human { background: rgba(255,107,43,0.07); }
+        .pipeline-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.8rem; display: flex; align-items: center; gap: 0.5rem; justify-content: center; }
+        .pipeline-note .dot-human { width: 10px; height: 10px; border-radius: 3px; background: rgba(233,69,96,0.5); border: 1px solid rgba(233,69,96,0.6); display: inline-block; }
+        @media (max-width: 900px) { .pipeline-flow { grid-template-columns: repeat(2, 1fr); } .pipe-step:not(:last-child)::after { display: none; } }
         .timeline { position: relative; padding-left: 2rem; margin-top: 1.5rem; }
         .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), rgba(233,69,96,0.1)); }
         .timeline-item { position: relative; padding-bottom: 1.2rem; }
@@ -234,34 +251,128 @@
     <div class="hero-content fade-in">
         <div class="hero-badge">KTM — Talousoikeus & Tuotantotalous</div>
         <h1>
-            Datasta <span class="gradient-text">päätöksiin</span>,<br>
-            kaaoksesta <span class="gradient-text">prosessiin</span>.
+            Määrittely on <span class="gradient-text">minun</span>.<br>
+            Koodin kirjoittaa <span class="gradient-text">agentti</span>.
         </h1>
         <p class="hero-sub">
-            Rakennan järjestelmiä joilla yritykset ymmärtävät kustannuksensa, optimoivat toimintansa ja tekevät parempia päätöksiä — tekoälyavusteisesti.
+            KTM, joka ei korjaa oiretta ennen kuin tietää mistä se johtuu. Kun syy on selvillä, rakennan korjauksen itse tekoälyagenteilla. Idea muuttuu toimivaksi työkaluksi päivissä, ei budjettikierroksissa.
         </p>
 
         <!-- Avainluvut suoraan herossa -->
         <div class="metrics">
             <div class="metric-card fade-in">
-                <div class="metric-value">6 kk</div>
-                <div class="metric-label">Kustannusdata analysoitu</div>
+                <div class="metric-value">100 000 €</div>
+                <div class="metric-label">Tunnistetut kuljetuskustannussäästöt vuodessa</div>
             </div>
             <div class="metric-card fade-in">
-                <div class="metric-value">6-num.</div>
-                <div class="metric-label">Tunnistettu säästöpotentiaali</div>
+                <div class="metric-value">5</div>
+                <div class="metric-label">Agenteilla rakennettua työkalua, yksi päivittäisessä käytössä</div>
+            </div>
+            <div class="metric-card fade-in">
+                <div class="metric-value">55</div>
+                <div class="metric-label">Kehitysehdotusta johdolle, 6 palkittu</div>
             </div>
             <div class="metric-card fade-in">
                 <div class="metric-value">14 kk</div>
-                <div class="metric-label">KTM työn ohessa</div>
-            </div>
-            <div class="metric-card fade-in">
-                <div class="metric-value">50+</div>
-                <div class="metric-label">Kehitysideaa johdolle</div>
+                <div class="metric-label">KTM (120 op) täyspäiväisen työn ohessa</div>
             </div>
         </div>
 
-        <!-- Case Study -->
+        <!-- Case Study 1: agenttijärjestelmä -->
+        <div class="case-section fade-in" id="case">
+            <div class="case-study">
+                <span class="case-tag">Agenttiorkestrointi &middot; 2026 &middot; päivittäisessä käytössä</span>
+                <h3 class="case-title">Työnhaun agenttijärjestelmä, kaksi sukupolvea</h3>
+                <p class="case-subtitle">Koodatusta botista agenttiin, joka lukee sivun elävänä &middot; rakennettu oikeaan prosessiin, ei demoksi</p>
+
+                <div class="case-metrics">
+                    <div class="case-metric">
+                        <div class="case-metric-value">v1 &#8594; v2</div>
+                        <div class="case-metric-label">Koodattu botti korvattiin agenttiorkestroinnilla</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-value">8+</div>
+                        <div class="case-metric-label">Eri rekrytointijärjestelmää, joissa lomakkeen täyttö toimii</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-value">0</div>
+                        <div class="case-metric-label">Kovakoodattua kenttävalitsinta</div>
+                    </div>
+                    <div class="case-metric">
+                        <div class="case-metric-value">Päivittäin</div>
+                        <div class="case-metric-label">Ajossa oikealla datalla, ei demoympäristössä</div>
+                    </div>
+                </div>
+
+                <div class="pipeline">
+                    <div class="pipeline-label">Miten putki kulkee</div>
+                    <div class="pipeline-flow">
+                        <div class="pipe-step human">
+                            <div class="pipe-num">01</div>
+                            <div class="pipe-name">Kriteerit</div>
+                            <div class="pipe-desc">Erillinen tiedosto: kovat suodattimet ja pehmeät priorisoijat</div>
+                        </div>
+                        <div class="pipe-step">
+                            <div class="pipe-num">02</div>
+                            <div class="pipe-name">Haku</div>
+                            <div class="pipe-desc">Kategoriaselaus ja urasivut, ei pelkkiä hakusanoja</div>
+                        </div>
+                        <div class="pipe-step">
+                            <div class="pipe-num">03</div>
+                            <div class="pipe-name">Pisteytys</div>
+                            <div class="pipe-desc">Työn sisältö ratkaisee, ei nimike</div>
+                        </div>
+                        <div class="pipe-step">
+                            <div class="pipe-num">04</div>
+                            <div class="pipe-name">Dokumentit</div>
+                            <div class="pipe-desc">Räätälöity kirje ja CV, renderöity PDF:ksi</div>
+                        </div>
+                        <div class="pipe-step">
+                            <div class="pipe-num">05</div>
+                            <div class="pipe-name">Lomake</div>
+                            <div class="pipe-desc">Sivu luetaan elävänä, yli 8 eri järjestelmää</div>
+                        </div>
+                        <div class="pipe-step human">
+                            <div class="pipe-num">06</div>
+                            <div class="pipe-name">Vahvistus</div>
+                            <div class="pipe-desc">Pysähtyy aina ennen lähetystä</div>
+                        </div>
+                        <div class="pipe-step">
+                            <div class="pipe-num">07</div>
+                            <div class="pipe-name">Loki</div>
+                            <div class="pipe-desc">Tila, kanava ja dedup seuraavaa ajoa varten</div>
+                        </div>
+                    </div>
+                    <div class="pipeline-note"><span class="dot-human"></span> Korostetut vaiheet ovat minun. Loput hoitaa agentti.</div>
+                </div>
+
+                <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; margin-top: 1.75rem;">Mitä opin, kun ensimmäinen versio hajosi</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>v1 — Koodattu botti (Python + Playwright)</h4>
+                        <p>Kenttävalitsimet kovakoodattuna. Toimi kunnes lomake muuttui, ja lomakkeet muuttuvat jatkuvasti. Ajoi öisin itsekseen, eli virheet huomattiin vasta jälkikäteen. Hylkäsin sen.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>v2 — Agentti lukee sivun elävänä</h4>
+                        <p>Agentti tulkitsee lomakkeen sellaisena kuin se on juuri nyt, joten rakenteen muutos ei riko sitä. Ratkaistuja tapauksia: iframe-upotukset, shadow DOM, tiedostojen liittäminen dropzoneihin, monivaiheiset lomakkeet. Ajot vain läsnä ollessa, koska valvomaton automaatio epäonnistui hiljaa.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Kriteerit ennen koodia</h4>
+                        <p>Pisteytys ei perustu nimikkeisiin vaan työn sisältöön: kovat suodattimet karsivat, pehmeät priorisoivat. Kirjoitin kriteerit erilliseksi tiedostoksi, jota voi muuttaa ilman että järjestelmään kosketaan.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Tilanhallinta ja jäljitettävyys</h4>
+                        <p>Jokainen ajo lukee ja päivittää lokia: mitä on tehty, mitä kanavaa pitkin, mikä on tila. Päällekkäisyydet estetään lokista, eivät muistista. Se on tylsin osa ja se on syy miksi järjestelmä on yhä käytössä.</p>
+                    </div>
+                </div>
+
+                <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-top: 1.5rem;">
+                    Määrittely, kriteerit ja päätöslogiikka ovat minun. Koodin kirjoittaa agentti. Osaamiseni ei ole syntaksissa vaan siinä, että osaan määritellä ongelman, arvioida tuloksen ja tietää milloin se ei ole riittävän hyvä.
+                </p>
+            </div>
+        </div>
+
+        <!-- Case Study 2 -->
         <div class="case-section fade-in">
             <div class="case-study">
                 <span class="case-tag">B2B-jakelu &middot; 2025</span>
@@ -320,7 +431,7 @@
             <a href="tyokalut.html" class="cta-card fade-in">
                 <div class="cta-card-icon">&#9881;</div>
                 <h3>Rakennetut työkalut</h3>
-                <p>Interaktiivisia demoja ja Python-työkaluja — näytän, en vain kerro.</p>
+                <p>Agenttijärjestelmä, hankintavertailu riskidatalla ja kustannuslaskuri — näytän, en vain kerro.</p>
                 <span class="arrow">Katso työkalut &#8594;</span>
             </a>
             <a href="#promptgen" class="cta-card fade-in" onclick="event.preventDefault(); document.getElementById('promptgen').scrollIntoView({behavior:'smooth'});">
