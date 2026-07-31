@@ -1,543 +1,81 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jesse Mattila — Rekrytoijalle</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-        :root {
-            --primary: #1a1a2e;
-            --accent: #e94560;
-            --accent-light: #ff6b81;
-            --bg: #0f0f1a;
-            --card: #16213e;
-            --card-hover: #1a2744;
-            --text: #eaeaea;
-            --text-muted: #8892b0;
-            --gradient: linear-gradient(135deg, #e94560, #0f3460);
-            --gradient-accent: linear-gradient(135deg, #e94560 0%, #ff6b81 50%, #0f3460 100%);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* ===== BACK LINK ===== */
-        .back-link {
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem;
-            z-index: 100;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.82rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .back-link:hover {
-            border-color: var(--accent);
-            color: var(--text);
-            transform: translateX(-3px);
-        }
-
-        /* ===== LAS VEGAS ARROW ===== */
-        .vegas-hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vegas-hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 50% 40%, rgba(233, 69, 96, 0.06) 0%, transparent 50%);
-            animation: heroGlow 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes heroGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-1%, -1%) scale(1.03); }
-        }
-
-        /* The big arrow sign */
-        .vegas-sign {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 3rem;
-            cursor: default;
-        }
-
-        .vegas-arrow {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-        }
-
-        /* Arrow body (the rectangle part) */
-        .arrow-body {
-            background: linear-gradient(180deg, #d4243b 0%, #a01a2d 50%, #8b1525 100%);
-            border: 4px solid #ffd700;
-            border-bottom: none;
-            border-radius: 16px 16px 0 0;
-            padding: 1.5rem 2.5rem;
-            position: relative;
-            box-shadow:
-                0 0 15px rgba(233, 69, 96, 0.4),
-                0 0 30px rgba(233, 69, 96, 0.2),
-                inset 0 2px 4px rgba(255, 255, 255, 0.15),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.3);
-            z-index: 2;
-        }
-
-        .arrow-body-text {
-            font-size: clamp(1.4rem, 4vw, 2.2rem);
-            font-weight: 900;
-            color: #fff8dc;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow:
-                0 2px 4px rgba(0, 0, 0, 0.5),
-                0 0 10px rgba(255, 215, 0, 0.6),
-                0 0 20px rgba(255, 215, 0, 0.4),
-                0 0 40px rgba(255, 215, 0, 0.2);
-            animation: textGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes textGlow {
-            0% { text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 10px rgba(255,215,0,0.4), 0 0 20px rgba(255,215,0,0.2); }
-            100% { text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(255,215,0,0.8), 0 0 30px rgba(255,215,0,0.5), 0 0 50px rgba(255,215,0,0.3); }
-        }
-
-        /* Arrow head (the triangle) - pointing DOWN */
-        .arrow-head {
-            width: 0;
-            height: 0;
-            border-left: 65px solid transparent;
-            border-right: 65px solid transparent;
-            border-top: 70px solid #b81d30;
-            filter: drop-shadow(0 4px 8px rgba(233, 69, 96, 0.3));
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Gold border on arrow head - pointing DOWN */
-        .arrow-head-border {
-            position: absolute;
-            bottom: -78px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 70px solid transparent;
-            border-right: 70px solid transparent;
-            border-top: 76px solid #ffd700;
-            z-index: 0;
-        }
-
-        /* Bulb lights around the sign */
-        .bulbs {
-            position: absolute;
-            top: -8px;
-            left: -8px;
-            right: -8px;
-            bottom: -80px;
-            pointer-events: none;
-            z-index: 3;
-        }
-
-        .bulb {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #ffd700;
-            box-shadow: 0 0 6px #ffd700, 0 0 12px rgba(255, 215, 0, 0.5);
-        }
-
-        .bulb.off {
-            background: #8b7530;
-            box-shadow: none;
-        }
-
-        /* Animate bulbs */
-        .bulb:nth-child(odd) { animation: bulbFlicker 1s ease-in-out infinite alternate; }
-        .bulb:nth-child(even) { animation: bulbFlicker 1s ease-in-out 0.5s infinite alternate; }
-
-        @keyframes bulbFlicker {
-            0% { background: #ffd700; box-shadow: 0 0 6px #ffd700, 0 0 12px rgba(255, 215, 0, 0.5); }
-            100% { background: #ffed8a; box-shadow: 0 0 10px #ffed8a, 0 0 20px rgba(255, 215, 0, 0.7), 0 0 30px rgba(255, 215, 0, 0.3); }
-        }
-
-        /* Whole sign glow pulse */
-        .vegas-sign {
-            animation: signGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes signGlow {
-            0% { filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.3)); }
-            100% { filter: drop-shadow(0 0 40px rgba(233, 69, 96, 0.5)) drop-shadow(0 0 60px rgba(255, 215, 0, 0.2)); }
-        }
-
-        /* Scroll indicator */
-        .scroll-hint {
-            position: relative;
-            z-index: 1;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            animation: fadeInUp 1s 0.5s ease both;
-        }
-
-        .scroll-hint .chevron {
-            font-size: 1.5rem;
-            animation: bounceDown 1.5s ease-in-out infinite;
-            color: var(--accent);
-        }
-
-        @keyframes bounceDown {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(8px); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== QUESTIONS SECTION ===== */
-        .questions-section {
-            min-height: 100vh;
-            padding: 6rem 2rem;
-            max-width: 750px;
-            margin: 0 auto;
-        }
-
-        .questions-intro {
-            text-align: center;
-            margin-bottom: 3.5rem;
-        }
-
-        .questions-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .questions-title {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 0.75rem;
-        }
-
-        .questions-desc {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-        }
-
-        .questions-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .question-card {
-            background: var(--card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease;
-        }
-
-        .question-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .question-card:hover {
-            border-color: rgba(233, 69, 96, 0.15);
-        }
-
-        .question-number {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent);
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-
-        .question-text {
-            font-size: 1rem;
-            font-weight: 600;
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .option {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            padding: 0.9rem 1.1rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.02);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            font-size: 0.92rem;
-            line-height: 1.5;
-            color: var(--text-muted);
-        }
-
-        .option:hover {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.05);
-            color: var(--text);
-        }
-
-        .option.selected {
-            border-color: var(--accent);
-            background: rgba(233, 69, 96, 0.1);
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .option-marker {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            flex-shrink: 0;
-            margin-top: 2px;
-            transition: all 0.25s ease;
-            position: relative;
-        }
-
-        .option.selected .option-marker {
-            border-color: var(--accent);
-            background: var(--accent);
-        }
-
-        .option.selected .option-marker::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: white;
-        }
-
-        /* Jesse's reveal comment */
-        .jesse-comment {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.5s ease, opacity 0.4s ease 0.1s, margin 0.4s ease;
-            margin-top: 0;
-        }
-
-        .jesse-comment.visible {
-            max-height: 200px;
-            opacity: 1;
-            margin-top: 1.25rem;
-        }
-
-        .jesse-comment-inner {
-            padding: 1rem 1.2rem;
-            border-left: 3px solid var(--accent);
-            background: rgba(233, 69, 96, 0.05);
-            border-radius: 0 10px 10px 0;
-            font-size: 0.88rem;
-            line-height: 1.6;
-            color: var(--text-muted);
-        }
-
-        .jesse-comment-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent);
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-
-        /* Submit */
-        .submit-wrap {
-            text-align: center;
-            margin-top: 2.5rem;
-        }
-
-        .submit-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.9rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            font-family: inherit;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-
-        .submit-btn.active {
-            background: var(--gradient);
-            color: white;
-            pointer-events: auto;
-            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
-        }
-
-        .submit-btn.active:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.4);
-        }
-
-        /* Result */
-        .result {
-            max-width: 700px;
-            margin: 2.5rem auto 0;
-            padding: 2.5rem;
-            background: var(--card);
-            border: 1px solid rgba(233, 69, 96, 0.2);
-            border-radius: 20px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            display: none;
-        }
-
-        .result.visible {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .result-emoji {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .result-text {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: var(--text);
-            margin-bottom: 1.5rem;
-        }
-
-        .result-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            background: var(--gradient);
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.25);
-        }
-
-        .result-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(233, 69, 96, 0.4);
-        }
-
-        /* Footer */
-        .rekry-footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .rekry-footer a {
-            color: var(--accent-light);
-            text-decoration: none;
-        }
-
-        .rekry-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .arrow-body { padding: 1.2rem 1.5rem; }
-            .arrow-body-text { letter-spacing: 2px; }
-            .arrow-head { border-left-width: 50px; border-right-width: 50px; border-top-width: 55px; }
-            .arrow-head-border { border-left-width: 55px; border-right-width: 55px; border-top-width: 60px; bottom: -63px; }
-            .question-card { padding: 1.5rem; }
-        }
-
-        @media (max-width: 480px) {
-            .arrow-body { padding: 1rem; }
-            .arrow-body-text { font-size: 1.1rem; letter-spacing: 1.5px; }
-            .arrow-head { border-left-width: 40px; border-right-width: 40px; border-top-width: 42px; }
-            .arrow-head-border { border-left-width: 45px; border-right-width: 45px; border-top-width: 48px; bottom: -52px; }
-            .questions-section { padding: 4rem 1.25rem; }
-            .back-link { top: 1rem; left: 1rem; font-size: 0.75rem; padding: 0.4rem 0.8rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekrytoijalle — Jesse Mattila</title>
+<meta name="description" content="Neljä kysymystä ennen kuin avaat CV:n. Ei oikeita vastauksia, vain rehellisiä.">
+<meta property="og:title" content="Rekrytoijalle — neljä kysymystä ennen CV:tä" />
+<meta property="og:description" content="Kulttuuritesti: neljä kysymystä, ei oikeita vastauksia, vain rehellisiä. Jessen omat vastaukset näkyvät valinnan jälkeen." />
+<meta property="og:url" content="https://jessemattila.github.io/rekrytoijalle.html" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://jessemattila.github.io/kuva.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+/* --- sivukohtaiset: kulttuuritesti --- */
+.back-link{position:fixed;top:1.2rem;left:1.6rem;z-index:120;font-family:var(--mono);font-size:.74rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:.5rem .9rem;border-radius:999px;background:rgba(10,12,16,.7);backdrop-filter:blur(10px);transition:all .25s}
+.back-link:hover{color:var(--accent);border-color:var(--accent)}
+
+.vegas-hero{min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 1.5rem 3rem;position:relative;overflow:hidden}
+.vegas-hero::before{content:'';position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:70vw;height:70vw;max-width:900px;max-height:900px;border-radius:50%;background:radial-gradient(circle,rgba(233,69,96,.15),transparent 62%);filter:blur(40px);pointer-events:none}
+.vegas-sign{position:relative;z-index:1}
+.vegas-arrow{display:flex;align-items:stretch}
+.arrow-body{position:relative;background:var(--bg-2);border:1px solid rgba(233,69,96,.45);border-right:0;border-radius:16px 0 0 16px;padding:2.6rem 3rem;box-shadow:0 0 60px rgba(233,69,96,.16),inset 0 0 40px rgba(233,69,96,.05)}
+.arrow-body-text{font-family:var(--display);font-size:clamp(2rem,5.5vw,3.4rem);font-weight:700;letter-spacing:-2px;color:var(--ink);text-shadow:0 0 24px rgba(233,69,96,.4)}
+.arrow-head,.arrow-head-border{width:0;height:0;align-self:center}
+.arrow-head-border{border-top:5.2rem solid transparent;border-bottom:5.2rem solid transparent;border-left:4rem solid rgba(233,69,96,.45);margin-left:-1px}
+.arrow-head{border-top:5rem solid transparent;border-bottom:5rem solid transparent;border-left:3.85rem solid var(--bg-2);margin-left:-3.95rem}
+.bulbs{position:absolute;inset:0;pointer-events:none}
+.bulbs div{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--accent-light);box-shadow:0 0 10px var(--accent);animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.scroll-hint{font-family:var(--mono);font-size:.76rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);text-align:center;transition:color .25s}
+.scroll-hint:hover{color:var(--accent)}
+.chevron{font-size:1.3rem;margin-top:.6rem;animation:bob 2s infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+.questions-section{max-width:840px;margin:0 auto;padding:5rem var(--pad) 6rem}
+.questions-intro{margin-bottom:3.5rem}
+.questions-label{font-family:var(--mono);font-size:.74rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem}
+.questions-title{font-family:var(--display);font-size:clamp(2.2rem,5.5vw,3.6rem);font-weight:700;letter-spacing:-2px;line-height:1.02;margin-bottom:1rem}
+.questions-desc{color:var(--muted);font-size:1.02rem}
+.questions-list{display:flex;flex-direction:column;gap:1.2rem}
+.question-card{background:var(--bg-2);border:1px solid var(--line);border-radius:18px;padding:2rem;opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.question-card.visible{opacity:1;transform:none}
+.question-number{font-family:var(--mono);font-size:.7rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.question-text{font-family:var(--display);font-size:1.18rem;font-weight:500;line-height:1.45;letter-spacing:-.5px;margin-bottom:1.4rem}
+.options{display:grid;gap:.7rem}
+.option{display:flex;align-items:center;gap:.9rem;border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem;cursor:pointer;transition:all .25s;font-size:.94rem;background:var(--bg-3)}
+.option:hover{border-color:var(--line-strong);transform:translateX(3px)}
+.option.selected{border-color:var(--accent);background:var(--accent-soft)}
+.option-marker{width:14px;height:14px;border-radius:50%;border:1px solid var(--line-strong);flex:none;transition:all .25s}
+.option.selected .option-marker{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 3px rgba(233,69,96,.2)}
+.jesse-comment{max-height:0;overflow:hidden;transition:max-height .5s ease,margin .4s ease}
+.jesse-comment.visible{max-height:340px;margin-top:1.2rem}
+.jesse-comment-inner{border-left:2px solid var(--accent);padding:.2rem 0 .2rem 1.3rem;color:var(--muted);font-size:.92rem;line-height:1.7}
+.jesse-comment-label{font-family:var(--mono);font-size:.66rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.submit-wrap{text-align:center;margin-top:2.5rem}
+.submit-btn{background:var(--accent);color:#fff;border:0;border-radius:999px;padding:.9rem 2rem;font-family:var(--body);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(233,69,96,.28)}
+.submit-btn{opacity:.45;pointer-events:none}
+.submit-btn.active{opacity:1;pointer-events:auto}
+.result{display:none;opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;text-align:center;margin-top:2.5rem}
+.result.visible{opacity:1;transform:none}
+.result-emoji{font-size:2.6rem;margin-bottom:1rem}
+.result-text{font-family:var(--display);font-size:1.25rem;font-weight:500;letter-spacing:-.5px;line-height:1.55;max-width:52ch;margin:0 auto;color:var(--ink)}
+.result-link{display:inline-block;margin-top:1.6rem;color:var(--accent);text-decoration:none;font-weight:600;font-size:.92rem}
+.rekry-footer{border-top:1px solid var(--line);padding:3rem var(--pad);text-align:center;color:var(--muted);font-family:var(--mono);font-size:.72rem;letter-spacing:1px}
+.rekry-footer a{color:var(--muted);text-decoration:none}
+.rekry-footer a:hover{color:var(--accent)}
+@media(max-width:768px){
+  .arrow-body{padding:1.8rem 1.6rem}
+  .arrow-head-border{border-top-width:3.6rem;border-bottom-width:3.6rem;border-left-width:2.6rem}
+  .arrow-head{border-top-width:3.45rem;border-bottom-width:3.45rem;border-left-width:2.5rem;margin-left:-2.55rem}
+  .question-card{padding:1.4rem}
+}
+</style>
 </head>
 <body>
 

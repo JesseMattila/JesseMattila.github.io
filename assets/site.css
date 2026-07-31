@@ -1,0 +1,251 @@
+/* ============================================================
+   Jesse Mattila — yhtenäinen ilme (2026-07)
+   Yksi teema. Typografia: Space Grotesk / Inter / JetBrains Mono.
+   ============================================================ */
+
+:root{
+  --bg:#0A0C10;
+  --bg-2:#0F1218;
+  --bg-3:#141821;
+  --line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.16);
+  --ink:#EDEFF3;
+  --muted:#8C939E;
+  --accent:#E94560;
+  --accent-light:#FF6B82;
+  --accent-soft:rgba(233,69,96,.13);
+  --live:#37D9A0;
+  --display:'Space Grotesk',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --body:'Inter',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --wrap:1180px;
+  --pad:2.5rem;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{ /* hienovarainen kohina */
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:var(--accent);color:#fff}
+
+/* ---------- skrollipalkki ---------- */
+#scrollProgress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:210;transition:width .1s linear}
+
+/* ---------- navi ---------- */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,12,16,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--wrap);margin:0 auto;padding:1rem var(--pad);display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.nav-left{display:flex;align-items:center;gap:1rem}
+.nav-logo{font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:-.5px;text-decoration:none;color:var(--ink)}
+.nav-logo span,.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.88rem;transition:color .2s;position:relative}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--accent)}
+.nav-rekry-link{border:1px solid var(--line-strong);padding:.45rem 1rem;border-radius:999px;font-size:.82rem !important;color:var(--ink) !important;transition:all .25s}
+.nav-rekry-link:hover{border-color:var(--accent);color:var(--accent) !important}
+.hamburger{display:none;background:none;border:0;color:var(--ink);font-size:1.4rem;cursor:pointer}
+
+/* elossa-merkki */
+.live-chip{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.7rem;color:var(--muted);border:1px solid var(--line);padding:.35rem .75rem;border-radius:999px;white-space:nowrap}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 rgba(55,217,160,.6);animation:pulse 2.4s infinite;flex:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(55,217,160,.55)}70%{box-shadow:0 0 0 7px rgba(55,217,160,0)}100%{box-shadow:0 0 0 0 rgba(55,217,160,0)}}
+
+/* ---------- yleinen rakenne ---------- */
+.wrap,.container{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad)}
+section{position:relative}
+
+/* ---------- hero ---------- */
+.hero{padding:7rem 0 4.5rem;position:relative;overflow:hidden;min-height:auto;display:block}
+.hero::before{content:'';position:absolute;right:-14%;top:-30%;width:56vw;height:56vw;border-radius:50%;background:radial-gradient(circle,rgba(233,69,96,.13),transparent 62%);filter:blur(30px);pointer-events:none;animation:none}
+.hero-grid{display:none}
+.hero-content{position:relative;z-index:1;max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);text-align:left}
+.hero-badge{display:inline-block;background:none;border:0;padding:0;margin:0 0 1.5rem;font-family:var(--mono);font-size:.74rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);border-radius:0}
+.hero h1{font-family:var(--display);font-size:clamp(2.8rem,7vw,5.6rem);line-height:.99;letter-spacing:-3px;font-weight:700;margin-bottom:1.6rem;max-width:16ch}
+.hero h1 .gradient-text{background:none;-webkit-background-clip:initial;-webkit-text-fill-color:currentColor;color:var(--accent)}
+.hero-sub{font-size:1.08rem;color:var(--muted);max-width:54ch;margin:0 0 2.5rem;line-height:1.7}
+
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.btn{font-size:.9rem;font-weight:600;padding:.8rem 1.5rem;border-radius:999px;text-decoration:none;transition:all .25s;border:1px solid transparent;display:inline-block}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(233,69,96,.28)}
+.btn-ghost{border-color:var(--line-strong);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- avainluvut: hiusviivat, ei laatikoita ---------- */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:4.5rem;border-top:1px solid var(--line)}
+.metric-card{background:none;border:0;border-right:1px solid var(--line);border-radius:0;padding:1.9rem 1.6rem 1.9rem 0;text-align:left;transition:none;overflow:visible}
+.metric-card:last-child{border-right:0}
+.metric-card::before{display:none}
+.metric-card:hover{transform:none;box-shadow:none;border-color:var(--line)}
+.metric-value{font-family:var(--display);font-size:2.1rem;font-weight:700;letter-spacing:-1.5px;line-height:1;color:var(--ink)}
+.metric-label{font-size:.78rem;color:var(--muted);margin-top:.6rem;line-height:1.5}
+
+/* ---------- osiot ja otsikot ---------- */
+.block{padding:6rem 0;border-top:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:baseline;margin-bottom:3rem}
+.sec-num{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+.sec-title{font-family:var(--display);font-size:clamp(1.7rem,3.4vw,2.6rem);letter-spacing:-1.4px;font-weight:700;line-height:1.1}
+.sec-sub{color:var(--muted);font-size:.98rem;max-width:62ch;margin-top:.7rem}
+
+/* sivujen otsikkoalue (tyokalut / osaaminen) */
+.page-header{max-width:var(--wrap);margin:0 auto;padding:6rem var(--pad) 3.5rem;text-align:left}
+.section-label{font-family:var(--mono);font-size:.74rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:1.4rem}
+.page-title{font-family:var(--display);font-size:clamp(2.4rem,6vw,4.4rem);letter-spacing:-2.5px;font-weight:700;line-height:1;margin-bottom:1.4rem}
+.page-desc{color:var(--muted);font-size:1.05rem;max-width:58ch;line-height:1.7}
+
+.category-header{display:flex;align-items:center;gap:1.2rem;margin:0 0 2rem}
+.category-header h2{font-family:var(--display);font-size:1.35rem;letter-spacing:-.8px;font-weight:700;white-space:nowrap}
+.category-line{flex:1;height:1px;background:var(--line)}
+.category-badge{font-family:var(--mono);font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:.3rem .7rem;border-radius:999px;background:none}
+
+/* ---------- case ---------- */
+.case-section{margin-top:0}
+.case-study{background:var(--bg-2);border:1px solid var(--line);border-radius:20px;padding:2.5rem;overflow:hidden}
+.case-tag{display:inline-block;background:none;border:1px solid var(--line);color:var(--muted);padding:.3rem .8rem;border-radius:999px;font-family:var(--mono);font-size:.68rem;font-weight:500;text-transform:uppercase;letter-spacing:1.4px}
+.case-title{font-family:var(--display);font-size:clamp(1.4rem,2.6vw,2rem);font-weight:700;letter-spacing:-1px;margin:1rem 0 .3rem;line-height:1.15}
+.case-subtitle{color:var(--muted);font-size:.92rem}
+.case-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:2rem 0 0;border-top:1px solid var(--line)}
+.case-metric{background:none;border:0;border-right:1px solid var(--line);border-radius:0;padding:1.5rem 1.3rem 1.5rem 0}
+.case-metric:last-child{border-right:0}
+.case-metric-value{font-family:var(--display);font-size:1.35rem;font-weight:700;color:var(--ink);letter-spacing:-.8px;line-height:1.1}
+.case-metric-label{font-size:.74rem;color:var(--muted);margin-top:.45rem;line-height:1.45}
+.case-study h4{font-family:var(--display);font-weight:600}
+
+/* ---------- aikajana ---------- */
+.timeline{position:relative;padding-left:2rem;margin-top:1.5rem}
+.timeline::before{content:'';position:absolute;left:0;top:.4rem;bottom:.4rem;width:1px;background:linear-gradient(to bottom,var(--accent),rgba(233,69,96,.06))}
+.timeline-item{position:relative;padding-bottom:1.4rem}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-item::before{content:'';position:absolute;left:-2rem;top:.55rem;width:7px;height:7px;border-radius:50%;background:var(--accent);border:0;transform:translateX(-3px)}
+.timeline-item h4{font-family:var(--display);font-size:.95rem;font-weight:600;margin-bottom:.25rem}
+.timeline-item p{font-size:.88rem;color:var(--muted);line-height:1.65}
+
+/* ---------- agenttiputki ---------- */
+.pipeline{margin:2rem 0 .5rem}
+.pipeline-label{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:1rem;font-weight:500}
+.pipeline-flow{display:grid;grid-template-columns:repeat(7,1fr);gap:.85rem}
+.pipe-step{background:var(--bg-3);border:1px solid var(--line);border-radius:14px;padding:1rem .85rem;text-align:left;position:relative;transition:all .45s ease}
+.pipe-step::after{display:none}
+.pipe-step .pipe-num{font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:1px}
+.pipe-step .pipe-name{font-family:var(--display);font-size:.9rem;font-weight:500;margin:.35rem 0 .25rem}
+.pipe-step .pipe-desc{font-size:.7rem;color:var(--muted);line-height:1.45}
+.pipe-step.human{border-color:rgba(233,69,96,.42);background:linear-gradient(180deg,var(--accent-soft),transparent)}
+.pipe-step.on{border-color:var(--live);box-shadow:0 0 0 1px rgba(55,217,160,.3),0 10px 30px rgba(55,217,160,.09);transform:translateY(-4px)}
+.pipe-step.on .pipe-num{color:var(--live)}
+.pipeline-note{display:flex;gap:1.6rem;margin-top:1.3rem;font-family:var(--mono);font-size:.72rem;color:var(--muted);justify-content:flex-start;align-items:center;flex-wrap:wrap}
+.pipeline-note span.dot-human{width:9px;height:9px;border-radius:3px;background:rgba(233,69,96,.5);border:0;display:inline-block;margin-right:.45rem;vertical-align:middle}
+
+/* ---------- kaksi sukupolvea ---------- */
+.gen-split{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:.5rem}
+.gen{border:1px solid var(--line);border-radius:18px;padding:2rem;background:var(--bg-2)}
+.gen.dead{opacity:.62}
+.gen .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}
+.gen.dead .tag{color:#C05066}
+.gen.alive .tag{color:var(--live)}
+.gen h4{font-family:var(--display);font-size:1.15rem;font-weight:700;margin:.35rem 0 .6rem;letter-spacing:-.5px}
+.gen p{font-size:.9rem;color:var(--muted)}
+.gen ul{list-style:none;margin-top:1rem;font-size:.86rem;color:var(--muted)}
+.gen li{padding-left:1.2rem;position:relative;margin-bottom:.5rem;line-height:1.6}
+.gen li::before{content:'';position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7}
+
+/* ---------- kortit (cta / tool / skill / value) ---------- */
+.cta-grid,.tools-grid,.skills-grid,.values-grid{display:grid;gap:1.2rem}
+.cta-grid{grid-template-columns:repeat(3,1fr);margin-top:0}
+.tools-grid{grid-template-columns:repeat(3,1fr)}
+.skills-grid{grid-template-columns:repeat(3,1fr)}
+.values-grid{grid-template-columns:repeat(3,1fr)}
+
+.cta-card,.tool-card,.skill-card,.value-card{
+  background:var(--bg-2);border:1px solid var(--line);border-radius:18px;padding:1.9rem;
+  text-decoration:none;color:var(--ink);transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;overflow:hidden;position:relative;display:block;
+}
+.cta-card::before,.tool-card::before{display:none}
+.cta-card:hover,.tool-card:hover,.skill-card:hover,.value-card:hover{transform:translateY(-5px);border-color:rgba(233,69,96,.4);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.cta-card-icon,.value-icon,.ai-note-icon{font-size:1.5rem;margin-bottom:.9rem;opacity:.9}
+.cta-card h3,.tool-card h3,.value-card h3{font-family:var(--display);font-size:1.1rem;font-weight:700;letter-spacing:-.4px;margin-bottom:.5rem}
+.cta-card p,.tool-card p,.tool-desc,.value-card p{color:var(--muted);font-size:.87rem;line-height:1.65;margin-bottom:1rem}
+.cta-card .arrow,.tool-link{color:var(--accent);font-size:.85rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;background:none;padding:0;border:0;border-radius:0}
+.tool-link:hover,.cta-card:hover .arrow{color:var(--accent-light)}
+
+.tool-status{display:flex;align-items:center;gap:.45rem;font-family:var(--mono);font-size:.66rem;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:.9rem}
+.status-dot{width:6px;height:6px;border-radius:50%;flex:none}
+.status-dot.live{background:var(--live);box-shadow:0 0 0 0 rgba(55,217,160,.6);animation:pulse 2.4s infinite}
+.status-dot.coming{background:#C9A227}
+.status-live{color:var(--live)}
+.status-coming{color:#C9A227}
+.tech-tags,.skill-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin:1rem 0}
+.tech-tag,.skill-tag{font-family:var(--mono);font-size:.68rem;color:var(--muted);border:1px solid var(--line);padding:.28rem .6rem;border-radius:6px;background:none}
+
+/* osaamissivun kortit */
+.skill-header{display:flex;align-items:center;gap:.9rem;margin-bottom:.8rem}
+.skill-icon{font-size:1.4rem;width:auto;height:auto;background:none;border-radius:0;display:flex;align-items:center;justify-content:center}
+.skill-name{font-family:var(--display);font-size:1.05rem;font-weight:700;letter-spacing:-.3px}
+.skill-desc{color:var(--muted);font-size:.87rem;line-height:1.65}
+.story-block{border-left:2px solid var(--accent);padding:.2rem 0 .2rem 1.6rem;margin:1.5rem 0}
+.story-block h3{font-family:var(--display);font-size:1.15rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.4px}
+.story-block p{color:var(--muted);font-size:.95rem}
+.highlight{color:var(--ink);font-weight:500}
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.5rem}
+.quote{border:1px solid var(--line);border-radius:16px;padding:1.7rem;background:var(--bg-2)}
+.quote p{font-family:var(--display);font-size:1rem;line-height:1.55;letter-spacing:-.3px}
+.quote span,.quote cite{display:block;margin-top:.9rem;font-family:var(--mono);font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;font-style:normal}
+
+/* huomiolaatikko */
+.ai-note{display:flex;gap:1.2rem;align-items:flex-start;border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:14px;padding:1.7rem;background:var(--bg-2);margin-top:2.5rem}
+.ai-note p{color:var(--muted);font-size:.9rem;line-height:1.7}
+.ai-note strong{color:var(--ink);font-weight:600}
+
+/* ---------- promptigeneraattori ---------- */
+.prompt-gen{background:var(--bg-2);border:1px solid var(--line);border-radius:20px;padding:2.5rem;text-align:left;overflow:hidden}
+.prompt-gen-label{font-family:var(--mono);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.prompt-gen h3{font-family:var(--display);font-size:1.5rem;font-weight:700;letter-spacing:-.8px;margin:.6rem 0 .4rem}
+.prompt-gen-sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem;max-width:60ch}
+.prompt-display{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:1.6rem;min-height:110px;font-family:var(--mono);font-size:.86rem;line-height:1.7;color:var(--ink);text-align:left}
+.prompt-category{font-family:var(--mono);font-size:.68rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem}
+.prompt-gen-btn{background:var(--accent);color:#fff;border:0;border-radius:999px;padding:.8rem 1.6rem;font-family:var(--body);font-size:.9rem;font-weight:600;cursor:pointer;margin-top:1.3rem;transition:all .25s}
+.prompt-gen-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(233,69,96,.28)}
+.prompt-counter{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:1rem}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);margin-top:0;padding:3rem var(--pad);background:none}
+.footer-links{max-width:var(--wrap);margin:0 auto;display:flex;gap:1.8rem;justify-content:center;flex-wrap:wrap;font-size:.85rem}
+.footer-links a{color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--accent)}
+.footer-copy{text-align:center;color:var(--muted);font-family:var(--mono);font-size:.7rem;margin-top:1.2rem;letter-spacing:1px}
+
+/* ---------- animaatiot ---------- */
+.fade-in,.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.fade-in.visible,.fade-in.in,.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .fade-in,.reveal{opacity:1;transform:none;transition:none}
+  .pulse,.status-dot.live{animation:none}
+}
+
+/* ---------- responsiivisuus ---------- */
+@media (max-width:980px){
+  .cta-grid,.tools-grid,.skills-grid,.values-grid,.quotes{grid-template-columns:1fr 1fr}
+  .pipeline-flow{grid-template-columns:repeat(2,1fr)}
+  .gen-split{grid-template-columns:1fr}
+}
+@media (max-width:768px){
+  :root{--pad:1.4rem}
+  .nav-links{display:none}
+  .nav-links.active{display:flex;position:absolute;top:100%;left:0;right:0;background:var(--bg-2);border-bottom:1px solid var(--line);flex-direction:column;padding:1.2rem var(--pad);gap:1.1rem}
+  .hamburger{display:block}
+  .hero{padding:4rem 0 3rem}
+  .metrics,.case-metrics{grid-template-columns:1fr 1fr}
+  .metric-card,.case-metric{border-right:0;border-bottom:1px solid var(--line);padding-right:0}
+  .cta-grid,.tools-grid,.skills-grid,.values-grid,.quotes{grid-template-columns:1fr}
+  .case-study,.prompt-gen{padding:1.6rem}
+  .block,.page-header{padding-top:3.5rem;padding-bottom:3.5rem}
+  .sec-head{grid-template-columns:1fr;gap:.5rem}
+}

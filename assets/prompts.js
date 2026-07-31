@@ -1,0 +1,22 @@
+const prompts = [
+        { category: 'Lämpötilasota', text: 'Toimistossa on kaksi koulukuntaa: ne jotka haluavat 19°C ja ne jotka haluavat 24°C. Laadi rauhanneuvottelusuunnitelma YK:n tyyliin.' },
+        { category: 'Verkkolevyt', text: 'Verkkolevyltä löytyy kansio nimeltä "LOPULLINEN versio FINAL (2) kopio - KÄYTÄ TÄTÄ". Kirjoita kansion sukupuu.' },
+        { category: 'Tulostin', text: 'Toimiston tulostin jumittaa 3,2 kertaa päivässä. Kirjoita sille irtisanomiskirje: varoitushistoria, kehityskeskustelujen yhteenveto ja siirtymäsuunnitelma seuraajalle.' },
+        { category: 'Kynät', text: 'Firma tilaa 500 logokynää vuodessa. Kukaan ei tiedä minne ne katoavat. Suorita tutkinta: todistajanlausunnot, epäiltyjen profilointi ja loppuraportti.' },
+        { category: 'Jääkaappi', text: 'Taukotilan jääkaapissa on ollut sama muovipurkki maaliskuusta. Kukaan ei omista sitä. Kirjoita kolme viestiä: johdon virallinen tiedote, rento Slack-viesti ja passiivisaggressiivinen sähköposti.' },
+        { category: 'Parkkipaikka', text: 'Firmalla on 20 parkkipaikkaa ja 35 autoa. Laadi oikeudenmukainen jakojärjestelmä. Mikko tulee aina klo 6:50 "varmuuden vuoksi" ja joku pysäköi aina vinoon.' },
+        { category: 'Excel-kriisi', text: 'Kollegasi lähettää Excel-tiedoston jossa on 14 välilehteä ja kaava joka viittaa välilehteen jota ei ole olemassa. Kirjoita kohtelias arvio tiedostosta — kuin kyseessä olisi viiniarvostelu.' },
+        { category: 'Lounas', text: 'Toimiston ainoa mikro on varattu klo 11:45–12:15 tauotta. Laadi ruuhkanhallintasuunnitelma, mutta ehdotuksesi ei saa sisältää sanoja "vuoronumero", "aikataulu" tai "toinen mikroaaltouuni".' },
+        { category: 'Kokoushuone', text: 'Kokoushuone "Innovaatio" on varattuna 8 tuntia päivässä mutta fyysisesti tyhjä 60 % ajasta. Kirjoita haamuvaraajille kohtelias mutta tiukka sähköposti.' },
+        { category: 'Kahvihuone', text: 'Firma vaihtaa kahvimerkin halvempaan. Kirjoita muutoksesta tiedote kolmella aikajänteellä: proaktiivinen viestintä, kriisiviestintä ja jälkihoito.' },
+        { category: 'Sähköposti', text: 'Laske "Vastaa kaikille" -sähköpostin todellinen hinta euroissa: 200 henkilöä × lukuaika × palkka/minuutti. Kirjoita lopuksi firman "Reply All -ohjesääntö".' },
+        { category: 'Pikkujoulut', text: 'Pikkujoulubudjetti: 5000 € ja 43 mielipidettä. Laadi kolme suunnitelmaa ja ennuste siitä, mistä valitetaan seuraavana maanantaina.' },
+        { category: 'Palaverit', text: 'Vertaile: Firma A (ei palavereita, kaikki Slackissa), Firma B (2h "nopea päivitys" JOKA AAMU), Firma C (yksi 8h megapalaveri perjantaisin). Pisteytä tuottavuus ja henkinen kuormitus.' },
+        { category: 'Etätyö', text: 'Kirjoita "Etätyöperjantain pelisäännöt" kahdesti: versio jota johto haluaa (webcam päällä klo 8–16) ja versio jota oikeasti noudatetaan. Laadi kompromissi.' },
+        { category: 'Raportointi', text: 'Pomo haluaa "yhden luvun joka kertoo miten firmalla menee". Selitä miksi se on kuin kysyisi lääkäriltä "olenko terve, vastaa yhdellä numerolla." Rakenna silti se luku.' },
+        { category: 'Sopimukset', text: 'Kirjoita sopimuspykälä joka vapauttaa vastuusta kun: pandemia, kyberuhka, toimitusketju hajoaa, tai toimitusjohtaja näki TikTokissa trendin ja muutti strategiaa yön yli.' },
+        { category: 'Toimittajat', text: 'Arvioi toimittajia viidellä kriteerillä. Lisää kuudes: "kuinka nopeasti myyjä vastaa puhelimeen perjantaina klo 15:30." Perustele miksi se kertoo enemmän kuin kaikki muut yhteensä.' },
+        { category: 'Tekoäly', text: 'Suunnittele AI-botti joka lukee firman Slack-kanavat ja jakaa viikoittain "Viikon turhin keskustelu" -palkinnon.' },
+        { category: 'Myynti', text: 'Asiakas on ostanut samaa tuotetta 3 vuotta. Hän on allerginen kaikelle uudelle. Myy hänelle lisäpalvelu niin ettei hän huomaa ostavansa mitään uutta.' },
+        { category: 'Budjetointi', text: 'Perustele kaikki toimiston kulut nollasta alkaen. Ensimmäinen haaste: miksi tarvitaan 3 kokoushuonetta kun "voidaan puhua käytävälläkin"?' }
+    ];
