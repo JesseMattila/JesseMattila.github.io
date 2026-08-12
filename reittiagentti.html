@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reittiagentti — demo · Jesse Mattila</title>
+<meta name="description" content="Reititysdemo kenttätyön päiville: mitoittaa tiimin, kunnioittaa asiakkaan aikaikkunoita, pitää työpäivät alle 7,5 tunnissa ja reitittää oikeilla HSL-yhteyksillä Digitransit-rajapinnasta.">
+<meta property="og:title" content="Reittiagentti — demo · Jesse Mattila" />
+<meta property="og:description" content="Kenttätyön päivien reititys oikealla HSL-datalla: tiimin mitoitus, aikaikkunat, 7,5 h työpäiväraja, kartta ja Gantt." />
+<meta property="og:url" content="https://jessemattila.github.io/reittiagentti.html" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://jessemattila.github.io/kuva.png" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{--blue:#037db0;--blue-dk:#025e84;--sky:#7ec8e3;--bg:#eef6fb;--ink:#15262e;--muted:#5d7480;--line:#d4e6f0;--card:#fff;--good:#1f9d6b;--warn:#c47a00;--bad:#c0392b;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5;}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 18px 60px;}
+  header.top{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+  .logo{width:42px;height:42px;border-radius:11px;background:#15262e;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;letter-spacing:.5px;color:#fff;flex:none;}
+  .logo span{color:#e94560;}
+  .backlink{display:inline-block;font-size:12px;color:var(--muted);text-decoration:none;margin-bottom:14px;}
+  .backlink:hover{color:var(--blue);}
+  h1{font-size:23px;margin:0;letter-spacing:.2px;}
+  .sub{color:var(--muted);font-size:13.5px;margin:2px 0 0;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}
+  @media(max-width:880px){.grid{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 18px;box-shadow:0 1px 3px rgba(3,125,176,.05);}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:1.4px;color:var(--blue);margin:0 0 12px;}
+  label.fl{display:block;font-size:12px;color:var(--muted);margin:0 0 4px;font-weight:600;}
+  input[type=text],input[type=password],input[type=number],input[type=time],textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:13px;font-family:inherit;color:var(--ink);background:#fbfdff;}
+  input:focus,textarea:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(126,200,227,.3);}
+  .hint{font-size:11.5px;color:var(--muted);margin:6px 0 0;}
+  .hint a{color:var(--blue);}
+  .row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:12px;}
+  .field-sm{max-width:120px;}
+  button{cursor:pointer;border:none;border-radius:10px;font-size:14px;font-weight:600;padding:11px 18px;font-family:inherit;transition:.15s;}
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:var(--blue-dk);}
+  .btn-ghost{background:#eaf4fa;color:var(--blue);padding:8px 13px;font-size:13px;}
+  .btn-ghost:hover{background:#dcedf6;}
+  .chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink);}
+  .chk input{width:16px;height:16px;accent-color:var(--blue);}
+  /* site rows */
+  #rows{margin-top:4px;max-height:230px;overflow:auto;padding-right:4px;}
+  .srowhead,.srow{display:grid;grid-template-columns:1fr 46px 72px 72px 44px 22px;gap:5px;align-items:center;}
+  .lockmark{font-size:10px;}
+  .srowhead{font-size:10.5px;color:var(--muted);font-weight:600;margin-bottom:4px;padding:0 2px;}
+  .srow{margin-bottom:5px;}
+  .srow input{padding:7px 8px;font-size:12.5px;}
+  .r-del{background:none;color:#b33;font-size:15px;padding:0;font-weight:700;}
+  .banner{margin-top:14px;border-radius:9px;padding:9px 12px;font-size:12.5px;display:none;}
+  .banner.live{background:#e6f6ee;color:#0f6b46;border:1px solid #bfe6d2;display:block;}
+  .banner.est{background:#fff6e3;color:#7a5300;border:1px solid #f0dcab;display:block;}
+  .banner.err{background:#fdeaea;color:#a11;border:1px solid #f3c9c9;display:block;}
+  #results{display:none;margin-top:22px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px;}
+  @media(max-width:880px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px;}
+  .stat .n{font-size:23px;font-weight:700;color:var(--blue);line-height:1.1;}
+  .stat .n.good{color:var(--good);}.stat .n.bad{color:var(--bad);}
+  .stat .u{font-size:11px;color:var(--muted);margin-top:3px;}
+  .effline{font-size:12px;color:var(--muted);margin:8px 2px 16px;}
+  .effline b{color:var(--ink);}
+  .warnline{background:#fff6e3;color:#7a5300;border:1px solid #f0dcab;border-radius:9px;padding:8px 11px;font-size:12.5px;margin:0 0 16px;}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+  @media(max-width:980px){.twocol{grid-template-columns:1fr;}}
+  .wcard{border:1px solid var(--line);border-left-width:5px;border-radius:11px;padding:11px 13px;margin-bottom:11px;background:#fbfdff;}
+  .whead{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;margin-bottom:7px;flex-wrap:wrap;}
+  .dot{width:12px;height:12px;border-radius:50%;flex:none;}
+  .wmeta{color:var(--muted);font-weight:400;font-size:11.5px;}
+  .wmeta.over{color:var(--bad);font-weight:700;}
+  .stoprow{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12.5px;border-top:1px dashed #e6eef4;}
+  .stoprow:first-child{border-top:none;}
+  .ord{width:20px;height:20px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none;}
+  .slabel{font-weight:600;flex:1;min-width:0;}
+  .sinfo{color:var(--muted);font-size:10.6px;white-space:nowrap;text-align:right;}
+  .sinfo a{color:var(--blue);text-decoration:none;font-weight:700;border-bottom:1px dotted var(--blue);}
+  .sinfo .viol{color:var(--bad);font-weight:700;}
+  .sinfo .wait{color:var(--warn);}
+  .movesel{font-size:11px;border:1px solid var(--line);border-radius:7px;padding:3px 4px;background:#fff;color:var(--blue-dk);cursor:pointer;}
+  .empty{color:var(--muted);font-size:12px;font-style:italic;padding:3px 0;}
+  #map{height:560px;border-radius:12px;border:1px solid var(--line);}
+  .mapnote{font-size:11px;color:var(--muted);margin-top:7px;}
+  .maplegend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center;}
+  .legchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:20px;padding:3px 10px 3px 8px;font-size:12px;cursor:pointer;background:#fff;user-select:none;font-weight:600;}
+  .legchip .ld{width:11px;height:11px;border-radius:50%;flex:none;}
+  .legchip.off{opacity:.42;background:#f3f6f8;}
+  .legbtn{font-size:11.5px;color:var(--blue);cursor:pointer;border:none;background:none;padding:3px 5px;text-decoration:underline;font-weight:600;}
+  /* gantt */
+  #gantt-card{margin-top:18px;}
+  .gantt{position:relative;overflow-x:auto;}
+  .gaxis{position:relative;height:18px;border-bottom:1px solid var(--line);margin-bottom:6px;}
+  .gtick{position:absolute;top:0;font-size:10px;color:var(--muted);transform:translateX(-50%);}
+  .gtickline{position:absolute;top:18px;bottom:0;width:1px;background:#eef3f7;}
+  .grow{position:relative;height:26px;margin-bottom:5px;}
+  .glabel{position:absolute;left:0;top:4px;font-size:11px;font-weight:700;width:78px;}
+  .gtrack{position:absolute;left:84px;right:0;top:0;height:26px;}
+  .gseg{position:absolute;top:3px;height:20px;border-radius:4px;font-size:9.5px;color:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;}
+  .gseg.travel{background:#cdd7de;}
+  .gseg.wait{background:repeating-linear-gradient(45deg,#f0c14b,#f0c14b 4px,#f7d98a 4px,#f7d98a 8px);}
+  .gseg.viol{outline:2px solid var(--bad);}
+  #log{font-size:11.5px;color:var(--muted);margin-top:14px;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;max-height:110px;overflow:auto;}
+  .foot{margin-top:34px;font-size:11.5px;color:var(--muted);text-align:center;}
+  .spin{display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:7px;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="backlink" href="tyokalut.html">← Jesse Mattila · Työkalut</a>
+  <header class="top">
+    <div class="logo">J<span>M</span></div>
+    <div>
+      <h1>Reittiagentti <span style="font-weight:400;color:var(--muted);font-size:15px;">· demo</span></h1>
+      <p class="sub">Mitoittaa tiimin, kunnioittaa <b>aikaikkunoita</b>, pitää työpäivät <b>≤ 7,5 h</b> ja reitittää <b>oikeilla HSL-yhteyksillä</b>.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2>1 · Päivän kohteet</h2>
+      <div class="row">
+        <div style="flex:1;min-width:160px"><label class="fl">Lähtöpaikka</label><input type="text" id="depot"></div>
+        <div class="field-sm"><label class="fl">Päivä alkaa</label><input type="time" id="daystart" value="08:00"></div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="srowhead"><span>Kohdeosoite</span><span>Työ min</span><span>Ikkuna alk.</span><span>Ikkuna loppu</span><span>Vakio T#</span><span></span></div>
+        <div id="rows"></div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn-ghost" id="addrow">+ Lisää kohde</button>
+        <button class="btn-ghost" id="ex">Lataa esimerkki (30)</button>
+      </div>
+      <div class="hint" style="margin-top:2px">Vakio T# = lukitse kohde tietylle työntekijälle (sama tekijä vakioasiakkaalle). Muut kohteet jaetaan joustavasti niiden ympärille.</div>
+      <div class="row">
+        <label class="chk"><input type="checkbox" id="auto" checked> Laske työntekijämäärä automaattisesti (tavoite ≤ 7,5 h / hlö)</label>
+      </div>
+      <div class="row">
+        <div class="field-sm"><label class="fl">Työntekijöitä</label><input type="number" id="workers" value="6" min="1" max="14"></div>
+        <label class="chk" style="padding-bottom:9px"><input type="checkbox" id="ret"> Palaa lähtöpaikkaan</label>
+      </div>
+      <div class="row"><button class="btn-primary" id="go">Optimoi reitit</button></div>
+      <div class="banner" id="banner"></div>
+    </div>
+
+    <div class="card">
+      <h2>2 · HSL-yhteys (valinnainen)</h2>
+      <label class="fl">Digitransit subscription key</label>
+      <input type="password" id="key" placeholder="Liitä avaimesi tähän">
+      <div class="hint">Ilman avainta: <b>arviotila</b> (esimerkkiosoitteilla). Avaimella: <b>oikeat HSL-ajat, reittiviivat ja aikataululinkit</b> — vain käytetyille osuuksille.<br>Avain: <a href="https://portal-api.digitransit.fi/" target="_blank" rel="noopener">portal-api.digitransit.fi</a> → Profile → Show.</div>
+      <div id="log"></div>
+    </div>
+  </div>
+
+  <div id="results">
+    <div class="stats">
+      <div class="stat"><div class="n" id="s-stops">–</div><div class="u">kohdetta</div></div>
+      <div class="stat"><div class="n" id="s-workers">–</div><div class="u">työntekijää (suositus <span id="s-rec">–</span>)</div></div>
+      <div class="stat"><div class="n" id="s-max">–</div><div class="u">pisin työpäivä (raja 7,5 h)</div></div>
+      <div class="stat"><div class="n good" id="s-viol">–</div><div class="u">aikaikkunan rikkomukset</div></div>
+    </div>
+    <div class="warnline" id="warnline" style="display:none"></div>
+    <div class="effline" id="effline"></div>
+    <div class="twocol">
+      <div class="card">
+        <h2>Reitit & aikataulu</h2>
+        <p class="mapnote" style="margin:-4px 0 12px">Siirrä kohde toiselle työntekijälle oikean reunan valikosta. Linjamerkki avaa HSL-aikataulun.</p>
+        <div id="workers-out"></div>
+      </div>
+      <div class="card">
+        <h2>Kartta</h2>
+        <div id="maplegend" class="maplegend"></div>
+        <div id="map"></div>
+        <p class="mapnote">⬛ lähtöpaikka · värit = työntekijät · numerot = käyntijärjestys · viivat = todellinen HSL-reitti (kävely katkoviiva).</p>
+      </div>
+    </div>
+    <div class="card" id="gantt-card">
+      <h2>Päivän aikajana (Gantt)</h2>
+      <p class="mapnote" style="margin:-4px 0 12px">Harmaa = matka · raidoitettu = odotus ikkunan avautumista · väri = työ kohteessa. Punainen reunus = aikaikkuna rikkoutuu.</p>
+      <div class="gantt" id="gantt"></div>
+    </div>
+  </div>
+
+  <p class="foot">Prototyyppi · <a href="tyokalut.html" style="color:var(--blue)">Jesse Mattila</a> · esimerkkiosoitteet keksittyjä · data: Digitransit / HSL avoin rajapinta</p>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const log=m=>{$('log').textContent+=m+"\n";$('log').scrollTop=1e9;};
+const WCOLORS=['#037db0','#e8590c','#1f9d6b','#8e44ad','#c0392b','#1098ad','#f59f00','#d6336c','#495057','#2b8a3e','#5f3dc4','#a61e4d','#0b7285','#e67700'];
+const CAP=450; // 7.5h in minutes
+
+// depot + sites: [label,lat,lon,sv,ws,we]
+const SAMPLE_DEPOT=["Lauttasaaren toimisto, Helsinki",60.1577,24.8770];
+const SAMPLE=[
+ ["Iso Roobertinkatu 20, Helsinki",60.1640,24.9430,90,"09:00","11:00",1],["Fredrikinkatu 40, Helsinki",60.1670,24.9360,60,"","",1],
+ ["Bulevardi 12, Helsinki",60.1655,24.9400,120,"10:00","13:00"],["Runeberginkatu 30, Helsinki",60.1740,24.9230,90,"",""],
+ ["Mannerheimintie 100, Helsinki",60.1899,24.9230,150,"09:00","12:00",2],["Hämeentie 50, Helsinki",60.1880,24.9580,90,"",""],
+ ["Vaasankatu 15, Helsinki",60.1845,24.9510,60,"12:00","14:00"],["Mäkelänkatu 30, Helsinki",60.1950,24.9530,120,"",""],
+ ["Sturenkatu 20, Helsinki",60.1920,24.9560,90,"10:00","12:00",2],["Itäkatu 1, Helsinki",60.2103,25.0780,150,"",""],
+ ["Linnanrakentajantie 2, Helsinki",60.1920,25.0360,90,"",""],["Gotlanninkatu 5, Helsinki",60.1930,25.0300,60,"09:00","11:00"],
+ ["Ratapihantie 11, Helsinki",60.1990,24.9320,120,"",""],["Pohjolankatu 2, Helsinki",60.2180,24.9520,90,"13:00","15:00"],
+ ["Mäkitorpantie 5, Helsinki",60.2270,24.9650,90,"",""],["Laajalahdentie 6, Helsinki",60.2010,24.8770,60,"",""],
+ ["Gyldenintie 10, Helsinki",60.1590,24.8830,120,"10:00","13:00"],["Isokaari 15, Helsinki",60.1530,24.8770,90,"",""],
+ ["Tapionaukio 3, Espoo",60.1759,24.8051,150,"12:00","15:00",3],["Piispansilta 11, Espoo",60.1590,24.7380,90,"",""],
+ ["Leppävaarankatu 5, Espoo",60.2190,24.8130,90,"",""],["Kauklahdenväylä 5, Espoo",60.1900,24.6400,120,"",""],
+ ["Otaniementie 9, Espoo",60.1840,24.8290,60,"09:00","11:00"],["Tikkurilantie 44, Vantaa",60.2920,25.0440,150,"",""],
+ ["Liesikuja 2, Vantaa",60.2610,24.8540,90,"",""],["Kielotie 20, Vantaa",60.2940,25.0410,90,"11:00","14:00"],
+ ["Lentäjäntie 1, Vantaa",60.2920,24.9690,120,"",""],["Topeliuksenkatu 15, Helsinki",60.1820,24.9180,90,"",""],
+ ["Lapinlahdenkatu 16, Helsinki",60.1660,24.9300,60,"",""],["Hietalahdenranta 5, Helsinki",60.1620,24.9320,90,"10:00","12:00"]
+];
+const coordCache={};
+
+function addRow(addr="",sv=90,ws="",we="",lock=""){
+  const d=document.createElement('div');d.className='srow';
+  d.innerHTML=`<input type="text" class="r-addr" placeholder="Osoite" value="${addr.replace(/"/g,'&quot;')}">`+
+    `<input type="number" class="r-sv" min="5" step="5" value="${sv}">`+
+    `<input type="time" class="r-ws" value="${ws}">`+
+    `<input type="time" class="r-we" value="${we}">`+
+    `<input type="number" class="r-lock" min="1" placeholder="–" value="${lock||''}" title="Lukitse vakiotyöntekijälle (T#)">`+
+    `<button class="r-del" title="Poista">✕</button>`;
+  d.querySelector('.r-del').addEventListener('click',()=>d.remove());
+  $('rows').appendChild(d);
+}
+function loadExample(){
+  $('depot').value=SAMPLE_DEPOT[0];coordCache[SAMPLE_DEPOT[0]]={lat:SAMPLE_DEPOT[1],lon:SAMPLE_DEPOT[2]};
+  $('rows').innerHTML='';
+  SAMPLE.forEach(s=>{coordCache[s[0]]={lat:s[1],lon:s[2]};addRow(s[0],s[3],s[4],s[5],s[6]);});
+  $('auto').checked=true;setBanner('','');
+}
+function readRows(){return [...document.querySelectorAll('#rows .srow')].map(r=>({
+  addr:r.querySelector('.r-addr').value.trim(),sv:parseInt(r.querySelector('.r-sv').value)||90,
+  ws:r.querySelector('.r-ws').value,we:r.querySelector('.r-we').value,lock:parseInt(r.querySelector('.r-lock').value)||null})).filter(x=>x.addr);}
+const t2m=s=>{if(!s)return null;const [h,m]=s.split(':').map(Number);return h*60+m;};
+const clk=m=>{m=Math.round(m);return Math.floor(m/60)+":"+String(((m%60)+60)%60).padStart(2,'0');};
+
+// geometry / estimate
+function haversine(a,b){const R=6371,t=x=>x*Math.PI/180;const dLat=t(b.lat-a.lat),dLon=t(b.lon-a.lon);const h=Math.sin(dLat/2)**2+Math.cos(t(a.lat))*Math.cos(t(b.lat))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
+function estimateMin(a,b){const km=haversine(a,b);if(km<.05)return 0;return Math.round(6+km/18*60);}
+function decodePolyline(str,p=5){let i=0,lat=0,lng=0,co=[],f=Math.pow(10,p);while(i<str.length){let r=1,sh=0,b;do{b=str.charCodeAt(i++)-63-1;r+=b<<sh;sh+=5;}while(b>=0x1f);lat+=(r&1)?~(r>>1):(r>>1);r=1;sh=0;do{b=str.charCodeAt(i++)-63-1;r+=b<<sh;sh+=5;}while(b>=0x1f);lng+=(r&1)?~(r>>1):(r>>1);co.push([lat/f,lng/f]);}return co;}
+
+// Digitransit live
+const GEO="https://api.digitransit.fi/geocoding/v1/search";
+const ROUTE="https://api.digitransit.fi/routing/v2/hsl/gtfs/v1";
+async function geocode(text,key){
+  const r=await fetch(`${GEO}?text=${encodeURIComponent(text)}&size=1&focus.point.lat=60.18&focus.point.lon=24.94&digitransit-subscription-key=${encodeURIComponent(key)}`);
+  if(!r.ok)throw new Error("Geokoodaus "+r.status);const j=await r.json();
+  if(!j.features||!j.features.length)throw new Error("Osoitetta ei löytynyt: "+text);
+  const [lon,lat]=j.features[0].geometry.coordinates;return {lat,lon};}
+function planQuery(o,d){return `{planConnection(origin:{location:{coordinate:{latitude:${o.lat},longitude:${o.lon}}}} destination:{location:{coordinate:{latitude:${d.lat},longitude:${d.lon}}}} first:1){edges{node{legs{duration mode legGeometry{points} route{shortName gtfsId}} emissionsPerPerson{co2}}}}}`;}
+async function transit(o,d,key){
+  const r=await fetch(ROUTE,{method:"POST",headers:{"Content-Type":"application/json","digitransit-subscription-key":key},body:JSON.stringify({query:planQuery(o,d)})});
+  if(!r.ok)throw new Error("Reititys "+r.status);const j=await r.json();if(j.errors)throw new Error(j.errors[0].message);
+  const e=j.data.planConnection.edges;if(!e.length)return null;const node=e[0].node;
+  return {minutes:node.legs.reduce((s,l)=>s+l.duration/60,0),co2:node.emissionsPerPerson?node.emissionsPerPerson.co2:null,
+    legs:node.legs.map(l=>({mode:l.mode,line:l.route&&l.route.shortName,gtfsId:l.route&&l.route.gtfsId,min:Math.round(l.duration/60),geom:l.legGeometry&&l.legGeometry.points?decodePolyline(l.legGeometry.points):null}))};}
+
+// ---- state-aware planning ----
+let STATE=null,map,layer,visibleW=null;
+const legKey=(a,b)=>[a.label,b.label].sort().join("||");
+function legMin(a,b){const k=legKey(a,b);return (STATE.live&&STATE.legInfo[k])?STATE.legInfo[k].minutes:estimateMin(a,b);}
+function simulate(route){
+  let t=STATE.dayStart,prev=STATE.depot,travel=0,wait=0,viol=0;const stops=[];
+  for(const s of route){const tr=legMin(prev,s);travel+=tr;const arr=t+tr;let start=arr,w=0;
+    if(s.ws!=null&&arr<s.ws){w=s.ws-arr;start=s.ws;}wait+=w;
+    let v=false;if(s.we!=null&&start>s.we+1e-9){v=true;viol++;}
+    const dep=start+s.sv;stops.push({s,arr,start,dep,w,v});t=dep;prev=s;}
+  let end=t;if(STATE.ret){const tr=legMin(prev,STATE.depot);travel+=tr;end+=tr;}
+  return {stops,end,travel,wait,viol,workday:end-STATE.dayStart};}
+const schedCost=r=>{const x=simulate(r);return x.travel+x.wait+1000*x.viol;};
+function nn(cl){const seen=new Set(),r=[];let cur=STATE.depot;while(r.length<cl.length){let b=-1,bd=1e9;cl.forEach((s,i)=>{if(!seen.has(i)){const d=estimateMin(cur,s);if(d<bd){bd=d;b=i;}}});r.push(b);seen.add(b);cur=cl[b];}return r.map(i=>cl[i]);}
+function twoOpt(r){let best=r.slice(),imp=true;while(imp){imp=false;for(let i=0;i<best.length-1;i++)for(let k=i+1;k<best.length;k++){const nr=best.slice(0,i).concat(best.slice(i,k+1).reverse(),best.slice(k+1));if(schedCost(nr)<schedCost(best)-1e-9){best=nr;imp=true;}}}return best;}
+const routeOf=cl=>cl.length?twoOpt(nn(cl)):[];
+const loadOf=cl=>cl.length?simulate(routeOf(cl)).workday:0;
+function kmeansPP(sites,K,iter=14){
+  let c=[sites[Math.floor(Math.random()*sites.length)]];
+  while(c.length<K){const d=sites.map(s=>Math.min(...c.map(x=>haversine(s,x)**2)));const sum=d.reduce((a,b)=>a+b,0);let r=Math.random()*sum,i=0;while(r>0&&i<d.length)r-=d[i++];c.push(sites[Math.max(0,i-1)]);}
+  c=c.map(x=>({lat:x.lat,lon:x.lon}));
+  for(let t=0;t<iter;t++){const a=sites.map(s=>{let b=0,bd=1e9;c.forEach((x,k)=>{const d=haversine(s,x);if(d<bd){bd=d;b=k;}});return b;});for(let k=0;k<K;k++){const cl=sites.filter((_,i)=>a[i]===k);if(cl.length)c[k]={lat:cl.reduce((p,s)=>p+s.lat,0)/cl.length,lon:cl.reduce((p,s)=>p+s.lon,0)/cl.length};}}
+  return c;}
+function balancedAssign(sites,c){const K=c.length,cap=Math.ceil(sites.length/K);const pr=[];sites.forEach((s,i)=>c.forEach((x,k)=>pr.push([haversine(s,x),i,k])));pr.sort((a,b)=>a[0]-b[0]);const a=Array(sites.length).fill(-1),ct=Array(K).fill(0);for(const[d,i,k]of pr)if(a[i]===-1&&ct[k]<cap){a[i]=k;ct[k]++;}for(let i=0;i<sites.length;i++)if(a[i]===-1){let b=0,bd=1e9;c.forEach((x,k)=>{if(ct[k]<cap){const d=haversine(sites[i],x);if(d<bd){bd=d;b=k;}}});a[i]=b;ct[b]++;}return a;}
+const centroid=cl=>({lat:cl.reduce((a,s)=>a+s.lat,0)/cl.length,lon:cl.reduce((a,s)=>a+s.lon,0)/cl.length});
+function rebalance(clusters){let L=clusters.map(loadOf);for(let it=0;it<160;it++){const hi=L.indexOf(Math.max(...L)),lo=L.indexOf(Math.min(...L));if(hi===lo)break;const lc=clusters[lo].length?centroid(clusters[lo]):STATE.depot;let cand=-1,bd=1e9;clusters[hi].forEach((s,i)=>{if(s.lock)return;const d=haversine(s,lc);if(d<bd){bd=d;cand=i;}});if(cand<0)break;const mv=clusters[hi][cand];const nHi=clusters[hi].filter((_,i)=>i!==cand),nLo=clusters[lo].concat([mv]);const tr=L.slice();tr[hi]=loadOf(nHi);tr[lo]=loadOf(nLo);if(Math.max(...tr)<Math.max(...L)-1e-9){clusters[hi]=nHi;clusters[lo]=nLo;L=tr;}else break;}return clusters;}
+function buildClusters(K){
+  const cs=Array.from({length:K},()=>[]);const flex=[];
+  STATE.sites.forEach(s=>{if(s.lock&&s.lock>=1&&s.lock<=K)cs[s.lock-1].push(s);else flex.push(s);});
+  if(flex.length){const c=kmeansPP(flex,K);const a=balancedAssign(flex,c);flex.forEach((s,i)=>cs[a[i]].push(s));}
+  return cs;}
+function planFor(K,R=3){
+  if(K<=1)return [STATE.sites.slice()].map(routeOf);
+  let best=null,bestMax=1e9;
+  for(let r=0;r<R;r++){const cs=buildClusters(K);rebalance(cs);const routes=cs.map(routeOf);const mx=Math.max(...routes.map(r=>simulate(r).workday));if(mx<bestMax){bestMax=mx;best=routes;}}
+  return best;}
+function suggestWorkers(maxK){
+  const totalSv=STATE.sites.reduce((a,s)=>a+s.sv,0);
+  const maxLock=STATE.sites.reduce((m,s)=>Math.max(m,s.lock||0),0);
+  const top=Math.max(maxK,maxLock,1);let lo=Math.max(1,Math.ceil(totalSv/CAP),maxLock);
+  for(let K=lo;K<=top;K++){const routes=planFor(K);const maxWd=Math.max(...routes.map(r=>simulate(r).workday));const viol=routes.reduce((a,r)=>a+simulate(r).viol,0);if(maxWd<=CAP&&viol===0)return {K,routes};}
+  return {K:top,routes:planFor(top),capped:true};}
+
+function setBanner(cls,msg){const b=$('banner');b.className='banner'+(cls?' '+cls:'');b.textContent=msg;}
+function fmt(min){min=Math.round(min);const h=Math.floor(min/60),m=min%60;return h?`${h} h ${m} min`:`${m} min`;}
+const MODEFI={WALK:'kävely',BUS:'bussi',TRAM:'ratikka',RAIL:'juna',SUBWAY:'metro',FERRY:'lautta'};
+const short=l=>l.replace(/, (Helsinki|Espoo|Vantaa)$/,'');
+const hslLink=g=>`https://reittiopas.hsl.fi/linjat/${g}`;
+
+function routePairs(route){const out=[];let p=STATE.depot;route.forEach(s=>{out.push([p,s]);p=s;});if(STATE.ret)out.push([p,STATE.depot]);return out;}
+async function fetchLegs(pairs){
+  const need=new Map();pairs.forEach(([o,d])=>{const k=legKey(o,d);if(!STATE.legInfo[k])need.set(k,[o,d]);});
+  const entries=[...need.entries()];
+  for(let b=0;b<entries.length;b+=4){await Promise.all(entries.slice(b,b+4).map(async([k,[o,d]])=>{
+    try{const t=await transit(o,d,STATE.key);STATE.legInfo[k]=t?{minutes:t.minutes,legs:t.legs,co2:t.co2}:{minutes:estimateMin(o,d),legs:null,co2:null};}
+    catch(e){STATE.legInfo[k]={minutes:estimateMin(o,d),legs:null,co2:null};}}));}
+  return entries.length;}
+
+async function reassign(label,fromW,toW){
+  if(fromW===toW||!STATE)return;
+  const idx=STATE.routes[fromW].findIndex(s=>s.label===label);if(idx<0)return;
+  if(STATE.routes[fromW][idx].lock)return;
+  const [site]=STATE.routes[fromW].splice(idx,1);STATE.routes[toW].push(site);
+  STATE.routes[fromW]=routeOf(STATE.routes[fromW]);STATE.routes[toW]=routeOf(STATE.routes[toW]);
+  if(STATE.live){log(`Siirretty ${short(label)} → Työntekijä ${toW+1}, päivitetään HSL-osuudet…`);await fetchLegs([...routePairs(STATE.routes[fromW]),...routePairs(STATE.routes[toW])]);}
+  renderFromState();}
+
+async function run(){
+  const depotAddr=$('depot').value.trim();const rows=readRows();
+  if(!depotAddr||rows.length<2){setBanner('err','Anna lähtöpaikka ja vähintään 2 kohdetta.');return;}
+  const key=$('key').value.trim(),live=!!key,dayStart=t2m($('daystart').value)||480,ret=$('ret').checked;
+  const auto=$('auto').checked,maxK=parseInt($('workers').max)||14;
+  $('log').textContent='';$('go').disabled=true;visibleW=null;const orig=$('go').innerHTML;$('go').innerHTML='<span class="spin"></span>Lasketaan…';
+  try{
+    const resolve=async(addr)=>{if(live){log("Geokoodataan: "+addr);return await geocode(addr,key);}const c=coordCache[addr];if(!c)throw new Error("Arviotila tunnistaa vain esimerkkiosoitteet. Syötä HSL-avain käyttääksesi omia osoitteita.");return c;};
+    const dc=await resolve(depotAddr);const depot={label:depotAddr,lat:dc.lat,lon:dc.lon,sv:0,ws:null,we:null};
+    const sites=[];for(const r of rows){const c=await resolve(r.addr);sites.push({label:r.addr,lat:c.lat,lon:c.lon,sv:r.sv,ws:t2m(r.ws),we:t2m(r.we),lock:r.lock&&r.lock>=1?r.lock:null});}
+    const maxLock=sites.reduce((m,s)=>Math.max(m,s.lock||0),0);
+    STATE={depot,sites,routes:[],dayStart,ret,live,key,legInfo:{},nSites:sites.length,recommendedK:null};
+    setBanner(live?'live':'est',live?'✓ Live-tila — HSL-ajat, reittiviivat ja aikataulut vain käytetyille osuuksille.':'⚠ Arviotila — likimääräiset arviot. Syötä HSL-avain saadaksesi oikeat ajat ja omat osoitteet.');
+    // recommendation always
+    log('Mitoitetaan tiimi (≤ 7,5 h / hlö)…');
+    const rec=suggestWorkers(maxK);STATE.recommendedK=rec.K;
+    if(auto){STATE.routes=rec.routes;$('workers').value=rec.K;}
+    else{let K=Math.max(1,Math.min(parseInt($('workers').value)||1,sites.length));if(K<maxLock){K=maxLock;log(`Nostettu ${maxLock} työntekijään lukittujen vakiokohteiden vuoksi.`);}STATE.routes=planFor(K);$('workers').value=K;}
+    if(live){const pairs=[];STATE.routes.forEach(r=>routePairs(r).forEach(p=>pairs.push(p)));log(`Haetaan reittiosuudet HSL:stä (vain käytetyt, ei kaikkia ${sites.length*(sites.length+1)/2} paria)…`);const n=await fetchLegs(pairs);log(`Haettu ${n} osuutta.`);}
+    renderFromState();
+  }catch(e){setBanner('err','Virhe: '+e.message+(/(401|403)/.test(e.message)?' — tarkista avain.':''));log("VIRHE: "+e.message);}
+  finally{$('go').disabled=false;$('go').innerHTML=orig;}
+}
+
+function renderFromState(){
+  $('results').style.display='block';
+  const {depot,routes,live}=STATE;
+  const sims=routes.map(simulate);
+  const workdays=sims.map(s=>s.workday);
+  const active=workdays.filter((_,i)=>routes[i].length);
+  const totalViol=sims.reduce((a,s)=>a+s.viol,0);
+  const maxWd=Math.max(...workdays);
+  $('s-stops').textContent=STATE.nSites;
+  $('s-workers').textContent=routes.length;$('s-rec').textContent=STATE.recommendedK;
+  $('s-max').textContent=fmt(maxWd);$('s-max').className='n'+(maxWd>CAP?' bad':' good');
+  $('s-viol').textContent=totalViol;$('s-viol').className='n'+(totalViol?' bad':' good');
+
+  // warning if manual count below recommendation or overflow
+  const over=routes.filter((r,i)=>r.length&&workdays[i]>CAP).length;
+  let warn='';
+  if(routes.length<STATE.recommendedK) warn=`Käytössä ${routes.length} työntekijää, mutta 7,5 h tavoite vaatii noin <b>${STATE.recommendedK}</b>. ${over} työntekijän päivä ylittää 7,5 h (punaisella).`;
+  else if(over) warn=`${over} työntekijän työpäivä ylittää 7,5 h.`;
+  else if(totalViol) warn=`${totalViol} aikaikkunaa ei ehditä — harkitse lisää työntekijöitä tai väljempiä ikkunoita.`;
+  $('warnline').style.display=warn?'block':'none';$('warnline').innerHTML=warn;
+
+  const full=STATE.nSites*(STATE.nSites+1)/2,used=Object.keys(STATE.legInfo).length;
+  const totTravel=sims.reduce((a,s)=>a+s.travel,0),totSvc=routes.reduce((a,r)=>a+r.reduce((x,s)=>x+s.sv,0),0),totWait=sims.reduce((a,s)=>a+s.wait,0);
+  let co2=0,ok=false;if(live){for(const k in STATE.legInfo){if(STATE.legInfo[k].co2!=null){co2+=STATE.legInfo[k].co2;ok=true;}}}
+  let eff=`Tiimin aika yht. <b>${fmt(totTravel+totSvc+totWait)}</b> (työ ${fmt(totSvc)} + matka ${fmt(totTravel)} + odotus ${fmt(totWait)}). `;
+  eff+=live?`HSL-kutsut <b>${used}</b> (täysi matriisi olisi ${full}).`:`Käytettyjä osuuksia ${used} (täysi matriisi ${full}); live-tilassa HSL vain näille.`;
+  if(ok)eff+=` · CO₂ ${(co2/1000).toFixed(2)} kg/hlö.`;
+  $('effline').innerHTML=eff;
+
+  // worker cards
+  const out=$('workers-out');out.innerHTML='';
+  routes.forEach((r,w)=>{
+    const col=WCOLORS[w%WCOLORS.length],sim=sims[w];
+    const div=document.createElement('div');div.className='wcard';div.style.borderLeftColor=col;
+    const overCls=sim.workday>CAP?' over':'';
+    div.innerHTML=`<div class="whead"><span class="dot" style="background:${col}"></span>Työntekijä ${w+1}<span class="wmeta${overCls}"> · ${r.length} kohdetta · työpäivä ${clk(STATE.dayStart)}–${clk(sim.end)} (${fmt(sim.workday)})${sim.viol?` · ⚠ ${sim.viol} ikkuna`:''}</span></div>`;
+    if(!r.length){const e=document.createElement('div');e.className='empty';e.textContent='ei kohteita';div.appendChild(e);}
+    let prev=depot;
+    r.forEach((s,i)=>{
+      const k=legKey(prev,s),st=sim.stops[i];let badge='arvio';
+      if(live&&STATE.legInfo[k]&&STATE.legInfo[k].legs){const main=STATE.legInfo[k].legs.filter(l=>l.mode!=='WALK');
+        badge=main.length?main.map(l=>l.gtfsId?`<a href="${hslLink(l.gtfsId)}" target="_blank" rel="noopener">${(MODEFI[l.mode]||l.mode)} ${l.line||''}</a>`:(MODEFI[l.mode]||l.mode)).join(', '):'kävely';}
+      const row=document.createElement('div');row.className='stoprow';
+      const winTxt=s.ws!=null?` · ikkuna ${clk(s.ws)}-${clk(s.we)}`:'';
+      const waitTxt=st.w?` <span class="wait">odottaa ${Math.round(st.w)}′</span>`:'';
+      const violTxt=st.v?` <span class="viol">⚠ myöhässä</span>`:'';
+      row.innerHTML=`<span class="ord" style="background:${col}">${i+1}</span>`+
+        `<span class="slabel">${short(s.label)}${s.lock?` <span class="lockmark" title="vakiotyöntekijä T${s.lock}">🔒</span>`:''}</span>`+
+        `<span class="sinfo">saapuu ${clk(st.arr)}${waitTxt} · työ ${clk(st.start)}–${clk(st.dep)}${winTxt}${violTxt}<br>${badge} · ${Math.round(legMin(prev,s))}′ matka</span>`;
+      const sel=document.createElement('select');sel.className='movesel';sel.title=s.lock?'Lukittu vakiotyöntekijälle':'Siirrä toiselle työntekijälle';
+      for(let t=0;t<routes.length;t++){const o=document.createElement('option');o.value=t;o.textContent='T'+(t+1);if(t===w)o.selected=true;sel.appendChild(o);}
+      if(s.lock)sel.disabled=true;
+      sel.addEventListener('change',e=>{sel.disabled=true;reassign(s.label,w,parseInt(e.target.value));});
+      row.appendChild(sel);div.appendChild(row);prev=s;
+    });
+    out.appendChild(div);
+  });
+
+  buildLegend();drawMap();drawGantt(sims);
+  setTimeout(()=>{if(map)map.invalidateSize();},120);
+}
+
+function buildLegend(){
+  const routes=STATE.routes;
+  const idxs=routes.map((r,i)=>i).filter(i=>routes[i].length);
+  if(!visibleW) visibleW=new Set(idxs);
+  [...visibleW].forEach(i=>{if(!routes[i]||!routes[i].length)visibleW.delete(i);});
+  const el=$('maplegend');el.innerHTML='';
+  idxs.forEach(i=>{
+    const col=WCOLORS[i%WCOLORS.length];
+    const chip=document.createElement('span');chip.className='legchip'+(visibleW.has(i)?'':' off');
+    chip.innerHTML=`<span class="ld" style="background:${col}"></span>T${i+1}`;
+    chip.addEventListener('click',()=>{if(visibleW.has(i))visibleW.delete(i);else visibleW.add(i);buildLegend();drawMap();});
+    el.appendChild(chip);
+  });
+  const all=document.createElement('button');all.className='legbtn';all.textContent='Kaikki';all.addEventListener('click',()=>{visibleW=new Set(idxs);buildLegend();drawMap();});
+  const none=document.createElement('button');none.className='legbtn';none.textContent='Ei yhtään';none.addEventListener('click',()=>{visibleW=new Set();buildLegend();drawMap();});
+  el.appendChild(all);el.appendChild(none);
+}
+function drawMap(){
+  const {depot,routes,live}=STATE;
+  if(typeof L==='undefined'){$('map').innerHTML='<div style="padding:20px;color:#5d7480;font-size:13px">Karttakirjasto (Leaflet) ei latautunut — tarkista verkkoyhteys. Reitit näkyvät vasemmalla.</div>';return;}
+  if(!map){map=L.map('map');L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);}
+  if(layer)layer.remove();layer=L.layerGroup().addTo(map);
+  const all=[[depot.lat,depot.lon]];
+  L.marker([depot.lat,depot.lon],{icon:L.divIcon({className:'',html:'<div style="background:#15262e;width:18px;height:18px;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)"></div>',iconSize:[18,18],iconAnchor:[9,9]})}).addTo(layer).bindPopup("Lähtöpaikka");
+  routes.forEach((route,w)=>{
+    if(!route.length||(visibleW&&!visibleW.has(w)))return;const col=WCOLORS[w%WCOLORS.length];let prev=depot;
+    route.forEach((p,i)=>{
+      const k=legKey(prev,p);const info=live&&STATE.legInfo[k]&&STATE.legInfo[k].legs;
+      if(info){STATE.legInfo[k].legs.forEach(l=>{if(l.geom&&l.geom.length>1){l.geom.forEach(c=>all.push(c));
+        L.polyline(l.geom,l.mode==='WALK'?{color:'#888',weight:2.5,dashArray:'4 5',opacity:.8}:{color:col,weight:4,opacity:.8}).addTo(layer);}});}
+      else{L.polyline([[prev.lat,prev.lon],[p.lat,p.lon]],{color:col,weight:2.5,opacity:.5,dashArray:'5 6'}).addTo(layer);}
+      all.push([p.lat,p.lon]);
+      L.marker([p.lat,p.lon],{icon:L.divIcon({className:'',html:`<div style="background:${col};color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 12px sans-serif;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)">${i+1}</div>`,iconSize:[24,24],iconAnchor:[12,12]})}).addTo(layer).bindPopup(`Työntekijä ${w+1} · ${i+1}. ${short(p.label)}`);
+      prev=p;
+    });
+  });
+  map.fitBounds(all,{padding:[35,35]});
+}
+
+function drawGantt(sims){
+  const {routes,dayStart}=STATE;
+  const ends=sims.map(s=>s.end).filter((_,i)=>routes[i].length);
+  if(!ends.length){$('gantt').innerHTML='';return;}
+  const T0=Math.floor(dayStart/60)*60, T1=Math.ceil(Math.max(...ends)/60)*60, span=Math.max(T1-T0,60);
+  const pct=m=>((m-T0)/span*100);
+  let html='<div class="gaxis">';
+  for(let h=T0;h<=T1;h+=60){const l=pct(h);html+=`<span class="gtick" style="left:calc(84px + (100% - 84px)*${l/100})">${clk(h)}</span><span class="gtickline" style="left:calc(84px + (100% - 84px)*${l/100})"></span>`;}
+  html+='</div>';
+  routes.forEach((r,w)=>{
+    if(!r.length)return;const col=WCOLORS[w%WCOLORS.length],sim=sims[w];
+    html+=`<div class="grow"><span class="glabel" style="color:${col}">T${w+1}</span><div class="gtrack">`;
+    let prevDep=dayStart;
+    sim.stops.forEach((st,i)=>{
+      const travL=pct(st.arr)-pct(prevDep);
+      html+=`<div class="gseg travel" style="left:${pct(prevDep)}%;width:${Math.max(travL,0)}%" title="matka ${Math.round(st.arr-prevDep)} min"></div>`;
+      if(st.w>0)html+=`<div class="gseg wait" style="left:${pct(st.arr)}%;width:${pct(st.start)-pct(st.arr)}%" title="odotus ${Math.round(st.w)} min"></div>`;
+      html+=`<div class="gseg${st.v?' viol':''}" style="left:${pct(st.start)}%;width:${pct(st.dep)-pct(st.start)}%;background:${col}" title="${short(st.s.label)} ${clk(st.start)}–${clk(st.dep)}">${i+1}</div>`;
+      prevDep=st.dep;
+    });
+    html+='</div></div>';
+  });
+  $('gantt').innerHTML=html;
+}
+
+$('go').addEventListener('click',run);
+$('ex').addEventListener('click',loadExample);
+$('addrow').addEventListener('click',()=>addRow());
+loadExample();
+</script>
+</body>
+</html>
